@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import simtek.gameplanner.R;
+import simtek.gameplanner.model.Model;
 
 public class Activity_launcher extends ActionBarActivity implements View.OnClickListener {
 
@@ -26,6 +27,9 @@ public class Activity_launcher extends ActionBarActivity implements View.OnClick
         startAcrivity01.setOnClickListener(this);
         startAcrivity02.setOnClickListener(this);
         startAcrivity03.setOnClickListener(this);
+
+        //Load model
+        Model model = ((CustomApplication) this.getApplication()).getModel();
 
     }
 

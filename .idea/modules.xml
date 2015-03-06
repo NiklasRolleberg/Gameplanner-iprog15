@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Gameplanner.iml" filepath="$PROJECT_DIR$/Gameplanner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Gameplanner-iprog15.iml" filepath="$PROJECT_DIR$/Gameplanner-iprog15.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
