@@ -19,14 +19,14 @@ public class Activity_launcher extends ActionBarActivity implements View.OnClick
         setContentView(R.layout.activity_launcher);
 
         //Find buttons
-        Button startAcrivity01 = (Button)findViewById(R.id.button);
-        Button startAcrivity02 = (Button)findViewById(R.id.button2);
-        Button startAcrivity03 = (Button)findViewById(R.id.button3);
+        Button startActivity01 = (Button)findViewById(R.id.button);
+        Button startActivity02 = (Button)findViewById(R.id.button2);
+        Button startActivity03 = (Button)findViewById(R.id.button3);
 
         //add OnClicklistener
-        startAcrivity01.setOnClickListener(this);
-        startAcrivity02.setOnClickListener(this);
-        startAcrivity03.setOnClickListener(this);
+        startActivity01.setOnClickListener(this);
+        startActivity02.setOnClickListener(this);
+        startActivity03.setOnClickListener(this);
 
         //Load model
         Model model = ((CustomApplication) this.getApplication()).getModel();
@@ -59,15 +59,15 @@ public class Activity_launcher extends ActionBarActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button) {
-            Intent intent = new Intent(this, Activity_01.class);
+            Intent intent = new Intent(this, Intro_Activity.class);
             startActivity(intent);
         }
         else if (v.getId() == R.id.button2) {
-            Intent intent = new Intent(this, Activity_02.class);
+            Intent intent = new Intent(this, Gameinfo_Activity.class);
             startActivity(intent);
         }
         else if (v.getId() == R.id.button3) {
-            Intent intent = new Intent(this, Activity_03.class);
+            Intent intent = new Intent(this, Officialspicker_activity.class);
             startActivity(intent);
         }
     }

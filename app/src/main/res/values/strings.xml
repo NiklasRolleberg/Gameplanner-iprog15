@@ -7,5 +7,8 @@
     <string name="title_activity_activity_launcher">Activity_launcher</string>
     <string name="title_activity_activity_02">Activity_02</string>
     <string name="title_activity_activity_03">Activity_03</string>
+    <string name="title_activity_arenapicker">Arenapicker</string>
+    <string name="title_activity_officials_picker">Officials_picker</string>
+    <string name="title_activity_refinfo_">Refinfo_Activity</string>
 
 </resources>

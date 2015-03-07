@@ -7,12 +7,12 @@ import android.view.MenuItem;
 
 import simtek.gameplanner.R;
 
-public class Activity_02 extends ActionBarActivity {
+public class Gameinfo_Activity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_02);
+        setContentView(R.layout.gameinfo_layout);
     }
 
 

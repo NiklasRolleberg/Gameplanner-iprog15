@@ -7,19 +7,19 @@ import android.view.MenuItem;
 
 import simtek.gameplanner.R;
 
-public class Activity_03 extends ActionBarActivity {
+public class Arenapicker extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_03);
+        setContentView(R.layout.arenapicker_layout);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_activity_03, menu);
+        getMenuInflater().inflate(R.menu.menu_arenapicker, menu);
         return true;
     }
 
