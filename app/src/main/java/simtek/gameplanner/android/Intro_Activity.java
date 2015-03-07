@@ -113,7 +113,26 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             refs.setText("3/5 ref");
 
 
-            
+            list1.setOrientation(HORIZONTAL);
+            list1.addView(team1);
+            list1.addView(vs);
+            list1.addView(team2);
+
+            this.setOrientation(VERTICAL);
+            this.setGravity(Gravity.CENTER_HORIZONTAL);
+
+            this.addView(list1);
+            this.addView(date);
+            this.addView(refs);
+
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int width = size.x;
+            //int height = size.y;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((width/2)-20,(width/2)-20);
+            this.setLayoutParams(params);
+            this.setBackgroundColor(Color.GREEN);
         }
     }
 }
