@@ -26,7 +26,7 @@
             android:label="@string/title_activity_activity_02" >
         </activity>
         <activity
-            android:name=".android.CrateGame_Activity"
+            android:name=".android.CreateGame_Activity"
             android:label="@string/title_activity_activity_03" >
         </activity>
         <activity
