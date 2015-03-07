@@ -88,8 +88,12 @@ public class Officialspicker_activity extends ActionBarActivity {
                     case DragEvent.ACTION_DROP:
                         //handle the dragged view being dropped over a drop view
                         System.out.println("ACTION_DROP event");
-
+                        if(v==findViewById(R.id.officials))
+                        {
+                            System.out.println("drop");
+                        }
                         v.setVisibility(View.INVISIBLE); //stop displaying the text when it has been dropped a correct place
+
                         // Gets the item containing the dragged data - do we need it.........?
                         //ClipData.Item item = event.getClipData().getItemAt(0);
 
