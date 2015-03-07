@@ -12,9 +12,11 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import simtek.gameplanner.R;
@@ -31,12 +33,31 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         createNewGame.setOnClickListener(this);
 
         GridLayout grid = (GridLayout) findViewById(R.id.intro_gridLayout01);
+        grid.setPadding(15,0,0,0);
         grid.removeAllViews();
+
+        //set params for tiles
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        LinearLayout.LayoutParams tileSize = new LinearLayout.LayoutParams((width/2)-30,(width/2)-30);
+        tileSize.setMargins(15,0,15,0);
+        LinearLayout.LayoutParams tileParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
         for(int i = 0;i< 18; i++) {
-            GameTile tile = new GameTile(Intro_Activity.this,1);
-            grid.addView(tile);
+            GameTile tile = new GameTile(Intro_Activity.this);
+            tile.setLayoutParams(tileParams);
+            LinearLayout container = new LinearLayout(this);
+            container.setLayoutParams(tileSize);
+            container.setPadding(15,15,15,15);
+            container.setGravity(Gravity.CENTER);
+            container.addView(tile);
+            grid.addView(container);
             tile.setOnClickListener(this);
         }
+
+
         /*
         grid.setRowCount(9);
         System.out.println("col" + grid.getColumnCount());
@@ -89,7 +110,7 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         private TextView refs;
 
 
-        public GameTile(Context context, int a) {
+        public GameTile(Context context) {
             super(context);
 
             list1 = new LinearLayout(context);
@@ -103,36 +124,30 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             vs = new TextView(context);
             vs.setText(" vs ");
 
-            date = new TextView(context);
-            date.setText("idag");
-
-            arena = new TextView(context);
-            arena.setText("långt borta");
-
-            refs = new TextView(context);
-            refs.setText("3/5 ref");
-
-
-            list1.setOrientation(HORIZONTAL);
             list1.addView(team1);
             list1.addView(vs);
             list1.addView(team2);
+            list1.setGravity(Gravity.CENTER_HORIZONTAL);
 
-            this.setOrientation(VERTICAL);
-            this.setGravity(Gravity.CENTER_HORIZONTAL);
+            date = new TextView(context);
+            date.setText("idag");
+            date.setGravity(Gravity.CENTER_HORIZONTAL);
 
-            this.addView(list1);
-            this.addView(date);
-            this.addView(refs);
+            arena = new TextView(context);
+            arena.setText("långt borta");
+            arena.setGravity(Gravity.CENTER_HORIZONTAL);
 
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            int width = size.x;
-            //int height = size.y;
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((width/2)-20,(width/2)-20);
-            this.setLayoutParams(params);
-            this.setBackgroundColor(Color.GREEN);
+            refs = new TextView(context);
+            refs.setText("3/5 ref");
+            refs.setGravity(Gravity.CENTER_HORIZONTAL);
+
+            setOrientation(VERTICAL);
+            setBackgroundColor(Color.GREEN);
+
+            addView(list1);
+            addView(date);
+            addView(arena);
+            addView(refs);
         }
     }
 }
