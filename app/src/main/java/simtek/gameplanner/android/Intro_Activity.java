@@ -20,14 +20,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import simtek.gameplanner.R;
+import simtek.gameplanner.model.Game;
+import simtek.gameplanner.model.Model;
 
 
 public class Intro_Activity extends ActionBarActivity implements View.OnClickListener{
+
+    private Model model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.intro_layout);
+
+        //load model
+        model = ((CustomApplication) this.getApplication()).getModel();
 
         Button createNewGame = (Button) findViewById(R.id.newGameButton);
         createNewGame.setOnClickListener(this);
@@ -45,8 +52,14 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         tileSize.setMargins(15,0,15,0);
         LinearLayout.LayoutParams tileParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        for(int i = 0;i< 18; i++) {
-            GameTile tile = new GameTile(Intro_Activity.this);
+
+
+        //for(int i = 0;i< 18; i++) {
+
+        for (Game g:model.getGames()) {
+
+
+            GameTile tile = new GameTile(Intro_Activity.this,g);
             tile.setLayoutParams(tileParams);
             LinearLayout container = new LinearLayout(this);
             container.setLayoutParams(tileSize);
@@ -114,11 +127,11 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         private TextView date;
         private TextView arena;
         private TextView refs;
+        private Game game;
 
-
-        public GameTile(Context context) {
+        public GameTile(Context context, Game game) {
             super(context);
-
+            this.game = game;
             list1 = new LinearLayout(context);
 
             team1 = new TextView(context);
