@@ -1,15 +1,12 @@
 package simtek.gameplanner.android;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -18,26 +15,32 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import simtek.gameplanner.R;
 
 public class Arenapicker extends ActionBarActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     int defaultArenaID;
     Spinner vSpinner;
-
+    int currentTicketPrice;
+    int currentTurnout;
+    TextView capacity;
+    TextView rentCost;
+    TextView ticketPrice;
+    TextView turnout;
+    TextView revenue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.arenapicker_layout);
-        TextView test = (TextView) findViewById(R.id.arenapicker_lbl_pick);
+
+        //initiate component values
         defaultArenaID = getIntent().getIntExtra("ID", 1);
         vSpinner = (Spinner) findViewById(R.id.venueSpinner);
-        TextView capacity = (TextView) findViewById(R.id.arenapicker_capacity);
-        TextView ticketPrice = (TextView) findViewById(R.id.arenapicker_ticketPrice);
-        TextView turnout = (TextView) findViewById(R.id.arenapicker_turnout);
-        TextView rentCost = (TextView) findViewById(R.id.arenapicker_rentCost);
-        TextView revenue = (TextView) findViewById(R.id.arenapicker_revenue);
+        capacity = (TextView) findViewById(R.id.arenapicker_capacity);
+        ticketPrice = (TextView) findViewById(R.id.arenapicker_ticketPrice);
+        turnout = (TextView) findViewById(R.id.arenapicker_turnout);
+        rentCost = (TextView) findViewById(R.id.arenapicker_rentCost);
+        revenue = (TextView) findViewById(R.id.arenapicker_revenue);
         //SELECT name FROM arenas, later: SELECT ID FROM arenas WHERE name = "chosen item thingy"
         String[] items = new String[]{"Super mega stadium 1", "Awesome arena 42"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
@@ -45,6 +48,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         vSpinner.setOnItemSelectedListener(this);
         ticketPrice.setOnClickListener(this);
         turnout.setOnClickListener(this);
+
 
 
 
@@ -91,42 +95,138 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     public void onClick(View v) {
         int clickedID = v.getId();
         if (clickedID == R.id.arenapicker_ticketPrice) {
-            final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-            alert.setTitle("Ticket pricing");
-            //alert.setMessage("Edit Text");
-
-            LinearLayout linear = new LinearLayout(this);
-
-            linear.setOrientation(LinearLayout.VERTICAL);
-            TextView text = new TextView(this);
-            //text.setText("Set ticket price!");
-            text.setPadding(10, 10, 10, 10);
-
-            SeekBar seek = new SeekBar(this);
-
-
-            linear.addView(seek);
-            linear.addView(text);
-
-            alert.setView(linear);
-
-
-            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    Toast.makeText(getApplicationContext(), "OK Pressed", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-            });
-
-            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    Toast.makeText(getApplicationContext(), "Cancel Pressed", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-            });
-
-            alert.show();
+            setTicketPriceFromSlider();
         }
+        if (clickedID == R.id.arenapicker_turnout){
+            setTurnoutPriceFromSlider();
+        }
+    }
+
+    private void setTurnoutPriceFromSlider(){
+
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Set expected turnout [%]");
+        //alert.setMessage("Edit Text");
+
+        LinearLayout linear = new LinearLayout(this);
+
+        linear.setOrientation(LinearLayout.VERTICAL);
+        final TextView progressLabel = new TextView(this);
+        progressLabel.setText("0");
+        progressLabel.setPadding(10, 10, 10, 10);
+
+        final SeekBar seek = new SeekBar(this);
+
+
+        linear.addView(seek);
+        linear.addView(progressLabel);
+
+        alert.setView(linear);
+
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                Toast.makeText(getApplicationContext(), "Turnout set to: "+ currentTurnout, Toast.LENGTH_LONG).show();
+                currentTurnout = seek.getProgress();
+                turnout.setText("Turnout: " + currentTurnout + " %");
+
+                //finish();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                //finish();
+            }
+        });
+
+        seek.setMax(100);
+        alert.show();
+        //final int[] ticketBarValue = new int[1];
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                int tempTurnout = seek.getProgress();
+                progressLabel.setText((String.valueOf(tempTurnout)));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+    }
+    private void setTicketPriceFromSlider(){
+        //todo add slider stuff here
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Ticket pricing");
+        //alert.setMessage("Edit Text");
+
+        LinearLayout linear = new LinearLayout(this);
+        linear.setOrientation(LinearLayout.VERTICAL);
+
+        final SeekBar seek = new SeekBar(this);
+        linear.addView(seek);
+
+        alert.setView(linear);
+
+        final TextView progressLabel = new TextView(this);
+        progressLabel.setText("0");
+        progressLabel.setPadding(10, 10, 10, 10);
+        linear.addView(progressLabel);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                currentTicketPrice = seek.getProgress();
+                Toast.makeText(getApplicationContext(), "Ticket price set to: "+currentTicketPrice, Toast.LENGTH_LONG).show();
+                ticketPrice.setText("Ticket price: " + currentTicketPrice);
+                //finish();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                //finish();
+            }
+        });
+
+        alert.show();
+        //final int[] ticketBarValue = new int[1];
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                int tempTurnout = seek.getProgress();
+                progressLabel.setText((String.valueOf(tempTurnout)));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
     }
 }
