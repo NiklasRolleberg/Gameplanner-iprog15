@@ -33,6 +33,8 @@ public class Model extends Observable {
             teams.add(new Team(i, "Team "+i));
         }
 
+        //create a game
+        games.add(new Game(0,arenas.get(0),teams.get(0),teams.get(1),0,1,2,3,4));
 
     }
 
