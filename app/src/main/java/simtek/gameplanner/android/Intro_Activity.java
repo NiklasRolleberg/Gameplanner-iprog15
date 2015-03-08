@@ -95,6 +95,12 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             Intent intent = new Intent(this, CreateGame_Activity.class);
             startActivity(intent);
         }
+        else {
+            Intent intent = new Intent(this, Gameinfo_Activity.class);
+            int arenaID = 1337; //todo get from db
+            intent.putExtra("ID",arenaID);
+            startActivity(intent);
+        }
     }
 
 

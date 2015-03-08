@@ -41,16 +41,15 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Venue: "
                     android:id="@+id/creategame_noid1"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
 
-                <TextView
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="NULL"
-                    android:id="@+id/creategame_arenatext"
-                    android:focusable="true"
+                    android:id="@+id/creategame_arenaspinner"
+                    android:spinnerMode="dropdown"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
 
@@ -119,7 +118,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:text="99-99-99"
                     android:id="@+id/creategame_date"
                     android:layout_alignParentRight="true"
@@ -141,12 +141,20 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:text="00:00"
                     android:id="@+id/creategame_time"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
             </RelativeLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create"
+                android:id="@+id/creategame_createButton"
+                android:layout_marginTop="10dp" />
 
         </LinearLayout>
     </ScrollView>
