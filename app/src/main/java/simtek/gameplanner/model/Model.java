@@ -9,6 +9,8 @@ public class Model extends Observable {
     private ArrayList<Game> games;
     private ArrayList<Official> officials;
     private ArrayList<Arena> arenas;
+    private ArrayList<Team> teams;
+
     public Model() {
         System.out.println("MODEL LEVER!");
         games = new ArrayList<Game>();
@@ -25,7 +27,11 @@ public class Model extends Observable {
             arenas.add(new Arena(i,"Arena " + i, "Location " + i ));
         }
 
-        //Ceate games
+        //create teams
+        teams = new ArrayList<Team>();
+        for(int i=0;i<10;i++) {
+            teams.add(new Team(i, "Team "+i));
+        }
 
 
     }

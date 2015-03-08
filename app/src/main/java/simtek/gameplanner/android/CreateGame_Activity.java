@@ -20,6 +20,8 @@ import org.w3c.dom.Text;
 import java.util.Calendar;
 
 import simtek.gameplanner.R;
+import simtek.gameplanner.model.Game;
+import simtek.gameplanner.model.Model;
 
 public class CreateGame_Activity extends ActionBarActivity implements View.OnClickListener{
 
@@ -38,7 +40,7 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
     private int mMinute;
 
 
-
+    private Model model;
 
     private Button createGame;
 
@@ -46,6 +48,9 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.creategame_layout);
+
+        //load model
+        model = ((CustomApplication) this.getApplication()).getModel();
 
         //spinners
         String[] teams = new String[]{"ABC", "123", "NIKLAS", "INTE NIKLAS"};
@@ -187,9 +192,16 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
             tpd.show();
         }
         else if(v.getId() == R.id.creategame_createButton) {
+
+
+
+            Game g = new Game(0,null,null,null ,1 ,1, 1,1,1);
+            model.addGame(g);
+
+
             System.out.println("Create game");
             Intent intent = new Intent(this, Gameinfo_Activity.class);
-            int arenaID = 1337; //todo get from db
+            int arenaID = g.getId(); //todo get from db
             intent.putExtra("ID", arenaID);
             startActivity(intent);
         }
