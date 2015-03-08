@@ -20,8 +20,10 @@ import org.w3c.dom.Text;
 import java.util.Calendar;
 
 import simtek.gameplanner.R;
+import simtek.gameplanner.model.Arena;
 import simtek.gameplanner.model.Game;
 import simtek.gameplanner.model.Model;
+import simtek.gameplanner.model.Team;
 
 public class CreateGame_Activity extends ActionBarActivity implements View.OnClickListener{
 
@@ -53,21 +55,27 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         model = ((CustomApplication) this.getApplication()).getModel();
 
         //spinners
-        String[] teams = new String[]{"ABC", "123", "NIKLAS", "INTE NIKLAS"};
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+
+        for(Team t:model.getTeams()) {
+            adapter1.add(t.getName());
+            adapter2.add(t.getName());
+        }
 
         hometeam = (Spinner)findViewById(R.id.creategame_spinner01);
         awayteam = (Spinner)findViewById(R.id.creategame_spinner02);
         arena = (Spinner) findViewById(R.id.creategame_arenaspinner);
 
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, teams);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, teams);
         hometeam.setAdapter(adapter1);
         awayteam.setAdapter(adapter2);
         //hometeam.setOnItemSelectedListener(this);
         //awayteam.setOnItemSelectedListener(this);
 
-        String[] arenas = new String[]{"Långt borta", "På parkeringen", "I vardagsrummet"};
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arenas);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        for(Arena a: model.getArenas()) {
+            adapter3.add(a.getName());
+        }
         arena.setAdapter(adapter3);
         //arena.setOnItemSelectedListener(this);
         //data and time

@@ -56,4 +56,8 @@ public class Model extends Observable {
         games.remove(g);
     }
 
+    public ArrayList<Team> getTeams() {
+        return this.teams;
+    }
+
 }

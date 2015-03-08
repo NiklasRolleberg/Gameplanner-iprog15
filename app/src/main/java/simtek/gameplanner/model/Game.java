@@ -42,10 +42,11 @@ public class Game {
         return this.id;
     }
 
-<<<<<<< HEAD
+
     public void addOfficial(Official o, int index) {
         officials.set(index, o);
-=======
+    }
+
     public int getYear() {
         return getYear();
     }
@@ -66,13 +67,12 @@ public class Game {
         return minute;
     }
 
-    public void addOfficial(Official o) {
-        officials.add(o);
->>>>>>> origin/master
-    }
-
     public Official getOfficial(int index) {
         return officials.get(index);
+    }
+
+    public void setOfficial(Official o, int index) {
+        officials.set(index,o);
     }
 
     public Team getHomeTeam() {
