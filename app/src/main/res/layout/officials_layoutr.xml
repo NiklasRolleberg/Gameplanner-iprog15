@@ -24,11 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Pick something something..."
+            android:text="Choose officials by dragging the names into the desired field"
             android:id="@+id/textView_officials"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -139,18 +141,18 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scrollView"
+            android:id="@+id/scrollView_officials"
             android:layout_gravity="center_horizontal"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Test Testsson"
-                android:id="@+id/testOfficial"
-                android:background="@drawable/abc_list_longpressed_holo" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/scroll_linear">
+
+            </LinearLayout>
         </ScrollView>
 
     </LinearLayout>
