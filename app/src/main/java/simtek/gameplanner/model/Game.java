@@ -11,8 +11,23 @@ public class Game {
     private Arena arena;
     private ArrayList<Official> officials;
 
-    public Game() {
-        System.out.println("I AM A GAME!");
+    private int year;
+    private int month;
+    private int day;
+
+    private int hour;
+    private int minute;
+
+    public Game(Arena arena, int year, int month, int day, int hour, int minute) {
+        //System.out.println("I AM A GAME!");
+
+        this.arena = arena;
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.hour = hour;
+        this.minute = minute;
+
         officials = new ArrayList<Official>();
     }
 
