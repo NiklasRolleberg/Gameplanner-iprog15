@@ -36,6 +36,10 @@ public class Officialspicker_activity extends ActionBarActivity{
 
         model = ((CustomApplication) this.getApplication()).getModel();
         allOfficials = model.getOfficials();
+        for(Game g : model.getGames())
+        {
+            game = g;
+        }
 
         //Move following to View?
         R_layout = (LinearLayout) findViewById(R.id.R_officials);
@@ -147,13 +151,10 @@ public class Officialspicker_activity extends ActionBarActivity{
 //                    case DragEvent.ACTION_DRAG_ENDED:
 //                        break;
                     case DragEvent.ACTION_DROP:
-                        //Official o = allOfficials.get(v.ge);
-
                         //handle the dragged view being dropped over a drop view
                         currentDrag.setVisibility(View.INVISIBLE); //stop displaying the text when it has been dropped a correct place
 
                         //listan borde "åka ihop" också när man tar bort en...
-                        //om man lägger den på ett ställe där det redan finns en så ska den gamla komma tillbaks!
 
                         int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
                         v.setBackgroundResource(resID);
@@ -197,15 +198,18 @@ public class Officialspicker_activity extends ActionBarActivity{
                             System.out.println("Error: no index available");
                         }
 
-                        Official of = d.getOfficial();
-                        game.addOfficial(of, index);
-                        System.out.println("hej");
+                        game.addOfficial(d.getOfficial(), index);
 
                         int ID = getResources().getIdentifier(S+"_text", "id", getPackageName());
                         t = (TextView) findViewById(ID);
 
+                        if(game.getOfficial(index) != null)//if place is already taken
+                        {
+                            //set visible on the one you are replacing
+                            //String X = t.getText().toString();
+                        }
+
                         t.setText(S + ": " + d.getText());
-                        //t.setText(game.getOfficial(index).getName());
 
                         //Fixa: Open new activity on "short" click
 
