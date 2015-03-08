@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/scrollView3" >
 
-        <RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent">
+        <RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent"
+            android:id="@+id/myScrollView">
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,25 +34,15 @@
             android:layout_below="@+id/gameinfo_homeTeam"
             android:layout_alignParentLeft="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Venue: Bergshamra IP"
-            android:id="@+id/gameinfo_Arena"
-            android:textSize="20dp"
-            android:layout_below="@+id/gameinfo_awayTeam"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/simpleframe"
-            android:linksClickable="false" />
-
-        <TextView
+            <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kickoff time: 2015-05-05, 15:00"
             android:id="@+id/gameinfo_kickoffTime"
             android:textSize="20dp"
-            android:layout_below="@+id/gameinfo_Arena"
-            android:layout_alignParentLeft="true" />
+            android:layout_below="@+id/gameinfo_awayTeam"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -69,17 +60,18 @@
             android:layout_below="@+id/gameinfo_kickoffTime"
             android:id="@+id/linear"
             android:layout_row="0"
-            android:layout_column="0">
+            android:layout_column="0"
+            android:gravity="top">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Officials"
-                android:id="@+id/textView2"
+                android:id="@+id/gameinfo_lbl_officials"
                 android:layout_below="@+id/gameinfo_kickoffTime"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="37dp" />
+                android:layout_marginTop="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -87,7 +79,7 @@
                 android:text="R: "
                 android:id="@+id/gameinfo_referee"
                 android:textSize="20dp"
-                android:layout_below="@+id/textView2"
+                android:layout_below="@+id/gameinfo_lbl_officials"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
@@ -135,27 +127,92 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Venue info"
-                android:id="@+id/textView7"
-                android:layout_below="@+id/gameinfo_kickoffTime"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="37dp"
+                android:text="Travel and pay: 10 000"
+                android:id="@+id/gameinfo_officialsCost"
+                android:background="@android:color/holo_orange_light"
                 android:layout_row="0"
-                android:layout_column="12" />
+                android:layout_column="9"
+                android:layout_alignBottom="@+id/textView4"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="right"
+                android:textSize="17dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rent cost:"
-                android:id="@+id/gameinfo_rentCost"
-                android:textSize="20dp" />
+                android:text="Venue: Bergshamra IP"
+                android:id="@+id/gameinfo_Arena"
+                android:textSize="20dp"
+                android:layout_below="@+id/gameinfo_awayTeam"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/simpleframe"
+                android:linksClickable="false"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Visitors: "
+                    android:id="@+id/gameinfo_visitors"
+                    android:textSize="20dp" />
+
+                <Space
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Turnout [%]:"
+                    android:id="@+id/textView2"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ticket price:"
+                    android:id="@+id/gameinfo_ticketPrice"
+                    android:textSize="20dp" />
+
+                <Space
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rent cost:"
+                    android:id="@+id/gameinfo_rentCost"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Visitors: "
-                android:id="@+id/gameinfo_visitors"
-                android:textSize="20dp" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Estimated income: 19 000"
+                android:id="@+id/textView5"
+                android:background="@android:color/holo_green_dark"
+                android:layout_row="0"
+                android:layout_column="9"
+                android:layout_alignBottom="@+id/textView4"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="right"
+                android:textSize="17dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -167,7 +224,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Projected revenue:"
                     android:id="@+id/textView4"
-                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
 
@@ -175,9 +232,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="9000"
+                    android:text=" 9000 "
                     android:id="@+id/totalCost"
-                    android:background="@drawable/simpleframe"
+                    android:background="@color/abc_search_url_text_normal"
                     android:layout_row="0"
                     android:layout_column="9"
                     android:layout_alignBottom="@+id/textView4"
@@ -186,6 +243,15 @@
             </RelativeLayout>
 
         </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:layout_alignBottom="@+id/gameinfo_Arena"
+                android:layout_toRightOf="@+id/gameinfo_Arena"
+                android:layout_toEndOf="@+id/gameinfo_Arena"
+                android:src="@android:color/background_dark" />
 
         </RelativeLayout>
     </ScrollView>
