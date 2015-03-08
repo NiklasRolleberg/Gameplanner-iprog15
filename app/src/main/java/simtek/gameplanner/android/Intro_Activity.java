@@ -49,28 +49,24 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         display.getSize(size);
         int width = size.x;
         LinearLayout.LayoutParams tileSize = new LinearLayout.LayoutParams((width/2)-30,(width/2)-30);
-        tileSize.gravity = Gravity.CENTER_VERTICAL;
         tileSize.setMargins(15,0,15,0);
         LinearLayout.LayoutParams tileParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
 
 
         //for(int i = 0;i< 18; i++) {
 
         for (Game g:model.getGames()) {
 
-
             GameTile tile = new GameTile(Intro_Activity.this,g);
             tile.setLayoutParams(tileParams);
             LinearLayout container = new LinearLayout(this);
             container.setLayoutParams(tileSize);
             container.setPadding(15,15,15,15);
-            container.setGravity(Gravity.CENTER);
+            //container.setGravity(Gravity.CENTER_VERTICAL);
             container.addView(tile);
             grid.addView(container);
             tile.setOnClickListener(this);
         }
-
 
         /*
         grid.setRowCount(9);
@@ -154,7 +150,6 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             list1.setGravity(Gravity.CENTER_HORIZONTAL);
 
             //date
-
             int mYear = game.getYear();
             int mMonth = game.getMonth();
             int mDay = game.getDay();
@@ -196,9 +191,11 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             refs.setText("3/5 ref");
             refs.setGravity(Gravity.CENTER_HORIZONTAL);
 
+            //TODO fixa layout utan padding
+
             setOrientation(VERTICAL);
             setBackgroundColor(Color.GREEN);
-
+            setPadding(0,75,0,0);
             addView(list1);
             addView(date);
             addView(arena);
