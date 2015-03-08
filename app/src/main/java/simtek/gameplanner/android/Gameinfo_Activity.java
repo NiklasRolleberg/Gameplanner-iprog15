@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import simtek.gameplanner.R;
 
 public class Gameinfo_Activity extends ActionBarActivity implements View.OnClickListener{
@@ -46,6 +48,12 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         backJudge = (TextView) findViewById(R.id.gameinfo_backJudge);
         setValues(1);
         arena.setOnClickListener(this);
+        referee.setOnClickListener(this);
+        umpire.setOnClickListener(this);
+        headLinesman.setOnClickListener(this);
+        linesman.setOnClickListener(this);
+        backJudge.setOnClickListener(this);
+
 
 
         return true;
@@ -68,7 +76,14 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.gameinfo_Arena) {
+        int clickedID = v.getId();
+        ArrayList<Integer> refArray = new ArrayList<>(5);
+        refArray.add(R.id.gameinfo_referee);
+        refArray.add(R.id.gameinfo_umpire);
+        refArray.add(R.id.gameinfo_headLinesman);
+        refArray.add(R.id.gameinfo_linesman);
+        refArray.add(R.id.gameinfo_backJudge);
+        if (clickedID == R.id.gameinfo_Arena) {
             Intent intent = new Intent(this, Arenapicker.class);
             int arenaID = 1337; //todo get from db
             intent.putExtra("ID",arenaID);
@@ -76,6 +91,12 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
             //Bundle bundle = new Bundle();
             //bundle.putInt("arenaID",arenaID);
             //intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        if (refArray.contains(clickedID)){
+            Intent intent = new Intent(this, Officialspicker_activity.class);
+            int arenaID = 1337; //TODO fix!
+            intent.putExtra("ID", arenaID);
             startActivity(intent);
         }
 
