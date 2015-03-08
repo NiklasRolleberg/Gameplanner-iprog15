@@ -2,6 +2,7 @@ package simtek.gameplanner.android;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,20 +13,29 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import simtek.gameplanner.R;
+import simtek.gameplanner.model.Game;
+import simtek.gameplanner.model.Model;
+import simtek.gameplanner.model.Official;
 
 public class Officialspicker_activity extends ActionBarActivity{
 
-    TextView testOfficial;
     View currentDrag;
     LinearLayout R_layout, U_layout, HL_layout, L_layout, BJ_layout;
-    //private android.widget.RelativeLayout.LayoutParams layoutParams;
-    //String msg;
+    Model model;
+    ArrayList<Official> allOfficials;
+    ArrayList<Game> game;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.officials_layoutr);
+
+        model = ((CustomApplication) this.getApplication()).getModel();
+        allOfficials = model.getOfficials();
 
         //Move following to View?
         R_layout = (LinearLayout) findViewById(R.id.R_officials);
@@ -36,11 +46,14 @@ public class Officialspicker_activity extends ActionBarActivity{
 
         //add text views
         LinearLayout scroll = (LinearLayout) findViewById(R.id.scroll_linear);
-        for(int i=0; i<15; i++)
+        //for(int i=0; i<15; i++)
+        for(Official o : allOfficials)
         {
             //Set "view" for text view
-            TextView official = new TextView(this);
-            official.setText("Test Testsson " + Integer.toString(i));
+            //TextView official = new TextView(this);
+            textViewOfficial official = new textViewOfficial(this);
+            //official.setText("Test Testsson " + Integer.toString(i));
+            official.setText(o.getName());
             official.setTag(official.getText());
             official.setTextSize(18);
             int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
@@ -132,6 +145,8 @@ public class Officialspicker_activity extends ActionBarActivity{
 //                    case DragEvent.ACTION_DRAG_ENDED:
 //                        break;
                     case DragEvent.ACTION_DROP:
+                        //Official o = allOfficials.get(v.ge);
+
                         //handle the dragged view being dropped over a drop view
                         currentDrag.setVisibility(View.INVISIBLE); //stop displaying the text when it has been dropped a correct place
 
@@ -158,7 +173,6 @@ public class Officialspicker_activity extends ActionBarActivity{
                         int ID = getResources().getIdentifier(S+"_text", "id", getPackageName());
                         t = (TextView) findViewById(ID);
                         t.setText(S + ": " + currentDrag.getTag().toString());
-
                         //Fixa: Open new activity on "short" click
 
                         break;
@@ -168,5 +182,25 @@ public class Officialspicker_activity extends ActionBarActivity{
                 return true;
             }
         });
+    }
+}
+
+
+class textViewOfficial extends TextView
+{
+    Official off;
+
+    public textViewOfficial(Context context) {
+        super(context);
+    }
+
+    public void setOfficial(Official o)
+    {
+        off = o;
+    }
+
+    public Official getOfficial()
+    {
+        return off;
     }
 }

@@ -28,15 +28,15 @@ public class Game {
         this.hour = hour;
         this.minute = minute;
 
-        officials = new ArrayList<Official>();
+        officials = new ArrayList<Official>(5);
     }
 
     public int getId() {
         return this.id;
     }
 
-    public void addOfficial(Official o) {
-        officials.add(o);
+    public void addOfficial(Official o, int index) {
+        officials.set(index, o);
     }
 
     public Official getOfficial(int index) {
