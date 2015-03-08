@@ -49,6 +49,7 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         display.getSize(size);
         int width = size.x;
         LinearLayout.LayoutParams tileSize = new LinearLayout.LayoutParams((width/2)-30,(width/2)-30);
+        tileSize.gravity = Gravity.CENTER_VERTICAL;
         tileSize.setMargins(15,0,15,0);
         LinearLayout.LayoutParams tileParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
@@ -132,13 +133,17 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         public GameTile(Context context, Game game) {
             super(context);
             this.game = game;
+
+            //teams
             list1 = new LinearLayout(context);
 
             team1 = new TextView(context);
-            team1.setText("JAG1");
+            team1.setText(game.getHomeTeam().getName());
+            //team1.setText("team1");
 
             team2 = new TextView(context);
-            team2.setText("JAG2");
+            team2.setText(game.getAwayTeam().getName());
+            //team2.setText("team2");
 
             vs = new TextView(context);
             vs.setText(" vs ");
@@ -148,14 +153,45 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             list1.addView(team2);
             list1.setGravity(Gravity.CENTER_HORIZONTAL);
 
+            //date
+
+            int mYear = game.getYear();
+            int mMonth = game.getMonth();
+            int mDay = game.getDay();
+
+            int mHour = game.getHour();
+            int mMinute = game.getMinute();
+
+            String year = "" + mYear % 100;
+            String month = ""+(mMonth+1);
+            String day = ""+mDay;
+            if(mMonth < 9)
+                month = "0" + month;
+            if(mDay < 10)
+                day = "0"+day;
+
+            String hourString = "" + mHour;
+            String minString = "" + mMinute;
+            if(hourString.length() == 1)
+                hourString = "0" + hourString;
+            if(minString.length() == 1)
+                minString = "0" + minString;
+            String timeString = hourString + ":" + minString;
+            String dateString = year + "-" + month + "-" + day;
+
+            //String timeString = "hour";
+            //String dateString = "time";
+
             date = new TextView(context);
-            date.setText("idag");
+            date.setText(dateString + "\n" + timeString);
             date.setGravity(Gravity.CENTER_HORIZONTAL);
 
             arena = new TextView(context);
-            arena.setText("långt borta");
+            arena.setText(game.getArena().getName());
+            //arena.setText("arena");
             arena.setGravity(Gravity.CENTER_HORIZONTAL);
 
+            //TODO fixa
             refs = new TextView(context);
             refs.setText("3/5 ref");
             refs.setGravity(Gravity.CENTER_HORIZONTAL);

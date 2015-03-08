@@ -201,9 +201,39 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         }
         else if(v.getId() == R.id.creategame_createButton) {
 
+            Arena temparena = null;
+            Team home = null;
+            Team away = null;
+
+            //TODO gör om
+            String selectedArena= (String) arena.getSelectedItem();
+            for(Arena a:model.getArenas()) {
+                if(a.getName().equals(selectedArena)) {
+                    temparena = a;
+                    System.out.println("arena is :" + temparena.getName());
+                    break;
+                }
+            }
+
+            String selectedHome= (String) hometeam.getSelectedItem();
+            for(Team a:model.getTeams()) {
+                if(a.getName().equals(selectedHome)) {
+                    home = a;
+                    break;
+                }
+            }
+
+            String selectedAway= (String) awayteam.getSelectedItem();
+            for(Team a:model.getTeams()) {
+                if(a.getName().equals(selectedAway)) {
+                    away = a;
+                    break;
+                }
+            }
 
 
-            Game g = new Game(0,null,null,null ,1 ,1, 1,1,1);
+
+            Game g = new Game(0,temparena,home,away ,mYear ,mMonth, mDay,mHour,mMinute);
             model.addGame(g);
 
 

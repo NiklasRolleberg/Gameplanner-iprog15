@@ -48,7 +48,7 @@ public class Game {
     }
 
     public int getYear() {
-        return getYear();
+        return year;
     }
 
     public int getMonth() {
@@ -89,5 +89,9 @@ public class Game {
 
     public void setAwayTeam(Team t) {
         awayTeam = t;
+    }
+
+    public Arena getArena() {
+        return this.arena;
     }
 }
