@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,8 +25,11 @@ public class Officialspicker_activity extends ActionBarActivity{
 
     View currentDrag;
     LinearLayout R_layout, U_layout, HL_layout, L_layout, BJ_layout;
+    LinearLayout officialsPositions[] = new LinearLayout[5];
+    TextView officialsPositionsText[] = new TextView[5];
     Model model;
     ArrayList<Official> allOfficials;
+    ArrayList<textViewOfficial> textViews = new ArrayList<>();
     Game game;
 
 
@@ -41,12 +45,32 @@ public class Officialspicker_activity extends ActionBarActivity{
             game = g;
         }
 
+        //set title (teams)
+        TextView teams = (TextView) findViewById(R.id.Teams);
+        teams.setText(game.getHomeTeam().getName() + " vs " + game.getAwayTeam().getName());
+
+        //first thing to do: add already existing officials!
+
         //Move following to View?
         R_layout = (LinearLayout) findViewById(R.id.R_officials);
         U_layout = (LinearLayout) findViewById(R.id.U_officials);
         HL_layout = (LinearLayout) findViewById(R.id.HL_officials);
         L_layout = (LinearLayout) findViewById(R.id.L_officials);
         BJ_layout = (LinearLayout) findViewById(R.id.BJ_officials);
+
+        officialsPositions[0] = R_layout;
+        officialsPositions[1] = U_layout;
+        officialsPositions[2] = HL_layout;
+        officialsPositions[3] = L_layout;
+        officialsPositions[4] = BJ_layout;
+
+        officialsPositionsText[0] = (TextView) findViewById(R.id.R_text);
+        officialsPositionsText[1] = (TextView) findViewById(R.id.U_text);
+        officialsPositionsText[2] = (TextView) findViewById(R.id.HL_text);
+        officialsPositionsText[3] = (TextView) findViewById(R.id.L_text);
+        officialsPositionsText[4] = (TextView) findViewById(R.id.BJ_text);
+
+
 
         //add text views
         LinearLayout scroll = (LinearLayout) findViewById(R.id.scroll_linear);
@@ -55,15 +79,19 @@ public class Officialspicker_activity extends ActionBarActivity{
         {
             //Set "view" for text view
             textViewOfficial official = new textViewOfficial(this);
+            textViews.add(official);
             official.setOfficial(o);
             official.setText(o.getName());
             official.setTag(official.getText());
             official.setTextSize(18);
+            official.setMinHeight(60);
+            official.setMinWidth(200);
+            official.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
             int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
             official.setBackgroundResource(resID);
             official.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)official.getLayoutParams();
-            params.setMargins(0, 5, 0, 5);
+            params.setMargins(0, 6, 0, 6);
             official.setLayoutParams(params);
             scroll.addView(official);
 
@@ -103,7 +131,6 @@ public class Officialspicker_activity extends ActionBarActivity{
     {
         currentDrag = drag;
 
-        //currentDrag.setTag("CURRENT_DRAG");
         currentDrag.setTag(currentDrag.getTag());
         currentDrag.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -139,83 +166,65 @@ public class Officialspicker_activity extends ActionBarActivity{
             @Override
             public boolean onDrag(View v, DragEvent event) {
                 d = (textViewOfficial) currentDrag;
-                switch (event.getAction()) {
-//                    case DragEvent.ACTION_DRAG_STARTED:
-//                        break;
-//                    case DragEvent.ACTION_DRAG_ENTERED:
-//                        break;
-//                    case DragEvent.ACTION_DRAG_EXITED:
-//                        break;
-//                    case DragEvent.ACTION_DRAG_LOCATION:
-//                        break;
-//                    case DragEvent.ACTION_DRAG_ENDED:
-//                        break;
-                    case DragEvent.ACTION_DROP:
-                        //handle the dragged view being dropped over a drop view
-                        currentDrag.setVisibility(View.INVISIBLE); //stop displaying the text when it has been dropped a correct place
+                if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
+                {
+                    currentDrag.setVisibility(View.INVISIBLE); //stop displaying the text when it has been dropped a correct place
 
-                        //listan borde "åka ihop" också när man tar bort en...
+                    int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
+                    v.setBackgroundResource(resID);
 
-                        int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
-                        v.setBackgroundResource(resID);
+                    TextView t;
 
-                        TextView t = new TextView(getBaseContext());
-
-                        String s = v.getResources().getResourceName(v.getId());
-                        String S = "";
-                        if(s.substring(22, 23).equals("H") || s.substring(22, 23).equals("B"))
+                    int INDEX = -1;
+                    for(int i=0; i<officialsPositions.length; i++)
+                    {
+                        if(v.getId()==officialsPositions[i].getId())
                         {
-                            S = s.substring(22, 24);
+                            INDEX = i;
                         }
-                        else
-                        {
-                            S = s.substring(22, 23);
-                        }
+                    }
 
-                        int index = 0;
-                        if(S.equals("R"))
-                        {
-                            index = 0;
-                        }
-                        else if(S.equals("U"))
-                        {
-                            index = 1;
-                        }
-                        else if(S.equals("HL"))
-                        {
-                            index = 2;
-                        }
-                        else if(S.equals("L"))
-                        {
-                            index = 3;
-                        }
-                        else if(S.equals("BJ"))
-                        {
-                            index = 4;
-                        }
-                        else
-                        {
-                            System.out.println("Error: no index available");
-                        }
+                    String s = v.getResources().getResourceName(v.getId());
+                    String S = "";
+                    int StartIndex = 0;
+                    if(INDEX == 2 | INDEX == 4)
+                    {
+                        S = s.substring(22, 24);
+                        StartIndex = 4;
+                    }
+                    else
+                    {
+                        S = s.substring(22, 23);
+                        StartIndex = 3;
+                    }
 
-                        game.addOfficial(d.getOfficial(), index);
+                    game.addOfficial(d.getOfficial(), INDEX);
 
-                        int ID = getResources().getIdentifier(S+"_text", "id", getPackageName());
-                        t = (TextView) findViewById(ID);
-
-                        if(game.getOfficial(index) != null)//if place is already taken
+                    t = officialsPositionsText[INDEX];
+                    String name = t.getText().toString();
+                    if( !name.substring(name.length()-9, name.length()).equals( "[missing]" ) )//if place is already taken
+                    {
+                        String st = t.getText().toString();
+                        for(textViewOfficial to: textViews)
                         {
-                            //set visible on the one you are replacing
-                            //String X = t.getText().toString();
+                            if(st.substring(StartIndex,st.length()).equals(to.getText()))
+                            {
+                                to.setVisibility(View.VISIBLE);
+                            }
                         }
+                    }
 
-                        t.setText(S + ": " + d.getText());
+                    t.setText(S + ": " + d.getText());
 
-                        //Fixa: Open new activity on "short" click
+                    //Open new activity on "short" click (on the layout)
+                    v.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getApplicationContext(), Refinfo_Activity.class);
+                            startActivity(intent);
+                        }
+                    });
 
-                        break;
-                    default:
-                        break;
                 }
                 return true;
             }
