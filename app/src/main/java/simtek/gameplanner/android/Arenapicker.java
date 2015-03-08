@@ -48,14 +48,6 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         vSpinner.setOnItemSelectedListener(this);
         ticketPrice.setOnClickListener(this);
         turnout.setOnClickListener(this);
-
-
-
-
-
-
-
-
     }
 
 
@@ -128,8 +120,8 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                Toast.makeText(getApplicationContext(), "Turnout set to: "+ currentTurnout, Toast.LENGTH_LONG).show();
                 currentTurnout = seek.getProgress();
+                Toast.makeText(getApplicationContext(), "Turnout set to: " + currentTurnout, Toast.LENGTH_LONG).show();
                 turnout.setText("Turnout: " + currentTurnout + " %");
 
                 //finish();
@@ -192,7 +184,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 currentTicketPrice = seek.getProgress();
-                Toast.makeText(getApplicationContext(), "Ticket price set to: "+currentTicketPrice, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Ticket price set to: "+ currentTicketPrice, Toast.LENGTH_LONG).show();
                 ticketPrice.setText("Ticket price: " + currentTicketPrice);
                 //finish();
             }
