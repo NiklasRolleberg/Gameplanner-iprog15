@@ -23,6 +23,7 @@
         </activity>
         <activity
             android:name=".android.Gameinfo_Activity"
+            android:parentActivityName=".android.Intro_Activity"
             android:label="@string/title_activity_activity_02" >
         </activity>
         <activity

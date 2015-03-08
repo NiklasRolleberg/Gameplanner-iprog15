@@ -2,6 +2,7 @@ package simtek.gameplanner.android;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -187,7 +188,10 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         }
         else if(v.getId() == R.id.creategame_createButton) {
             System.out.println("Create game");
-            this.finish();
+            Intent intent = new Intent(this, Gameinfo_Activity.class);
+            int arenaID = 1337; //todo get from db
+            intent.putExtra("ID", arenaID);
+            startActivity(intent);
         }
 
     }

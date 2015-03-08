@@ -1,8 +1,10 @@
 package simtek.gameplanner.android;
 
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,4 +109,14 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         umpire.setText("U: Lubo!!!");
 
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }
