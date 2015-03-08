@@ -26,7 +26,7 @@ public class Officialspicker_activity extends ActionBarActivity{
     LinearLayout R_layout, U_layout, HL_layout, L_layout, BJ_layout;
     Model model;
     ArrayList<Official> allOfficials;
-    ArrayList<Game> game;
+    Game game;
 
 
     @Override
@@ -46,13 +46,12 @@ public class Officialspicker_activity extends ActionBarActivity{
 
         //add text views
         LinearLayout scroll = (LinearLayout) findViewById(R.id.scroll_linear);
-        //for(int i=0; i<15; i++)
+
         for(Official o : allOfficials)
         {
             //Set "view" for text view
-            //TextView official = new TextView(this);
             textViewOfficial official = new textViewOfficial(this);
-            //official.setText("Test Testsson " + Integer.toString(i));
+            official.setOfficial(o);
             official.setText(o.getName());
             official.setTag(official.getText());
             official.setTextSize(18);
@@ -98,7 +97,7 @@ public class Officialspicker_activity extends ActionBarActivity{
 
     public void listeners(View drop, View drag)
     {
-        currentDrag = drag; //<--- blir fel!
+        currentDrag = drag;
 
         //currentDrag.setTag("CURRENT_DRAG");
         currentDrag.setTag(currentDrag.getTag());
@@ -110,7 +109,7 @@ public class Officialspicker_activity extends ActionBarActivity{
                 String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
                 ClipData dragData = new ClipData(v.getTag().toString(), mimeTypes, item);
                 // Instantiates the drag shadow builder.
-                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(currentDrag);
+                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(v);
 
                 // Starts the drag
                 v.startDrag(dragData, myShadow, v, 0);
@@ -130,9 +129,12 @@ public class Officialspicker_activity extends ActionBarActivity{
 
         //Drag listener
         drop.setOnDragListener(new View.OnDragListener() {
+
+            textViewOfficial d;
+
             @Override
             public boolean onDrag(View v, DragEvent event) {
-
+                d = (textViewOfficial) currentDrag;
                 switch (event.getAction()) {
 //                    case DragEvent.ACTION_DRAG_STARTED:
 //                        break;
@@ -156,7 +158,6 @@ public class Officialspicker_activity extends ActionBarActivity{
                         int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
                         v.setBackgroundResource(resID);
 
-                        //kan nog göra det här bättre:
                         TextView t = new TextView(getBaseContext());
 
                         String s = v.getResources().getResourceName(v.getId());
@@ -170,9 +171,42 @@ public class Officialspicker_activity extends ActionBarActivity{
                             S = s.substring(22, 23);
                         }
 
+                        int index = 0;
+                        if(S.equals("R"))
+                        {
+                            index = 0;
+                        }
+                        else if(S.equals("U"))
+                        {
+                            index = 1;
+                        }
+                        else if(S.equals("HL"))
+                        {
+                            index = 2;
+                        }
+                        else if(S.equals("L"))
+                        {
+                            index = 3;
+                        }
+                        else if(S.equals("BJ"))
+                        {
+                            index = 4;
+                        }
+                        else
+                        {
+                            System.out.println("Error: no index available");
+                        }
+
+                        Official of = d.getOfficial();
+                        game.addOfficial(of, index);
+                        System.out.println("hej");
+
                         int ID = getResources().getIdentifier(S+"_text", "id", getPackageName());
                         t = (TextView) findViewById(ID);
-                        t.setText(S + ": " + currentDrag.getTag().toString());
+
+                        t.setText(S + ": " + d.getText());
+                        //t.setText(game.getOfficial(index).getName());
+
                         //Fixa: Open new activity on "short" click
 
                         break;
