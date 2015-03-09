@@ -121,8 +121,8 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
             public void onClick(DialogInterface dialog, int id) {
 
                 currentTurnout = seek.getProgress();
-                Toast.makeText(getApplicationContext(), "Turnout set to: " + currentTurnout, Toast.LENGTH_LONG).show();
-                turnout.setText("Turnout: " + currentTurnout + " %");
+                Toast.makeText(getApplicationContext(), "Turnout set to: " + currentTurnout + " %", Toast.LENGTH_LONG).show();
+                turnout.setText(" Turnout: " + currentTurnout + " % ");
 
                 //finish();
             }
@@ -162,7 +162,6 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
     }
     private void setTicketPriceFromSlider(){
-        //todo add slider stuff here
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         alert.setTitle("Ticket pricing");
@@ -209,16 +208,74 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
             }
 
             @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+
+    }/* //todo failed attempt at breaking out the seekbar in a single method call, in order to avoid code repetition
+    private int getValueFromSeekBar(String title, String lbl_min,String progress_lbl_init,
+                                    final String ok_toast, final String textViewValue, int defaultValue)
+    {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle(title);
+        //alert.setMessage("Edit Text");
+
+        LinearLayout linear = new LinearLayout(this);
+        linear.setOrientation(LinearLayout.VERTICAL);
+
+        final SeekBar seek = new SeekBar(this);
+        linear.addView(seek);
+
+        alert.setView(linear);
+
+        final TextView progressLabel = new TextView(this);
+        progressLabel.setText(lbl_min);
+        progressLabel.setPadding(10, 10, 10, 10);
+        linear.addView(progressLabel);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                defaultValue = seek.getProgress();
+                Toast.makeText(getApplicationContext(), ok_toast + currentTicketPrice, Toast.LENGTH_LONG).show();
+                ticketPrice.setText(textViewValue + currentTicketPrice);
+                //finish();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                //finish();
+            }
+        });
+
+        alert.show();
+        //final int[] ticketBarValue = new int[1];
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                int tempValue = seek.getProgress();
+                progressLabel.setText((String.valueOf(tempValue)));
+            }
+
+            @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
+
             }
         });
+        //if
+        return 1;
+    }*/
 
-
-    }
 }

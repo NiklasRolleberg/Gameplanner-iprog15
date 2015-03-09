@@ -32,13 +32,6 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gameinfo_layout);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) { //todo pass gameID
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_activity_02, menu);
         homeTeam = (TextView) findViewById(R.id.gameinfo_homeTeam);
         awayTeam = (TextView) findViewById(R.id.gameinfo_awayTeam);
         arena = (TextView) findViewById(R.id.gameinfo_Arena);
@@ -55,10 +48,14 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         headLinesman.setOnClickListener(this);
         linesman.setOnClickListener(this);
         backJudge.setOnClickListener(this);
+    }
 
 
-
-        return true;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) { //todo pass gameID
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_activity_02, menu);
+        return false;
     }
 
     @Override
