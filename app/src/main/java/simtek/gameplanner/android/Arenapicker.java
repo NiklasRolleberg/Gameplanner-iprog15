@@ -50,8 +50,9 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
         //initiate component values
         gameID = getIntent().getIntExtra("ID", 1);
+        System.out.println("GAME ID!!!" + gameID);
         arenaID = getIntent().getIntExtra("arenaID", 1);
-
+        System.out.println("ARENA ID!!!" + arenaID);
         vSpinner = (Spinner) findViewById(R.id.venueSpinner);
         capacity = (TextView) findViewById(R.id.arenapicker_capacity);
         ticketPrice = (TextView) findViewById(R.id.arenapicker_ticketPrice);

@@ -124,7 +124,7 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         }
         if (refArray.contains(clickedID)){
             Intent intent = new Intent(this, Officialspicker_activity.class);
-            int arenaID = 1337; //TODO fix!
+            //int arenaID = 1337; //TODO fix!
             intent.putExtra("ID", gameID);
             startActivity(intent);
         }
@@ -137,8 +137,8 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         }
 
         arena.setText(myArena.getName());
-        homeTeam.setText(myGame.getHomeTeam().getName());
-        awayTeam.setText(myGame.getAwayTeam().getName());
+        homeTeam.setText("Home team: " + myGame.getHomeTeam().getName());
+        awayTeam.setText("Away team: " + myGame.getAwayTeam().getName());
         ticketPrice.setText("Ticket price: " + myGame.getTicketPrice());
         turnout.setText("Turnout [%]: " + myGame.getTurnout());
         visitors.setText("Visitors: " + myGame.getVisitors());
