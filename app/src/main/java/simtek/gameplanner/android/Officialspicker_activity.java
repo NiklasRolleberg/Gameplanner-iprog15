@@ -49,8 +49,6 @@ public class Officialspicker_activity extends ActionBarActivity{
         TextView teams = (TextView) findViewById(R.id.Teams);
         teams.setText(game.getHomeTeam().getName() + " vs " + game.getAwayTeam().getName());
 
-        //first thing to do: add already existing officials!
-
         //Move following to View?
         R_layout = (LinearLayout) findViewById(R.id.R_officials);
         U_layout = (LinearLayout) findViewById(R.id.U_officials);
@@ -69,7 +67,6 @@ public class Officialspicker_activity extends ActionBarActivity{
         officialsPositionsText[2] = (TextView) findViewById(R.id.HL_text);
         officialsPositionsText[3] = (TextView) findViewById(R.id.L_text);
         officialsPositionsText[4] = (TextView) findViewById(R.id.BJ_text);
-
 
 
         //add text views
@@ -101,6 +98,38 @@ public class Officialspicker_activity extends ActionBarActivity{
             listeners(HL_layout, official);
             listeners(L_layout, official);
             listeners(BJ_layout, official);
+        }
+
+
+        //add already existing officials!
+        for(int i=0; i<5; i++)
+        {
+            if(game.getOfficial(i) != null)
+            {
+                int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
+                officialsPositions[i].setBackgroundResource(resID);
+
+                String x = officialsPositionsText[i].getText().toString();
+                String X;
+                if(i == 2 | i == 4)
+                {
+                    X = x.substring(0, 2);
+                }
+                else
+                {
+                    X = x.substring(0, 1);
+                }
+                officialsPositionsText[i].setText(X + ": " + game.getOfficial(i).getName());
+
+                //Remove the official from the list
+                for(textViewOfficial to : textViews)
+                {
+                    if(to.getOfficial().getName().equals(game.getOfficial(i).getName()))
+                    {
+                        to.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
         }
     }
 
@@ -184,7 +213,7 @@ public class Officialspicker_activity extends ActionBarActivity{
                         }
                     }
 
-                    String s = v.getResources().getResourceName(v.getId());
+                    String s = v.getResources().getResourceName(v.getId()); //<---- DÅLIGT!!!!
                     String S = "";
                     int StartIndex = 0;
                     if(INDEX == 2 | INDEX == 4)
