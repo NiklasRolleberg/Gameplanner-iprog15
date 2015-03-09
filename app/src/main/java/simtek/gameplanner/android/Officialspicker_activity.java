@@ -43,10 +43,9 @@ public class Officialspicker_activity extends ActionBarActivity{
         model = ((CustomApplication) this.getApplication()).getModel();
 
         allOfficials = model.getOfficials();
-        for(Game g : model.getGames())
-        {
-            game = g;
-        }
+
+        int ID = getIntent().getIntExtra("ID",0);
+        game = model.getGame(ID);
 
         //set title (teams)
         TextView teams = (TextView) findViewById(R.id.Teams);
