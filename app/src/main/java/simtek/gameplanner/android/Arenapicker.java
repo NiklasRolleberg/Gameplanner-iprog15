@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -27,6 +28,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     TextView ticketPrice;
     TextView turnout;
     TextView revenue;
+    Button okButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,6 +43,8 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         turnout = (TextView) findViewById(R.id.arenapicker_turnout);
         rentCost = (TextView) findViewById(R.id.arenapicker_rentCost);
         revenue = (TextView) findViewById(R.id.arenapicker_revenue);
+        okButton = (Button) findViewById(R.id.arenapicker_okButton);
+
         //SELECT name FROM arenas, later: SELECT ID FROM arenas WHERE name = "chosen item thingy"
         String[] items = new String[]{"Super mega stadium 1", "Awesome arena 42"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
@@ -48,6 +52,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         vSpinner.setOnItemSelectedListener(this);
         ticketPrice.setOnClickListener(this);
         turnout.setOnClickListener(this);
+        okButton.setOnClickListener(this);
     }
 
 
@@ -91,6 +96,11 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         }
         if (clickedID == R.id.arenapicker_turnout){
             setTurnoutPriceFromSlider();
+        }
+        if (clickedID == R.id.arenapicker_okButton){
+            //todo add update stuff here later!
+            finish();
+
         }
     }
 
