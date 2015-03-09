@@ -149,9 +149,23 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/scroll_linear">
+                android:layout_height="fill_parent">
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/scroll_linear">
+
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="OK"
+                    android:id="@+id/ok_button_officials"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp" />
             </LinearLayout>
         </ScrollView>
 

@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -131,6 +132,15 @@ public class Officialspicker_activity extends ActionBarActivity{
                 }
             }
         }
+
+        Button okButton = (Button) findViewById(R.id.ok_button_officials);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
 
@@ -138,7 +148,7 @@ public class Officialspicker_activity extends ActionBarActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_officials_picker, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -213,17 +223,17 @@ public class Officialspicker_activity extends ActionBarActivity{
                         }
                     }
 
-                    String s = v.getResources().getResourceName(v.getId()); //<---- DÅLIGT!!!!
+                    String s = officialsPositionsText[INDEX].getText().toString();
                     String S = "";
                     int StartIndex = 0;
                     if(INDEX == 2 | INDEX == 4)
                     {
-                        S = s.substring(22, 24);
+                        S = s.substring(0, 2);
                         StartIndex = 4;
                     }
                     else
                     {
-                        S = s.substring(22, 23);
+                        S = s.substring(0, 1);
                         StartIndex = 3;
                     }
 
