@@ -63,6 +63,8 @@ public class Officialspicker_activity extends ActionBarActivity{
         officialsPositions[3] = L_layout;
         officialsPositions[4] = BJ_layout;
 
+        //TODO add onClickListeners on the layouts
+
         officialsPositionsText[0] = (TextView) findViewById(R.id.R_text);
         officialsPositionsText[1] = (TextView) findViewById(R.id.U_text);
         officialsPositionsText[2] = (TextView) findViewById(R.id.HL_text);
@@ -256,15 +258,6 @@ public class Officialspicker_activity extends ActionBarActivity{
                     }
 
                     t.setText(S + ": " + d.getText());
-
-                    //Open new activity on "short" click (on the layout)
-//                    v.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            Intent intent = new Intent(getApplicationContext(), Refinfo_Activity.class);
-//                            startActivity(intent);
-//                        }
-//                    });
 
                 }
                 return true;
