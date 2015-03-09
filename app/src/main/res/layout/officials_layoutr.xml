@@ -136,20 +136,22 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp" />
             </LinearLayout>
+
         </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/scrollView_officials"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp" >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scrollView_officials"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_above="@+id/ok_button_officials">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -158,16 +160,18 @@
                     android:id="@+id/scroll_linear">
 
                 </LinearLayout>
+            </ScrollView>
 
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="OK"
-                    android:id="@+id/ok_button_officials"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp" />
-            </LinearLayout>
-        </ScrollView>
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:id="@+id/ok_button_officials"
+                android:layout_gravity="center_horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
 
     </LinearLayout>
 </RelativeLayout>

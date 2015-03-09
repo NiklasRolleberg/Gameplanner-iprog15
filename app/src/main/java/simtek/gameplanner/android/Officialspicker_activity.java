@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.DragEvent;
@@ -40,6 +41,7 @@ public class Officialspicker_activity extends ActionBarActivity{
         setContentView(R.layout.officials_layoutr);
 
         model = ((CustomApplication) this.getApplication()).getModel();
+
         allOfficials = model.getOfficials();
         for(Game g : model.getGames())
         {
@@ -129,7 +131,10 @@ public class Officialspicker_activity extends ActionBarActivity{
                 {
                     if(to.getOfficial().getName().equals(game.getOfficial(i).getName()))
                     {
-                        to.setVisibility(View.INVISIBLE);
+                        //to.setVisibility(View.INVISIBLE);
+                        to.setBackgroundColor(Color.GRAY);
+                        to.getBackground().setAlpha(75);
+                        to.setLongClickable(false);
                     }
                 }
             }
@@ -211,7 +216,10 @@ public class Officialspicker_activity extends ActionBarActivity{
                 d = (textViewOfficial) currentDrag;
                 if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
                 {
-                    currentDrag.setVisibility(View.INVISIBLE); //stop displaying the text when it has been dropped a correct place
+                    //currentDrag.setVisibility(View.INVISIBLE); //stop displaying the text when it has been dropped a correct place
+                    currentDrag.setBackgroundColor(Color.GRAY);
+                    currentDrag.getBackground().setAlpha(75);
+                    currentDrag.setLongClickable(false);
 
                     int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
                     v.setBackgroundResource(resID);
@@ -252,7 +260,10 @@ public class Officialspicker_activity extends ActionBarActivity{
                         {
                             if(st.substring(StartIndex,st.length()).equals(to.getText()))
                             {
-                                to.setVisibility(View.VISIBLE);
+                                //to.setVisibility(View.VISIBLE);
+                                int rID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
+                                to.setBackgroundResource(rID);
+                                to.setLongClickable(true);
                             }
                         }
                     }
