@@ -51,7 +51,7 @@ public class Refinfo_Activity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_refinfo_, menu);
-        return true;
+        return false;
     }
 
     @Override

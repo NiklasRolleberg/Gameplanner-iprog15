@@ -7,23 +7,12 @@
     android:paddingBottom="0dp"
     tools:context=".Activity_01">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Games"
-        android:id="@+id/intro_Title"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView"
         android:layout_above="@+id/newGameButton"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/intro_Title">
+        android:layout_centerHorizontal="true">
 
         <GridLayout
             android:layout_width="fill_parent"
