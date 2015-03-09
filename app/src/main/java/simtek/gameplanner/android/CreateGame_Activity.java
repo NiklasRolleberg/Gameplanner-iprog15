@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -33,6 +34,9 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
 
     private TextView date;
     private TextView time;
+
+    private TextView arenaInfo;
+    private ImageView arenaImage;
 
     private int mYear;
     private int mMonth;
@@ -78,6 +82,16 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         }
         arena.setAdapter(adapter3);
         //arena.setOnItemSelectedListener(this);
+
+        arenaInfo = (TextView) findViewById(R.id.creategame_arenaInfo);
+        arenaImage = (ImageView) findViewById(R.id.creategame_arenaimage);
+
+        arenaImage.setImageResource(R.drawable.arena_01);
+        arenaImage.getLayoutParams().height = 400;
+        arenaImage.getLayoutParams().width = 400;
+
+        arenaInfo.setText("Capacity:30p \nCost/day:$£ \nLocation:nej");
+
         //data and time
 
         Calendar c = Calendar.getInstance();

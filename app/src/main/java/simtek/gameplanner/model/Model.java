@@ -34,8 +34,11 @@ public class Model extends Observable {
         }
 
         //create a game
-        games.add(new Game(0,arenas.get(0),teams.get(0),teams.get(1),0,1,2,3,4));
-
+        Game G = new Game(0,arenas.get(0),teams.get(0),teams.get(1),0,1,2,3,4);
+        G.addOfficial(officials.get(0),0);
+        G.addOfficial(officials.get(1),1);
+        G.addOfficial(officials.get(2),2);
+        games.add(G);
     }
 
     public ArrayList<Game> getGames() {

@@ -40,7 +40,6 @@ public class Game {
         return this.id;
     }
 
-
     public void addOfficial(Official o, int index) {
         officials[index] = o;
     }
@@ -87,5 +86,14 @@ public class Game {
 
     public Arena getArena() {
         return this.arena;
+    }
+
+    public int getNrOfOfficials() {
+        int nr = 0;
+        for(int i=0;i<5;i++)
+            if (officials[i] != null) {
+                nr++;
+            }
+        return nr;
     }
 }

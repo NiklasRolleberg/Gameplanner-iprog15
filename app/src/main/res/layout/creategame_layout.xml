@@ -21,13 +21,38 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageView"
-                    android:src="@drawable/ic_launcher"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/creategame_arenaimage"
+                        android:src="@drawable/ic_launcher"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" />
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Mycket liten text"
+                            android:id="@+id/creategame_arenaInfo"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/creategame_arenaimage"
+                            android:layout_toEndOf="@+id/creategame_arenaimage" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
             </RelativeLayout>
 
             <RelativeLayout

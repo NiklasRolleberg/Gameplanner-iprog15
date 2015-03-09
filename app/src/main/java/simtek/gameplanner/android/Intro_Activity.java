@@ -188,13 +188,14 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
 
             //TODO fixa
             refs = new TextView(context);
-            refs.setText("3/5 ref");
+            refs.setText(game.getNrOfOfficials() + "/5 ref");
             refs.setGravity(Gravity.CENTER_HORIZONTAL);
 
             //TODO fixa layout utan padding
 
             setOrientation(VERTICAL);
-            setBackgroundColor(Color.GREEN);
+            setBackgroundColor(Color.parseColor("#58FA58"));
+            //setBackgroundColor(Color.GREEN);
             setPadding(0,75,0,0);
             addView(list1);
             addView(date);
