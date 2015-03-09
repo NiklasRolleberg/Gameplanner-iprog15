@@ -193,6 +193,8 @@ public class Officialspicker_activity extends ActionBarActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Refinfo_Activity.class);
+                textViewOfficial tv = (textViewOfficial) v;
+                intent.putExtra("officialID", tv.getOfficial().getId());
                 startActivity(intent);
             }
         });
@@ -256,13 +258,13 @@ public class Officialspicker_activity extends ActionBarActivity{
                     t.setText(S + ": " + d.getText());
 
                     //Open new activity on "short" click (on the layout)
-                    v.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getApplicationContext(), Refinfo_Activity.class);
-                            startActivity(intent);
-                        }
-                    });
+//                    v.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Intent intent = new Intent(getApplicationContext(), Refinfo_Activity.class);
+//                            startActivity(intent);
+//                        }
+//                    });
 
                 }
                 return true;

@@ -1,6 +1,5 @@
 package simtek.gameplanner.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -18,7 +17,7 @@ public class Model extends Observable {
         //Create officials
         officials = new ArrayList<Official>();
         for(int i=0;i<10;i++) {
-            officials.add(new Official(i, "Official " + i));
+            officials.add(new Official(i, "Official " + i, "Stockholm", "E"));
         }
 
         //create arenas
