@@ -21,7 +21,7 @@ public class Game {
 
     public Game(int id, Arena arena, Team homeTeam, Team awayTeam, int year, int month, int day, int hour, int minute) {
         //System.out.println("I AM A GAME!");
-
+        this.id = id;
         this.arena = arena;
 
         this.homeTeam = homeTeam;
