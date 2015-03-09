@@ -13,6 +13,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import simtek.gameplanner.R;
+import simtek.gameplanner.model.Arena;
+import simtek.gameplanner.model.Game;
+import simtek.gameplanner.model.Model;
+import simtek.gameplanner.model.Official;
 
 public class Gameinfo_Activity extends ActionBarActivity implements View.OnClickListener{
 
@@ -25,7 +29,10 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
     TextView headLinesman;
     TextView linesman;
     TextView backJudge;
-
+    int gameID;
+    Game myGame;
+    Arena myArena;
+    Model myModel;
 
 
     @Override
@@ -41,13 +48,23 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         headLinesman = (TextView) findViewById(R.id.gameinfo_headLinesman);
         linesman = (TextView) findViewById(R.id.gameinfo_linesman);
         backJudge = (TextView) findViewById(R.id.gameinfo_backJudge);
-        setValues(1);
+
         arena.setOnClickListener(this);
         referee.setOnClickListener(this);
         umpire.setOnClickListener(this);
         headLinesman.setOnClickListener(this);
         linesman.setOnClickListener(this);
         backJudge.setOnClickListener(this);
+
+        myModel = ((CustomApplication) this.getApplication()).getModel();
+
+        //get ID
+        gameID = getIntent().getIntExtra("ID", 1);
+        //get info based on ID
+
+
+        System.out.println("GAME ID!!!!!!!" + gameID);
+        setValues(gameID);
     }
 
 
@@ -95,15 +112,62 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         if (refArray.contains(clickedID)){
             Intent intent = new Intent(this, Officialspicker_activity.class);
             int arenaID = 1337; //TODO fix!
-            intent.putExtra("ID", arenaID);
+            intent.putExtra("ID", gameID);
             startActivity(intent);
         }
 
     }
     private void setValues(int gameID){ //TODO get from db
-        homeTeam.setText("Home team: " + "STU");
-        referee.setText("R: John Doe");
-        umpire.setText("U: Lubo!!!");
+        myGame = myModel.getGame(gameID);
+        if (myGame != null){
+            myArena = myGame.getArena();
+        }
+
+        arena.setText(myArena.getName());
+        homeTeam.setText(myGame.getHomeTeam().getName());
+        awayTeam.setText(myGame.getAwayTeam().getName());
+
+        String hourString = "" + myGame.getHour();
+        String minString = "" + myGame.getMinute();
+        if(hourString.length() == 1)
+            hourString = "0" + hourString;
+        if(minString.length() == 1)
+            minString = "0" + minString;
+        String timeString = hourString + ":" + minString;
+        String year = "" + myGame.getYear() % 100;
+        String month = "" +(myGame.getMonth()+1);
+        String day = "" + myGame.getDay();
+        if(year.length() == 1)
+            year = "0" + year;
+        if(myGame.getMonth() < 9)
+            month = "0" + month;
+        if(myGame.getDay() < 10)
+            day = "0"+day;
+        String date = (year + "-" + month + "-" + day);
+
+        kickoffTime.setText(date + ", " + timeString);
+        //todo this shit is horrible
+        Official tempOff = myGame.getOfficial(0);
+        if (tempOff != null){
+            referee.setText("R: " + tempOff.getName());
+        }
+        tempOff = myGame.getOfficial(1);
+        if (tempOff != null){
+            umpire.setText("U: " + tempOff.getName());
+        }
+        tempOff = myGame.getOfficial(2);
+        if (tempOff != null){
+            headLinesman.setText("HL: " + tempOff.getName());
+        }
+        tempOff = myGame.getOfficial(3);
+        if (tempOff != null){
+            linesman.setText("L: " + tempOff.getName());
+        }
+        tempOff = myGame.getOfficial(4);
+        if (tempOff != null){
+            backJudge.setText("BJ: " + tempOff.getName());
+        }
+
 
     }
 

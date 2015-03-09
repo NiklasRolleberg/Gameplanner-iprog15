@@ -29,6 +29,8 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     TextView turnout;
     TextView revenue;
     Button okButton;
+
+    String[] items = new String[]{"Super mega stadium 1", "Awesome arena 42"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -46,7 +48,6 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         okButton = (Button) findViewById(R.id.arenapicker_okButton);
 
         //SELECT name FROM arenas, later: SELECT ID FROM arenas WHERE name = "chosen item thingy"
-        String[] items = new String[]{"Super mega stadium 1", "Awesome arena 42"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         vSpinner.setAdapter(adapter);
         vSpinner.setOnItemSelectedListener(this);
@@ -80,6 +81,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println(items[position]);
 
     }
 
