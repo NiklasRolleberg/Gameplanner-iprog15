@@ -245,16 +245,16 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
                 }
             }
 
+            //TODO ta bort och gör om
+            int gameid = (int) (Math.random()*700);
 
-
-            Game g = new Game(0,temparena,home,away ,mYear ,mMonth, mDay,mHour,mMinute);
+            Game g = new Game(gameid,temparena,home,away ,mYear ,mMonth, mDay,mHour,mMinute);
             model.addGame(g);
 
 
             System.out.println("Create game");
             Intent intent = new Intent(this, Gameinfo_Activity.class);
-            int arenaID = g.getId(); //todo get from db
-            intent.putExtra("ID", arenaID);
+            intent.putExtra("ID", gameid);
             startActivity(intent);
         }
 

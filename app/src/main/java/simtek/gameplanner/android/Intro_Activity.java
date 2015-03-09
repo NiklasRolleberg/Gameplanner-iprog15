@@ -105,9 +105,9 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             Intent intent = new Intent(this, CreateGame_Activity.class);
             startActivity(intent);
         }
-        else {
+        else if(v instanceof GameTile){
             Intent intent = new Intent(this, Gameinfo_Activity.class);
-            int arenaID = 1337; //todo get from db
+            int arenaID = ((GameTile) v).game.getId();
             intent.putExtra("ID",arenaID);
             startActivity(intent);
         }
