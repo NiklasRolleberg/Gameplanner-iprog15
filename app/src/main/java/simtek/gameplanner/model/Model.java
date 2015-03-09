@@ -91,7 +91,7 @@ public class Model extends Observable {
     }
 
     public void addGame(Game g) {
-        System.out.println("GAME ID, FOOL!!!" + g.getId());
+        //System.out.println("GAME ID, FOOL!!!" + g.getId());
 
         games.add(g);
     }

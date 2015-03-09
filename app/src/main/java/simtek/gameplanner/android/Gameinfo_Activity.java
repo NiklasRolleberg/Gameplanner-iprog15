@@ -29,11 +29,18 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
     TextView headLinesman;
     TextView linesman;
     TextView backJudge;
+    TextView turnout;
+    TextView ticketPrice;
+    TextView visitors;
     int gameID;
     Game myGame;
     Arena myArena;
     Model myModel;
-
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+        setValues(gameID);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,11 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         headLinesman = (TextView) findViewById(R.id.gameinfo_headLinesman);
         linesman = (TextView) findViewById(R.id.gameinfo_linesman);
         backJudge = (TextView) findViewById(R.id.gameinfo_backJudge);
+        turnout = (TextView) findViewById(R.id.gameinfo_turnout);
+        ticketPrice = (TextView) findViewById(R.id.gameinfo_ticketPrice);
+
+        visitors = (TextView) findViewById(R.id.gameinfo_visitors);
+
 
         arena.setOnClickListener(this);
         referee.setOnClickListener(this);
@@ -101,8 +113,9 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         refArray.add(R.id.gameinfo_backJudge);
         if (clickedID == R.id.gameinfo_Arena) {
             Intent intent = new Intent(this, Arenapicker.class);
-            int arenaID = 1337; //todo get from db
-            intent.putExtra("ID",arenaID);
+            //int arenaID = 1337; //todo get from db
+            intent.putExtra("ID", gameID);
+            intent.putExtra("arenaID", myGame.getArena().getID());
 
             //Bundle bundle = new Bundle();
             //bundle.putInt("arenaID",arenaID);
@@ -126,6 +139,11 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         arena.setText(myArena.getName());
         homeTeam.setText(myGame.getHomeTeam().getName());
         awayTeam.setText(myGame.getAwayTeam().getName());
+        ticketPrice.setText("Ticket price: " + myGame.getTicketPrice());
+        turnout.setText("Turnout [%]: " + myGame.getTurnout());
+        visitors.setText("Visitors: " + myGame.getVisitors());
+
+
 
         String hourString = "" + myGame.getHour();
         String minString = "" + myGame.getMinute();

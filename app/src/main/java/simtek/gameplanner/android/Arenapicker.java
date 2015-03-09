@@ -16,10 +16,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import simtek.gameplanner.R;
+import simtek.gameplanner.model.Arena;
+import simtek.gameplanner.model.Model;
 
 public class Arenapicker extends ActionBarActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
-    int defaultArenaID;
+    int gameID;
+    int arenaID;
     Spinner vSpinner;
     int currentTicketPrice;
     int currentTurnout;
@@ -29,8 +34,14 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     TextView turnout;
     TextView revenue;
     Button okButton;
+    Model myModel;
+    int selectedPosition;
+    Arena currentArena;
+    private ArrayList<Arena> items;
+    private ArrayList<String> arenaNames;
 
-    String[] items = new String[]{"Super mega stadium 1", "Awesome arena 42"};
+    //String[] items = new String[]{"Super mega stadium 1", "Awesome arena 42"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -38,7 +49,9 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         setContentView(R.layout.arenapicker_layout);
 
         //initiate component values
-        defaultArenaID = getIntent().getIntExtra("ID", 1);
+        gameID = getIntent().getIntExtra("ID", 1);
+        arenaID = getIntent().getIntExtra("arenaID", 1);
+
         vSpinner = (Spinner) findViewById(R.id.venueSpinner);
         capacity = (TextView) findViewById(R.id.arenapicker_capacity);
         ticketPrice = (TextView) findViewById(R.id.arenapicker_ticketPrice);
@@ -48,12 +61,22 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         okButton = (Button) findViewById(R.id.arenapicker_okButton);
 
         //SELECT name FROM arenas, later: SELECT ID FROM arenas WHERE name = "chosen item thingy"
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        myModel = ((CustomApplication) this.getApplication()).getModel();
+
+        items = myModel.getArenas();
+        currentArena = myModel.getGame(gameID).getArena();
+        arenaNames = new ArrayList<>(items.size());
+        for (Arena a : items){
+            arenaNames.add(a.getName());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arenaNames);
         vSpinner.setAdapter(adapter);
         vSpinner.setOnItemSelectedListener(this);
         ticketPrice.setOnClickListener(this);
         turnout.setOnClickListener(this);
         okButton.setOnClickListener(this);
+        //capacity.setText(currentArena.getCapacity());
+        //rentCost.setText(currentArena.getRentCost());
     }
 
 
@@ -81,7 +104,9 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println(items[position]);
+        //System.out.println(arenaNames.get(position));
+        selectedPosition = position;
+
 
     }
 
@@ -101,11 +126,19 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         }
         if (clickedID == R.id.arenapicker_okButton){
             //todo add update stuff here later!
+            myModel.getGame(gameID).setArena(items.get(selectedPosition));
+            myModel.getGame(gameID).setTurnout(currentTurnout);
+            myModel.getGame(gameID).setTicketPrice(currentTicketPrice);
+
             finish();
 
         }
     }
+    private void setValues(){
+        capacity.setText(currentArena.getCapacity());
+        rentCost.setText(currentArena.getRentCost());
 
+    }
     private void setTurnoutPriceFromSlider(){
 
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);

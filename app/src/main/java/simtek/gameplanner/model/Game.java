@@ -8,6 +8,11 @@ public class Game {
     private int id;
     private Arena arena;
     private Official[] officials;
+    private int visitors;
+    private int turnout;
+    private int ticketPrice;
+    private int rentCost;
+
 
     private Team homeTeam;
     private Team awayTeam;
@@ -34,6 +39,27 @@ public class Game {
         this.minute = minute;
 
         officials  = new Official[5];
+    }
+    public int getTicketPrice(){
+        return ticketPrice;
+    }
+    public int getRentCost(){
+        return rentCost;
+    }
+    public int getVisitors(){
+        return visitors;
+    }
+    public int getTurnout(){
+        return turnout;
+    }
+    public void setTicketPrice(int inPrice){
+        ticketPrice = inPrice;
+    }
+    public void setVisitors(int inVisitors){
+        visitors = inVisitors;
+    }
+    public void setTurnout(int inTurnout){
+        turnout = inTurnout;
     }
 
     public int getId() {
@@ -86,6 +112,10 @@ public class Game {
 
     public Arena getArena() {
         return this.arena;
+    }
+
+    public void setArena(Arena inArena){
+        this.arena = inArena;
     }
 
     public int getNrOfOfficials() {
