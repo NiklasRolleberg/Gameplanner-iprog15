@@ -52,6 +52,15 @@ public class Model extends Observable {
         return this.arenas;
     }
 
+    public Game getGame(int id) {
+        for (int i=0;i<games.size();i++) {
+            if(games.get(i).getId() == id) {
+                return games.get(i);
+            }
+        }
+        return null;
+    }
+
     public void addGame(Game g) {
         games.add(g);
     }
