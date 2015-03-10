@@ -5,7 +5,7 @@ package simtek.gameplanner.model;
  */
 public class Arena {
 
-    int id;
+    private int id;
     private String name;
     private String location;
     private int rentCost;
@@ -19,6 +19,11 @@ public class Arena {
         this.rentCost = 5000;
         this.capacity = 1000;
     }
+
+    public int getId() {
+        return this.id;
+    }
+
     public int getRentCost(){
         return rentCost;
     }

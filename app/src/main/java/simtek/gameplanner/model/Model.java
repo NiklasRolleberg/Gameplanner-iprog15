@@ -90,6 +90,24 @@ public class Model extends Observable {
         return null;
     }
 
+    public Official getOfficial(int id) {
+        for (int i=0;i<officials.size();i++) {
+            if(officials.get(i).getId() == id) {
+                return officials.get(i);
+            }
+        }
+        return null;
+    }
+
+    public Arena getArena(int id) {
+        for (int i=0;i<arenas.size();i++) {
+            if(arenas.get(i).getId() == id) {
+                return arenas.get(i);
+            }
+        }
+        return null;
+    }
+
     public void addGame(Game g) {
         //System.out.println("GAME ID, FOOL!!!" + g.getId());
 
