@@ -16,8 +16,8 @@ public class Arena {
         System.out.println("arena");
         this.name = name;
         this.location = location;
-        this.rentCost = 5000;
-        this.capacity = 1000;
+        this.capacity = 600+(int) (Math.random()*2000);
+        this.rentCost = 4000+ (int) (Math.random()*capacity);
     }
 
     public int getId() {
