@@ -4,27 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.GridView;
 import simtek.gameplanner.R;
 import simtek.gameplanner.model.Game;
 import simtek.gameplanner.model.Model;
 
 
-public class Intro_Activity extends ActionBarActivity implements View.OnClickListener{
+public class Intro_Activity extends ActionBarActivity implements View.OnClickListener {
 
     private Model model;
 
@@ -39,40 +34,17 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         Button createNewGame = (Button) findViewById(R.id.newGameButton);
         createNewGame.setOnClickListener(this);
 
-        GridLayout grid = (GridLayout) findViewById(R.id.intro_gridLayout01);
-        grid.setPadding(15,0,0,0);
-        grid.removeAllViews();
 
-        //set params for tiles
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
-        LinearLayout.LayoutParams tileSize = new LinearLayout.LayoutParams((width/2)-30,(width/2)-30);
-        tileSize.setMargins(15,0,15,0);
-        LinearLayout.LayoutParams tileParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-
-        //for(int i = 0;i< 18; i++) {
-
-        for (Game g:model.getGames()) {
-
-            GameTile tile = new GameTile(Intro_Activity.this,g);
-            tile.setLayoutParams(tileParams);
-            LinearLayout container = new LinearLayout(this);
-            container.setLayoutParams(tileSize);
-            container.setPadding(15,15,15,15);
-            //container.setGravity(Gravity.CENTER_VERTICAL);
-            container.addView(tile);
-            grid.addView(container);
-            tile.setOnClickListener(this);
-        }
-
-        /*
-        grid.setRowCount(9);
-        System.out.println("col" + grid.getColumnCount());
-        System.out.println("row" + grid.getRowCount());
-        */
+        GridView G = (GridView) findViewById(R.id.intro_gridView);
+        G.setColumnWidth(width / 2);
+        G.setAdapter(new tileAdapter(this));
+        G.setPadding(30, 0, 30, 0);
+        G.setVerticalSpacing(20);
+        G.setHorizontalSpacing(20);
     }
 
 
@@ -100,107 +72,136 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.newGameButton) {
+        if (v.getId() == R.id.newGameButton) {
             System.out.println("Create new game");
             Intent intent = new Intent(this, CreateGame_Activity.class);
             startActivity(intent);
         }
-        else if(v instanceof GameTile){
-            Intent intent = new Intent(this, Gameinfo_Activity.class);
-            int arenaID = ((GameTile) v).game.getId();
-            intent.putExtra("ID",arenaID);
-            startActivity(intent);
+    }
+
+    private String getDateString(Game game) {
+
+        int mYear = game.getYear();
+        int mMonth = game.getMonth();
+        int mDay = game.getDay();
+        String year = "" + mYear % 100;
+        String month = "" + (mMonth + 1);
+        String day = "" + mDay;
+        if (mMonth < 9)
+            month = "0" + month;
+        if (mDay < 10)
+            day = "0" + day;
+
+        String dateString = year + "-" + month + "-" + day;
+        return dateString;
+    }
+
+    private String getTimeString(Game game) {
+        int mHour = game.getHour();
+        int mMinute = game.getMinute();
+        String hourString = "" + mHour;
+        String minString = "" + mMinute;
+        if (hourString.length() == 1)
+            hourString = "0" + hourString;
+        if (minString.length() == 1)
+            minString = "0" + minString;
+        String timeString = hourString + ":" + minString;
+        return timeString;
+    }
+
+    class tileAdapter extends BaseAdapter {
+
+        Context context;
+
+        tileAdapter(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public int getCount() {
+            return model.getGames().size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            GameTile tile;
+
+            if (convertView == null) {
+                tile = new GameTile(context);
+            } else {
+                tile = (GameTile) convertView;
+            }
+
+            //TODO fixa om det är dåligt, kanske lägga till en "get(index)" i model
+            Game game = model.getGames().get(position);
+            if (game == null)
+                return tile;
+
+            //TODO kan nog göras bättre
+            String info = "" + game.getHomeTeam().getName() + " vs " + game.getAwayTeam().getName() +
+                    "\n" + game.getArena().getName() + "\n" + getDateString(game) + "  " + getTimeString(game) +
+                    "\n" + game.getNrOfOfficials() + "/5 ref";
+
+
+            tile.setBackgroundColor(Color.parseColor("#58FA58"));
+            tile.setGame(game);
+            tile.setText(info);
+            tile.setOnClickListener(new tileListener());
+            return tile;
         }
     }
 
+    class GameTile extends Button {
 
-    class GameTile extends LinearLayout{
-
-        private LinearLayout list1;
-        private TextView team1;
-        private TextView team2;
-        private TextView vs;
-
-        private TextView date;
-        private TextView arena;
-        private TextView refs;
         private Game game;
 
-        public GameTile(Context context, Game game) {
+        public GameTile(Context context) {
             super(context);
+        }
+
+        public void setGame(Game game) {
             this.game = game;
+        }
 
-            //teams
-            list1 = new LinearLayout(context);
+        public int getGameID() {
+            if (game != null)
+                return game.getId();
+            return 0;
+        }
 
-            team1 = new TextView(context);
-            team1.setText(game.getHomeTeam().getName());
-            //team1.setText("team1");
+        @Override
+        protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+            final int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+            setMeasuredDimension(width, width);
+            this.invalidate();
+        }
 
-            team2 = new TextView(context);
-            team2.setText(game.getAwayTeam().getName());
-            //team2.setText("team2");
+        @Override
+        protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh) {
+            super.onSizeChanged(w, w, oldw, oldh);
+        }
+    }
 
-            vs = new TextView(context);
-            vs.setText(" vs ");
-
-            list1.addView(team1);
-            list1.addView(vs);
-            list1.addView(team2);
-            list1.setGravity(Gravity.CENTER_HORIZONTAL);
-
-            //date
-            int mYear = game.getYear();
-            int mMonth = game.getMonth();
-            int mDay = game.getDay();
-
-            int mHour = game.getHour();
-            int mMinute = game.getMinute();
-
-            String year = "" + mYear % 100;
-            String month = ""+(mMonth+1);
-            String day = ""+mDay;
-            if(mMonth < 9)
-                month = "0" + month;
-            if(mDay < 10)
-                day = "0"+day;
-
-            String hourString = "" + mHour;
-            String minString = "" + mMinute;
-            if(hourString.length() == 1)
-                hourString = "0" + hourString;
-            if(minString.length() == 1)
-                minString = "0" + minString;
-            String timeString = hourString + ":" + minString;
-            String dateString = year + "-" + month + "-" + day;
-
-            //String timeString = "hour";
-            //String dateString = "time";
-
-            date = new TextView(context);
-            date.setText(dateString + "\n" + timeString);
-            date.setGravity(Gravity.CENTER_HORIZONTAL);
-
-            arena = new TextView(context);
-            arena.setText(game.getArena().getName());
-            //arena.setText("arena");
-            arena.setGravity(Gravity.CENTER_HORIZONTAL);
-
-            //TODO fixa
-            refs = new TextView(context);
-            refs.setText(game.getNrOfOfficials() + "/5 ref");
-            refs.setGravity(Gravity.CENTER_HORIZONTAL);
-
-            //TODO fixa layout utan padding
-
-            setOrientation(VERTICAL);
-            setBackgroundColor(Color.parseColor("#58FA58"));
-            //setBackgroundColor(Color.GREEN);
-            setPadding(0,75,0,0);
-            addView(list1);
-            addView(date);
-            addView(arena);
-            addView(refs);
+    class tileListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (v instanceof GameTile) {
+                GameTile tile = (GameTile) v;
+                Intent intent = new Intent(Intro_Activity.this, Gameinfo_Activity.class);
+                int gameID = tile.getGameID();
+                intent.putExtra("ID", gameID);
+                startActivity(intent);
+            }
         }
     }
 }

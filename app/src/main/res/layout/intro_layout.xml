@@ -7,56 +7,13 @@
     android:paddingBottom="0dp"
     tools:context=".Activity_01">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollView"
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/intro_gridView"
         android:layout_above="@+id/newGameButton"
-        android:layout_centerHorizontal="true">
-
-        <GridLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/intro_gridLayout01"
-            android:columnCount="2"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
-            android:layout_above="@+id/newGameButton"
-            android:columnOrderPreserved="true"
-            android:useDefaultMargins="true"
-            android:rowOrderPreserved="true">
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/progressBar" />
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/progressBar2" />
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/progressBar3" />
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/progressBar4" />
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/progressBar5" />
-        </GridLayout>
-    </ScrollView>
+        android:numColumns="2"
+        android:layout_alignParentTop="true" />
 
     <Button
         android:layout_width="match_parent"
