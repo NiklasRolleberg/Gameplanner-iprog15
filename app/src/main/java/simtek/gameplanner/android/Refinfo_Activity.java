@@ -59,6 +59,12 @@ public class Refinfo_Activity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
