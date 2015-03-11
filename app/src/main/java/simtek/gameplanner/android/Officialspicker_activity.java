@@ -26,10 +26,9 @@ import simtek.gameplanner.model.Official;
 public class Officialspicker_activity extends ActionBarActivity{
 
     View currentDrag;
-    LinearLayout R_layout, U_layout, HL_layout, L_layout, BJ_layout;
     String[] pos = {"R", "U", "HL", "L", "BJ"};
     LinearLayout officialsPositions[] = new LinearLayout[5];
-    TextView officialsPositionsText[] = new TextView[5];
+    textViewOfficial officialsPositionsText[] = new textViewOfficial[5];
     Model model;
     ArrayList<Official> allOfficials;
     ArrayList<textViewOfficial> textViews = new ArrayList<>();
@@ -45,38 +44,21 @@ public class Officialspicker_activity extends ActionBarActivity{
 
         allOfficials = model.getOfficials();
 
-        int ID = getIntent().getIntExtra("ID",0); //TODO this is not working when you come from the Refinfo Activity :(
+        int ID = getIntent().getIntExtra("ID",0);
         game = model.getGame(ID);
 
         //set title (teams)
         TextView teams = (TextView) findViewById(R.id.Teams);
         teams.setText(game.getHomeTeam().getName() + " vs " + game.getAwayTeam().getName());
 
-        //Move following to View?
-        R_layout = (LinearLayout) findViewById(R.id.R_officials);
-        U_layout = (LinearLayout) findViewById(R.id.U_officials);
-        HL_layout = (LinearLayout) findViewById(R.id.HL_officials);
-        L_layout = (LinearLayout) findViewById(R.id.L_officials);
-        BJ_layout = (LinearLayout) findViewById(R.id.BJ_officials);
-
-        officialsPositions[0] = R_layout;
-        officialsPositions[1] = U_layout;
-        officialsPositions[2] = HL_layout;
-        officialsPositions[3] = L_layout;
-        officialsPositions[4] = BJ_layout;
-
-        //TODO add onClickListeners on the layouts
-
-        officialsPositionsText[0] = (TextView) findViewById(R.id.R_text);
-        officialsPositionsText[1] = (TextView) findViewById(R.id.U_text);
-        officialsPositionsText[2] = (TextView) findViewById(R.id.HL_text);
-        officialsPositionsText[3] = (TextView) findViewById(R.id.L_text);
-        officialsPositionsText[4] = (TextView) findViewById(R.id.BJ_text);
-
+        officialsPositions[0] = (LinearLayout) findViewById(R.id.R_officials);
+        officialsPositions[1] = (LinearLayout) findViewById(R.id.U_officials);
+        officialsPositions[2] = (LinearLayout) findViewById(R.id.HL_officials);
+        officialsPositions[3] = (LinearLayout) findViewById(R.id.L_officials);
+        officialsPositions[4] = (LinearLayout) findViewById(R.id.BJ_officials);
 
         //add text views
         LinearLayout scroll = (LinearLayout) findViewById(R.id.scroll_linear);
-
         for(Official o : allOfficials)
         {
             //Set "view" for text view
@@ -117,7 +99,7 @@ public class Officialspicker_activity extends ActionBarActivity{
                 }
             });
 
-            //Drag listeners
+            //Drag listeners (enable drop)
             currentDrag = official;
             for(int j=0; j<5; j++)
             {
@@ -130,7 +112,6 @@ public class Officialspicker_activity extends ActionBarActivity{
                         d = (textViewOfficial) currentDrag;
                         if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
                         {
-                            //currentDrag.setVisibility(View.INVISIBLE); //stop displaying the text when it has been dropped a correct place
                             currentDrag.setBackgroundColor(Color.GRAY);
                             currentDrag.getBackground().setAlpha(75);
                             currentDrag.setLongClickable(false);
@@ -138,21 +119,9 @@ public class Officialspicker_activity extends ActionBarActivity{
                             int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
                             v.setBackgroundResource(resID);
 
-                            TextView t;
-
-                            int INDEX = -1;
-                            for(int i=0; i<officialsPositions.length; i++)
-                            {
-                                if(v.getId()==officialsPositions[i].getId())
-                                {
-                                    INDEX = i;
-                                }
-                            }
-
+                            int INDEX = getIndex((LinearLayout) v);
                             game.addOfficial(d.getOfficial(), INDEX);
-
-                            t = officialsPositionsText[INDEX];
-                            //String name = t.getText().toString();
+                            textViewOfficial t = officialsPositionsText[INDEX];
                             if(game.getOfficial(INDEX) != null)
                             {
                                 String st = t.getText().toString();
@@ -160,7 +129,6 @@ public class Officialspicker_activity extends ActionBarActivity{
                                 {
                                     if(st.substring(2+pos[INDEX].length(),st.length()).equals(to.getText()))
                                     {
-                                        //to.setVisibility(View.VISIBLE);
                                         int rID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
                                         to.setBackgroundResource(rID);
                                         to.setLongClickable(true);
@@ -168,7 +136,19 @@ public class Officialspicker_activity extends ActionBarActivity{
                                 }
                             }
                             t.setText(pos[INDEX] + ": " + d.getText());
+                            t.setOfficial(((textViewOfficial) currentDrag).getOfficial());
 
+                            //set onClickListener (short click) on layout
+                            officialsPositions[INDEX].setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(getApplicationContext(), Refinfo_Activity.class);
+                                    int index = getIndex((LinearLayout) v);
+                                    Official o = officialsPositionsText[index].getOfficial();
+                                    intent.putExtra("officialID", o.getId());
+                                    startActivity(intent);
+                                }
+                            });
                         }
                         return true;
                     }
@@ -187,29 +167,59 @@ public class Officialspicker_activity extends ActionBarActivity{
             });
         }
 
-        //add already existing officials!
+        //Add text and onClickListeners (short click) on layouts
         for(int i=0; i<5; i++)
         {
+            textViewOfficial tv = new textViewOfficial(this);
+            officialsPositionsText[i] = tv;
+
+            //check if there is an existing official on this position
             if(game.getOfficial(i) != null)
             {
                 int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
                 officialsPositions[i].setBackgroundResource(resID);
                 officialsPositionsText[i].setText(pos[i] + ": " + game.getOfficial(i).getName());
+                officialsPositionsText[i].setOfficial(game.getOfficial(i));
+                tv.setText(pos[i] + ": " + game.getOfficial(i).getName());
+                tv.setOfficial(game.getOfficial(i));
 
-                //Remove the official from the list
+                //Remove (set gray color and not "drag-able") the official from the list
                 for(textViewOfficial to : textViews)
                 {
                     if(to.getOfficial().getName().equals(game.getOfficial(i).getName()))
                     {
-                        //to.setVisibility(View.INVISIBLE);
                         to.setBackgroundColor(Color.GRAY);
                         to.getBackground().setAlpha(75);
                         to.setLongClickable(false);
                     }
                 }
+
+                //set onClickListener (short click) on layout
+                officialsPositions[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), Refinfo_Activity.class);
+                        int index = getIndex((LinearLayout) v);
+                        intent.putExtra("officialID", officialsPositionsText[index].getOfficial().getId());
+                        startActivity(intent);
+                    }
+                });
             }
+            else
+            {
+                tv.setText(pos[i] + ": [missing]");
+            }
+
+            tv.setTextSize(18);
+            tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)tv.getLayoutParams();
+            params.setMargins(0, 10, 0, 10);
+            tv.setLayoutParams(params);
+            tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            officialsPositions[i].addView(tv);
         }
 
+        //ok button to exit activity
         Button okButton = (Button) findViewById(R.id.ok_button_officials);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,9 +252,25 @@ public class Officialspicker_activity extends ActionBarActivity{
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    /** getIndex finds the index of one of the 5 LinearLayouts */
+    int getIndex(LinearLayout l)
+    {
+        int index = 0;
+        for(int j=0; j<5; j++)
+        {
+            if(l == officialsPositions[j])
+            {
+                index = j;
+            }
+        }
+        return index;
+    }
 }
 
 
+/* extends TextView with an Official */
 class textViewOfficial extends TextView
 {
     Official off;
