@@ -14,6 +14,7 @@ public class Arena {
 
     public Arena(int id, String name, String location) {
         System.out.println("arena");
+        this.id = id;
         this.name = name;
         this.location = location;
         this.capacity = 600+(int) (Math.random()*2000);
