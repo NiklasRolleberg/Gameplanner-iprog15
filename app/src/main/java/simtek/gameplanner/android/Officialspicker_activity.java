@@ -27,6 +27,7 @@ public class Officialspicker_activity extends ActionBarActivity{
 
     View currentDrag;
     LinearLayout R_layout, U_layout, HL_layout, L_layout, BJ_layout;
+    String[] pos = {"R", "U", "HL", "L", "BJ"};
     LinearLayout officialsPositions[] = new LinearLayout[5];
     TextView officialsPositionsText[] = new TextView[5];
     Model model;
@@ -44,7 +45,7 @@ public class Officialspicker_activity extends ActionBarActivity{
 
         allOfficials = model.getOfficials();
 
-        int ID = getIntent().getIntExtra("ID",0);
+        int ID = getIntent().getIntExtra("ID",0); //TODO this is not working when you come from the Refinfo Activity :(
         game = model.getGame(ID);
 
         //set title (teams)
@@ -96,14 +97,95 @@ public class Officialspicker_activity extends ActionBarActivity{
             official.setLayoutParams(params);
             scroll.addView(official);
 
-            //Set listener for the drag and drop events.
-            listeners(R_layout, official);
-            listeners(U_layout, official);
-            listeners(HL_layout, official);
-            listeners(L_layout, official);
-            listeners(BJ_layout, official);
-        }
+            // Set listeners for the drag and drop events.
+            currentDrag = official;
+            currentDrag.setTag(currentDrag.getTag());
+            currentDrag.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    currentDrag = v;
+                    ClipData.Item item = new ClipData.Item((CharSequence)v.getTag());
+                    String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
+                    ClipData dragData = new ClipData(v.getTag().toString(), mimeTypes, item);
+                    // Instantiates the drag shadow builder.
+                    View.DragShadowBuilder myShadow = new View.DragShadowBuilder(v);
 
+                    // Starts the drag
+                    currentDrag.startDrag(dragData, myShadow, v, 0);
+
+                    return false;
+                }
+            });
+
+            //Drag listeners
+            currentDrag = official;
+            for(int j=0; j<5; j++)
+            {
+                officialsPositions[j].setOnDragListener(new View.OnDragListener() {
+
+                    textViewOfficial d;
+
+                    @Override
+                    public boolean onDrag(View v, DragEvent event) {
+                        d = (textViewOfficial) currentDrag;
+                        if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
+                        {
+                            //currentDrag.setVisibility(View.INVISIBLE); //stop displaying the text when it has been dropped a correct place
+                            currentDrag.setBackgroundColor(Color.GRAY);
+                            currentDrag.getBackground().setAlpha(75);
+                            currentDrag.setLongClickable(false);
+
+                            int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
+                            v.setBackgroundResource(resID);
+
+                            TextView t;
+
+                            int INDEX = -1;
+                            for(int i=0; i<officialsPositions.length; i++)
+                            {
+                                if(v.getId()==officialsPositions[i].getId())
+                                {
+                                    INDEX = i;
+                                }
+                            }
+
+                            game.addOfficial(d.getOfficial(), INDEX);
+
+                            t = officialsPositionsText[INDEX];
+                            //String name = t.getText().toString();
+                            if(game.getOfficial(INDEX) != null)
+                            {
+                                String st = t.getText().toString();
+                                for(textViewOfficial to: textViews)
+                                {
+                                    if(st.substring(2+pos[INDEX].length(),st.length()).equals(to.getText()))
+                                    {
+                                        //to.setVisibility(View.VISIBLE);
+                                        int rID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
+                                        to.setBackgroundResource(rID);
+                                        to.setLongClickable(true);
+                                    }
+                                }
+                            }
+                            t.setText(pos[INDEX] + ": " + d.getText());
+
+                        }
+                        return true;
+                    }
+                });
+            }
+
+            //Open new activity on "short" click
+            official.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), Refinfo_Activity.class);
+                    textViewOfficial tv = (textViewOfficial) v;
+                    intent.putExtra("officialID", tv.getOfficial().getId());
+                    startActivity(intent);
+                }
+            });
+        }
 
         //add already existing officials!
         for(int i=0; i<5; i++)
@@ -112,18 +194,7 @@ public class Officialspicker_activity extends ActionBarActivity{
             {
                 int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
                 officialsPositions[i].setBackgroundResource(resID);
-
-                String x = officialsPositionsText[i].getText().toString();
-                String X;
-                if(i == 2 | i == 4)
-                {
-                    X = x.substring(0, 2);
-                }
-                else
-                {
-                    X = x.substring(0, 1);
-                }
-                officialsPositionsText[i].setText(X + ": " + game.getOfficial(i).getName());
+                officialsPositionsText[i].setText(pos[i] + ": " + game.getOfficial(i).getName());
 
                 //Remove the official from the list
                 for(textViewOfficial to : textViews)
@@ -170,109 +241,6 @@ public class Officialspicker_activity extends ActionBarActivity{
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void listeners(View drop, View drag)
-    {
-        currentDrag = drag;
-
-        currentDrag.setTag(currentDrag.getTag());
-        currentDrag.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                currentDrag = v;
-                ClipData.Item item = new ClipData.Item((CharSequence)v.getTag());
-                String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
-                ClipData dragData = new ClipData(v.getTag().toString(), mimeTypes, item);
-                // Instantiates the drag shadow builder.
-                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(v);
-
-                // Starts the drag
-                v.startDrag(dragData, myShadow, v, 0);
-
-                return false;
-            }
-        });
-
-        //Open new activity on "short" click
-        currentDrag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Refinfo_Activity.class);
-                textViewOfficial tv = (textViewOfficial) v;
-                intent.putExtra("officialID", tv.getOfficial().getId());
-                startActivity(intent);
-            }
-        });
-
-        //Drag listener
-        drop.setOnDragListener(new View.OnDragListener() {
-
-            textViewOfficial d;
-
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                d = (textViewOfficial) currentDrag;
-                if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
-                {
-                    //currentDrag.setVisibility(View.INVISIBLE); //stop displaying the text when it has been dropped a correct place
-                    currentDrag.setBackgroundColor(Color.GRAY);
-                    currentDrag.getBackground().setAlpha(75);
-                    currentDrag.setLongClickable(false);
-
-                    int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
-                    v.setBackgroundResource(resID);
-
-                    TextView t;
-
-                    int INDEX = -1;
-                    for(int i=0; i<officialsPositions.length; i++)
-                    {
-                        if(v.getId()==officialsPositions[i].getId())
-                        {
-                            INDEX = i;
-                        }
-                    }
-
-                    String s = officialsPositionsText[INDEX].getText().toString();
-                    String S = "";
-                    int StartIndex = 0;
-                    if(INDEX == 2 | INDEX == 4)
-                    {
-                        S = s.substring(0, 2);
-                        StartIndex = 4;
-                    }
-                    else
-                    {
-                        S = s.substring(0, 1);
-                        StartIndex = 3;
-                    }
-
-                    game.addOfficial(d.getOfficial(), INDEX);
-
-                    t = officialsPositionsText[INDEX];
-                    String name = t.getText().toString();
-                    if( !name.substring(name.length()-9, name.length()).equals( "[missing]" ) )//if place is already taken
-                    {
-                        String st = t.getText().toString();
-                        for(textViewOfficial to: textViews)
-                        {
-                            if(st.substring(StartIndex,st.length()).equals(to.getText()))
-                            {
-                                //to.setVisibility(View.VISIBLE);
-                                int rID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
-                                to.setBackgroundResource(rID);
-                                to.setLongClickable(true);
-                            }
-                        }
-                    }
-
-                    t.setText(S + ": " + d.getText());
-
-                }
-                return true;
-            }
-        });
     }
 }
 
