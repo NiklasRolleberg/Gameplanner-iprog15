@@ -27,10 +27,10 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     int arenaID;
     Spinner vSpinner;
     int currentTicketPrice;
-    int currentTurnout;
+    double currentTurnout;
     int currentRentCost;
     int currentCapacity;
-    int curentRevenue;
+    int currentRevenue;
     TextView capacity;
     TextView rentCost;
     TextView ticketPrice;
@@ -47,12 +47,9 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.arenapicker_layout);
         setValues();
-
-
     }
 
 
@@ -82,9 +79,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         //System.out.println(arenaNames.get(position));
         selectedPosition = position;
-        setValues();
-
-
+        updateValues(items.get(selectedPosition).getId());
     }
 
     @Override
@@ -104,7 +99,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         if (clickedID == R.id.arenapicker_okButton){    //OK button
             //todo add update stuff here later!
             myModel.getGame(gameID).setArena(items.get(selectedPosition));
-            myModel.getGame(gameID).setTurnout(currentTurnout);
+            myModel.getGame(gameID).setTurnout((int)currentTurnout*100);
             myModel.getGame(gameID).setTicketPrice(currentTicketPrice);
             finish();
 
@@ -140,8 +135,25 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         okButton.setOnClickListener(this);
         currentRentCost = currentArena.getRentCost();
         currentCapacity = currentArena.getCapacity();
-        capacity.setText("Capacity: " + Integer.toString(currentCapacity));
-        rentCost.setText("Rent cost: " + Integer.toString(currentRentCost));
+        capacity.setText(" Capacity: " + Integer.toString(currentCapacity));
+        rentCost.setText(" Rent cost: " + Integer.toString(currentRentCost));
+
+    }
+    private void updateValues(int tempArenaID){
+        System.out.println(tempArenaID);
+        currentArena = myModel.getArena(tempArenaID);
+        currentRentCost = currentArena.getRentCost();
+        currentCapacity = currentArena.getCapacity();
+        capacity.setText(" Capacity: " + Integer.toString(currentCapacity));
+        rentCost.setText(" Rent cost: " + Integer.toString(currentRentCost));
+        //todo what else happens here?
+
+        //reset ticket price and turnout?
+        currentTicketPrice = 0;
+        currentTurnout = 0;
+        ticketPrice.setText(" Ticket price: ");
+        turnout.setText(" Turnout: ");
+        revenue.setText("");
 
     }
     private void setTurnoutPriceFromSlider(){
@@ -171,9 +183,13 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
             public void onClick(DialogInterface dialog, int id) {
 
                 currentTurnout = seek.getProgress();
-                Toast.makeText(getApplicationContext(), "Turnout set to: " + currentTurnout + " %", Toast.LENGTH_LONG).show();
+                currentTurnout = (double)currentTurnout * 0.01;
+                System.out.println(currentTurnout);
+                Toast.makeText(getApplicationContext(), "Turnout set to: " + currentTurnout * 100 + " %", Toast.LENGTH_LONG).show();
                 turnout.setText(" Turnout: " + currentTurnout + " % ");
 
+                currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout);
+                revenue.setText(Integer.toString(currentRevenue));
 
                 //finish();
             }
@@ -235,7 +251,9 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
             public void onClick(DialogInterface dialog, int id) {
                 currentTicketPrice = seek.getProgress();
                 Toast.makeText(getApplicationContext(), "Ticket price set to: "+ currentTicketPrice, Toast.LENGTH_LONG).show();
-                ticketPrice.setText("Ticket price: " + currentTicketPrice);
+                ticketPrice.setText(" Ticket price: " + currentTicketPrice + " ");
+                currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout);
+                revenue.setText(Integer.toString(currentRevenue));
                 //finish();
             }
         });
