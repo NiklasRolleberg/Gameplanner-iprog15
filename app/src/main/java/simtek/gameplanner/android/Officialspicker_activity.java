@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -50,12 +51,25 @@ public class Officialspicker_activity extends ActionBarActivity{
         //set title (teams)
         TextView teams = (TextView) findViewById(R.id.Teams);
         teams.setText(game.getHomeTeam().getName() + " vs " + game.getAwayTeam().getName());
+//        ActionBar actionBar = getActionBar();
+//        actionBar.setTitle("hej");
+
+        Toast toast= Toast.makeText(getApplicationContext(),
+                "Choose officials by dragging the names into the desired fields", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 100);
+        toast.show();
 
         officialsPositions[0] = (LinearLayout) findViewById(R.id.R_officials);
         officialsPositions[1] = (LinearLayout) findViewById(R.id.U_officials);
         officialsPositions[2] = (LinearLayout) findViewById(R.id.HL_officials);
         officialsPositions[3] = (LinearLayout) findViewById(R.id.L_officials);
         officialsPositions[4] = (LinearLayout) findViewById(R.id.BJ_officials);
+
+        for(LinearLayout l : officialsPositions)
+        {
+            //l.setBackgroundColor(Color.parseColor(gray));
+            l.setBackgroundResource(R.drawable.buttondesign);
+        }
 
         //add text views
         LinearLayout scroll = (LinearLayout) findViewById(R.id.scroll_linear);
@@ -71,8 +85,7 @@ public class Officialspicker_activity extends ActionBarActivity{
             official.setMinHeight(60);
             official.setMinWidth(200);
             official.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
-            official.setBackgroundResource(resID);
+            official.setBackgroundResource(R.drawable.not_chosen_field);
             official.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)official.getLayoutParams();
             params.setMargins(0, 6, 0, 6);
@@ -112,12 +125,11 @@ public class Officialspicker_activity extends ActionBarActivity{
                         d = (textViewOfficial) currentDrag;
                         if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
                         {
-                            currentDrag.setBackgroundColor(Color.GRAY);
+                            currentDrag.setBackgroundResource(R.drawable.chosen_field);
                             currentDrag.getBackground().setAlpha(75);
                             currentDrag.setLongClickable(false);
 
-                            int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
-                            v.setBackgroundResource(resID);
+                            v.setBackgroundResource(R.drawable.tiledesign);
 
                             int INDEX = getIndex((LinearLayout) v);
                             game.addOfficial(d.getOfficial(), INDEX);
@@ -129,8 +141,7 @@ public class Officialspicker_activity extends ActionBarActivity{
                                 {
                                     if(st.substring(2+pos[INDEX].length(),st.length()).equals(to.getText()))
                                     {
-                                        int rID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
-                                        to.setBackgroundResource(rID);
+                                        to.setBackgroundResource(R.drawable.not_chosen_field);
                                         to.setLongClickable(true);
                                     }
                                 }
@@ -176,8 +187,8 @@ public class Officialspicker_activity extends ActionBarActivity{
             //check if there is an existing official on this position
             if(game.getOfficial(i) != null)
             {
-                int resID = getResources().getIdentifier("abc_list_longpressed_holo", "drawable", getPackageName());
-                officialsPositions[i].setBackgroundResource(resID);
+               // officialsPositions[i].setBackgroundColor(Color.parseColor(green));
+                officialsPositions[i].setBackgroundResource(R.drawable.tiledesign);
                 officialsPositionsText[i].setText(pos[i] + ": " + game.getOfficial(i).getName());
                 officialsPositionsText[i].setOfficial(game.getOfficial(i));
                 tv.setText(pos[i] + ": " + game.getOfficial(i).getName());
@@ -188,7 +199,8 @@ public class Officialspicker_activity extends ActionBarActivity{
                 {
                     if(to.getOfficial().getName().equals(game.getOfficial(i).getName()))
                     {
-                        to.setBackgroundColor(Color.GRAY);
+                        //to.setBackgroundColor(Color.parseColor(gray));
+                        to.setBackgroundResource(R.drawable.chosen_field);
                         to.getBackground().setAlpha(75);
                         to.setLongClickable(false);
                     }
@@ -221,6 +233,8 @@ public class Officialspicker_activity extends ActionBarActivity{
 
         //ok button to exit activity
         Button okButton = (Button) findViewById(R.id.ok_button_officials);
+        okButton.setBackgroundResource(R.drawable.buttondesign);
+        okButton.setTextColor(Color.WHITE);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

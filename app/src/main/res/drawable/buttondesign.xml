@@ -3,12 +3,12 @@
     <item android:state_pressed="true" >
         <shape>
             <solid
-                android:color="#343434" />
+                android:color="#3F6A9B" />
             <stroke
                 android:width="1dp"
                 android:color="#171717" />
             <corners
-                android:radius="3dp" />
+                android:radius="10dp" />
             <padding
                 android:left="5dp"
                 android:top="5dp"
@@ -18,16 +18,18 @@
     </item>
     <item>
         <shape>
-            <gradient
+            <solid
+                android:color="#82B7F3" />
+            <!--<gradient
                 android:startColor="#399c5e"
                 android:centerColor="#3cd876"
                 android:endColor="#399c5e"
-                android:angle="270" />
+                android:angle="270" />-->
             <stroke
                 android:width="0dp"
                 android:color="#171717" />
             <corners
-                android:radius="4dp" />
+                android:radius="10dp" />
             <padding
                 android:left="5dp"
                 android:top="5dp"

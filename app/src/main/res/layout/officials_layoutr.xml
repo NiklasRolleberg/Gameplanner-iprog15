@@ -20,26 +20,13 @@
             android:id="@+id/Teams"
             android:layout_gravity="center_horizontal" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Choose officials by dragging the names into the desired fields"
-            android:id="@+id/textView_officials"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp" />
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/officials"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginRight="20dp">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -86,8 +73,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/BJ_officials"
-                android:background="@drawable/abc_list_focused_holo"
-                android:layout_marginBottom="3dp" >
+                android:background="@drawable/abc_list_focused_holo">
 
             </LinearLayout>
 
