@@ -1,13 +1,19 @@
 package simtek.gameplanner.android;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,9 +21,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+
+import java.sql.SQLOutput;
+
 import simtek.gameplanner.R;
 import simtek.gameplanner.model.Game;
 import simtek.gameplanner.model.Model;
+import simtek.gameplanner.model.Official;
 
 
 public class Intro_Activity extends ActionBarActivity implements View.OnClickListener {
@@ -48,6 +59,14 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         G.setPadding(30, 20, 30, 0);
         G.setVerticalSpacing(20);
         G.setHorizontalSpacing(20);
+
+        /*
+        G.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                return true;
+            }
+        });*/
     }
 
 
@@ -64,8 +83,6 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -160,7 +177,13 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             tile.setBackgroundResource(R.drawable.tiledesign);
             tile.setGame(game);
             tile.setText(info);
-            tile.setOnClickListener(new tileListener());
+
+            TileListener tl = new TileListener();
+            tile.setTag(""+game.getId());
+            tile.setOnClickListener(tl);
+            tile.setOnLongClickListener(tl);
+            tile.setOnDragListener(tl);
+
             return tile;
         }
     }
@@ -196,7 +219,7 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         }
     }
 
-    class tileListener implements View.OnClickListener {
+    class TileListener implements View.OnClickListener, View.OnLongClickListener, View.OnDragListener{
         @Override
         public void onClick(View v) {
             if (v instanceof GameTile) {
@@ -206,6 +229,38 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
                 intent.putExtra("ID", gameID);
                 startActivity(intent);
             }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (v instanceof GameTile) {
+                GameTile g = (GameTile) v;
+                ClipData.Item item = new ClipData.Item(""+g.getGameID());
+                String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
+                ClipData dragData = new ClipData(v.getTag().toString(), mimeTypes, item);
+                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(v);
+                v.startDrag(dragData, myShadow, v, 0);
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+
+            if(event.getAction() == DragEvent.ACTION_DRAG_STARTED) {
+                System.out.println("Drag start");
+            }
+
+            if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
+            {
+                System.out.println("OnDrop");
+            }
+
+            if(event.getAction() == DragEvent.ACTION_DRAG_EXITED) {
+                System.out.println("Drag left");
+            }
+
+            return true;
         }
     }
 }
