@@ -10,6 +10,8 @@ public class Model extends Observable {
     private ArrayList<Arena> arenas;
     private ArrayList<Team> teams;
 
+    public int nrGames = 0;
+
     public Model() {
         System.out.println("MODEL LEVER!");
         games = new ArrayList<Game>();
@@ -67,6 +69,7 @@ public class Model extends Observable {
         G.addOfficial(officials.get(1),1);
         G.addOfficial(officials.get(2),2);
         games.add(G);
+        nrGames ++;
     }
 
     public ArrayList<Game> getGames() {

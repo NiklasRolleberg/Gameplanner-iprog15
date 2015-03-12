@@ -3,6 +3,7 @@ package simtek.gameplanner.android;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -133,6 +134,8 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         //Button
         createGame = (Button) findViewById(R.id.creategame_createButton);
         createGame.setOnClickListener(this);
+        createGame.setBackgroundResource(R.drawable.buttondesign);
+        createGame.setTextColor(Color.WHITE);
 
 
     }
@@ -246,7 +249,8 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
             }
 
             //TODO ta bort och gör om
-            int gameid = (int) (Math.random()*700);
+            model.nrGames += 1;
+            int gameid = model.nrGames;
 
             Game g = new Game(gameid,temparena,home,away ,mYear ,mMonth, mDay,mHour,mMinute);
             model.addGame(g);

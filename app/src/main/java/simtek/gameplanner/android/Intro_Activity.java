@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
@@ -32,6 +33,8 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         model = ((CustomApplication) this.getApplication()).getModel();
 
         Button createNewGame = (Button) findViewById(R.id.newGameButton);
+        createNewGame.setBackgroundResource(R.drawable.buttondesign);
+        createNewGame.setTextColor(Color.WHITE);
         createNewGame.setOnClickListener(this);
 
 
@@ -42,7 +45,7 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         GridView G = (GridView) findViewById(R.id.intro_gridView);
         G.setColumnWidth(width / 2);
         G.setAdapter(new tileAdapter(this));
-        G.setPadding(30, 0, 30, 0);
+        G.setPadding(30, 20, 30, 0);
         G.setVerticalSpacing(20);
         G.setHorizontalSpacing(20);
     }
@@ -153,7 +156,8 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
                     "\n" + game.getNrOfOfficials() + "/5 ref";
 
 
-            tile.setBackgroundColor(Color.parseColor("#58FA58"));
+            //tile.setBackgroundColor(Color.parseColor("#58FA58"));
+            tile.setBackgroundResource(R.drawable.tiledesign);
             tile.setGame(game);
             tile.setText(info);
             tile.setOnClickListener(new tileListener());
