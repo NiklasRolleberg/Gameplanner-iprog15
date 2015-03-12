@@ -211,11 +211,11 @@ public class Officialspicker_activity extends ActionBarActivity{
             }
 
             tv.setTextSize(18);
-            tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)tv.getLayoutParams();
             params.setMargins(0, 10, 0, 10);
             tv.setLayoutParams(params);
-            tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL); // :(
             officialsPositions[i].addView(tv);
         }
 
