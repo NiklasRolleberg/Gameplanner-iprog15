@@ -4,12 +4,8 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
@@ -22,14 +18,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import java.sql.SQLOutput;
 
 import simtek.gameplanner.R;
 import simtek.gameplanner.model.Game;
 import simtek.gameplanner.model.Model;
-import simtek.gameplanner.model.Official;
 
 
 public class Intro_Activity extends ActionBarActivity implements View.OnClickListener {
@@ -70,20 +62,24 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             public boolean onDrag(View v, DragEvent event) {
 
                 if(event.getAction() == DragEvent.ACTION_DRAG_ENTERED) {
-                    System.out.println("in trashcan!");
+                    //System.out.println("in trashcan!");
+                    trashCan.setImageResource(R.drawable.trashcan_red);
                 }
 
                 if(event.getAction() == DragEvent.ACTION_DRAG_EXITED) {
-                    System.out.println("left trashcan!");
+                    //System.out.println("left trashcan!");
+                    trashCan.setImageResource(R.drawable.trashcan_black);
                 }
 
                 if(event.getAction() == DragEvent.ACTION_DROP) {
-                    System.out.println("Dropped in trashcan!");
+                    //System.out.println("Dropped in trashcan!");
+                    trashCan.setImageResource(R.drawable.trashcan_black);
 
                     //find dragged item and remove game
                     String s = event.getClipDescription().getLabel().toString();
                     int gameID = Integer.parseInt(s);
                     model.removeGame(model.getGame(gameID));
+                    grid.invalidateViews();
                 }
 
                 return true;
@@ -274,32 +270,23 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         public boolean onDrag(View v, DragEvent event) {
 
             if(event.getAction() == DragEvent.ACTION_DRAG_STARTED) {
-                System.out.println("Drag start");
-                //trashCan.setVisibility(View.VISIBLE);
+                //System.out.println("Drag start");
                 trashCan.setAlpha(1f);
                 trashCan.bringToFront();
             }
 
             if(event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
-                System.out.println("Drag ended");
+                //System.out.println("Drag ended");
                 trashCan.setAlpha(0f);
                 createNewGame.bringToFront();
-                //createNewGame.setVisibility(View.VISIBLE);
             }
 
             if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
             {
-                System.out.println("OnDrop");
+                //System.out.println("OnDrop");
                 trashCan.setAlpha(0f);
                 createNewGame.bringToFront();
-                //trashCan.setVisibility(View.INVISIBLE);
-                //createNewGame.setVisibility(View.VISIBLE);
             }
-
-            if(event.getAction() == DragEvent.ACTION_DRAG_EXITED) {
-                System.out.println("Drag left");
-            }
-
             return true;
         }
     }
