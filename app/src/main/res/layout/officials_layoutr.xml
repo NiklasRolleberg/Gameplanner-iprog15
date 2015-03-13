@@ -12,14 +12,6 @@
         android:layout_height="fill_parent"
         android:id="@+id/Vertical1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Team1 vs Team2"
-            android:id="@+id/Teams"
-            android:layout_gravity="center_horizontal" />
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"

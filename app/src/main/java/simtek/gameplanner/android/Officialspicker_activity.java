@@ -49,14 +49,10 @@ public class Officialspicker_activity extends ActionBarActivity{
         game = model.getGame(ID);
 
         //set title (teams)
-        TextView teams = (TextView) findViewById(R.id.Teams);
-        teams.setText(game.getHomeTeam().getName() + " vs " + game.getAwayTeam().getName());
-//        ActionBar actionBar = getActionBar();
-//        actionBar.setTitle("hej");
+        setTitle(game.getHomeTeam().getName() + " vs " + game.getAwayTeam().getName());
 
-        Toast toast= Toast.makeText(getApplicationContext(),
-                "Choose officials by dragging the names into the desired fields", Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 100);
+        Toast toast= Toast.makeText(getApplicationContext(), "Choose officials by dragging the names into the desired fields", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 100);
         toast.show();
 
         officialsPositions[0] = (LinearLayout) findViewById(R.id.R_officials);
@@ -67,8 +63,7 @@ public class Officialspicker_activity extends ActionBarActivity{
 
         for(LinearLayout l : officialsPositions)
         {
-            //l.setBackgroundColor(Color.parseColor(gray));
-            l.setBackgroundResource(R.drawable.buttondesign);
+            l.setBackgroundResource(R.drawable.red_field);
         }
 
         //add text views
@@ -86,6 +81,7 @@ public class Officialspicker_activity extends ActionBarActivity{
             official.setMinWidth(200);
             official.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
             official.setBackgroundResource(R.drawable.not_chosen_field);
+            official.getBackground().setAlpha(130);
             official.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)official.getLayoutParams();
             params.setMargins(0, 6, 0, 6);
@@ -142,6 +138,7 @@ public class Officialspicker_activity extends ActionBarActivity{
                                     if(st.substring(2+pos[INDEX].length(),st.length()).equals(to.getText()))
                                     {
                                         to.setBackgroundResource(R.drawable.not_chosen_field);
+                                        to.getBackground().setAlpha(130);
                                         to.setLongClickable(true);
                                     }
                                 }
