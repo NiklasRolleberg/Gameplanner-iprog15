@@ -79,19 +79,16 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
 
                 if(event.getAction() == DragEvent.ACTION_DROP) {
                     System.out.println("Dropped in trashcan!");
+
+                    //find dragged item and remove game
+                    String s = event.getClipDescription().getLabel().toString();
+                    int gameID = Integer.parseInt(s);
+                    model.removeGame(model.getGame(gameID));
                 }
 
                 return true;
             }
         });
-
-        /*
-        G.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                return true;
-            }
-        });*/
     }
 
 
@@ -231,6 +228,10 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             return 0;
         }
 
+        public Game getGame() {
+            return this.game;
+        }
+
         @Override
         protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
             final int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
@@ -274,20 +275,24 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
 
             if(event.getAction() == DragEvent.ACTION_DRAG_STARTED) {
                 System.out.println("Drag start");
-                trashCan.setVisibility(View.VISIBLE);
-                //createNewGame.setVisibility(View.INVISIBLE);
+                //trashCan.setVisibility(View.VISIBLE);
+                trashCan.setAlpha(1f);
+                trashCan.bringToFront();
             }
 
             if(event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
                 System.out.println("Drag ended");
-                trashCan.setVisibility(View.INVISIBLE);
+                trashCan.setAlpha(0f);
+                createNewGame.bringToFront();
                 //createNewGame.setVisibility(View.VISIBLE);
             }
 
             if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
             {
                 System.out.println("OnDrop");
-                trashCan.setVisibility(View.INVISIBLE);
+                trashCan.setAlpha(0f);
+                createNewGame.bringToFront();
+                //trashCan.setVisibility(View.INVISIBLE);
                 //createNewGame.setVisibility(View.VISIBLE);
             }
 
