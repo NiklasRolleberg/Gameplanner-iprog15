@@ -1,7 +1,11 @@
 package simtek.gameplanner.model;
 
+import android.graphics.drawable.Drawable;
+
 import java.util.ArrayList;
 import java.util.Observable;
+
+import simtek.gameplanner.R;
 
 public class Model extends Observable {
 
@@ -29,12 +33,12 @@ public class Model extends Observable {
 
         //create arenas
         arenas = new ArrayList<Arena>();
-        arenas.add(new Arena(1,"Colosseum", "Rome"));
-        arenas.add(new Arena(2,"Madison Square Garden", "New York"));
-        arenas.add(new Arena(3,"Ericsson Globe", "Stockholm"));
-        arenas.add(new Arena(4,"Scandinavium", "Gothenburg"));
-        arenas.add(new Arena(5,"Göransson Arena", "Sandviken"));
-        arenas.add(new Arena(6,"Friends Arena", "Solna"));
+        arenas.add(new Arena(1,"Colosseum", "Rome", "colosseum"));
+        arenas.add(new Arena(2,"Madison Square Garden", "London" ,"madisonsquaregarden"));
+        arenas.add(new Arena(3,"Ericsson Globe", "Stockholm","ericssonglobe"));
+        arenas.add(new Arena(4,"Scandinavium", "Gothenburg","scandinavium"));
+        arenas.add(new Arena(5,"Göransson Arena", "Sandviken","goranssonarena"));
+        arenas.add(new Arena(6,"Friends Arena", "Solna","friendsarena"));
 
 
         /*

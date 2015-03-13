@@ -4,11 +4,13 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -74,22 +76,20 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
 
         hometeam.setAdapter(adapter1);
         awayteam.setAdapter(adapter2);
-        //hometeam.setOnItemSelectedListener(this);
-        //awayteam.setOnItemSelectedListener(this);
 
         ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         for(Arena a: model.getArenas()) {
             adapter3.add(a.getName());
         }
         arena.setAdapter(adapter3);
-        //arena.setOnItemSelectedListener(this);
+        arena.setOnItemSelectedListener(new ArenaListener());
 
         arenaInfo = (TextView) findViewById(R.id.creategame_arenaInfo);
         arenaImage = (ImageView) findViewById(R.id.creategame_arenaimage);
 
-        arenaImage.setImageResource(R.drawable.arena_01);
-        arenaImage.getLayoutParams().height = 400;
-        arenaImage.getLayoutParams().width = 400;
+        arenaImage.setImageResource(R.drawable.colosseum);
+        arenaImage.getLayoutParams().height = 512;
+        arenaImage.getLayoutParams().width = 512;
 
         arenaInfo.setText("Capacity:30p \nCost/day:$£ \nLocation:nej");
 
@@ -262,5 +262,30 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
             startActivity(intent);
         }
 
+    }
+
+    class ArenaListener implements AdapterView.OnItemSelectedListener
+    {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            //System.out.println("something selected");
+
+            Arena arena = model.getArenas().get(position);
+
+            String imageName = arena.getImageName();//"colosseum";
+            Drawable image = CreateGame_Activity.this.getResources().getDrawable(CreateGame_Activity.this.getResources()
+                    .getIdentifier(imageName, "drawable", CreateGame_Activity.this.getPackageName()));
+
+            arenaImage.setImageDrawable(image);
+            arenaImage.getLayoutParams().height = 512;
+            arenaImage.getLayoutParams().width = 512;
+
+            arenaInfo.setText("Capacity: " + arena.getCapacity() + "\nCost/day: " + arena.getRentCost() + "\nLocation: " + arena.getLocation());
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
     }
 }
