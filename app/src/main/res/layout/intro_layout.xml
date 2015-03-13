@@ -15,6 +15,19 @@
         android:numColumns="2"
         android:layout_alignParentTop="true" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/intro_trashCan"
+        android:visibility="invisible"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20px"
+        android:layout_marginTop="20px"
+        android:src="@drawable/trashcan" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,5 +39,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20px"
         android:layout_marginTop="20px" />
+
+
 
 </RelativeLayout>

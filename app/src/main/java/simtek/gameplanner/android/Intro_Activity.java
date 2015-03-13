@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.sql.SQLOutput;
@@ -34,6 +35,9 @@ import simtek.gameplanner.model.Official;
 public class Intro_Activity extends ActionBarActivity implements View.OnClickListener {
 
     private Model model;
+    private ImageView trashCan;
+    private Button createNewGame;
+    private GridView grid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,7 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         //load model
         model = ((CustomApplication) this.getApplication()).getModel();
 
-        Button createNewGame = (Button) findViewById(R.id.newGameButton);
+        createNewGame = (Button) findViewById(R.id.newGameButton);
         createNewGame.setBackgroundResource(R.drawable.buttondesign);
         createNewGame.setTextColor(Color.WHITE);
         createNewGame.setOnClickListener(this);
@@ -53,12 +57,33 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
-        GridView G = (GridView) findViewById(R.id.intro_gridView);
-        G.setColumnWidth(width / 2);
-        G.setAdapter(new tileAdapter(this));
-        G.setPadding(30, 20, 30, 0);
-        G.setVerticalSpacing(20);
-        G.setHorizontalSpacing(20);
+        grid = (GridView) findViewById(R.id.intro_gridView);
+        grid.setColumnWidth(width / 2);
+        grid.setAdapter(new tileAdapter(this));
+        grid.setPadding(30, 20, 30, 0);
+        grid.setVerticalSpacing(20);
+        grid.setHorizontalSpacing(20);
+
+        trashCan = (ImageView) findViewById(R.id.intro_trashCan);
+        trashCan.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+
+                if(event.getAction() == DragEvent.ACTION_DRAG_ENTERED) {
+                    System.out.println("in trashcan!");
+                }
+
+                if(event.getAction() == DragEvent.ACTION_DRAG_EXITED) {
+                    System.out.println("left trashcan!");
+                }
+
+                if(event.getAction() == DragEvent.ACTION_DROP) {
+                    System.out.println("Dropped in trashcan!");
+                }
+
+                return true;
+            }
+        });
 
         /*
         G.setOnDragListener(new View.OnDragListener() {
@@ -249,11 +274,21 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
 
             if(event.getAction() == DragEvent.ACTION_DRAG_STARTED) {
                 System.out.println("Drag start");
+                trashCan.setVisibility(View.VISIBLE);
+                //createNewGame.setVisibility(View.INVISIBLE);
+            }
+
+            if(event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
+                System.out.println("Drag ended");
+                trashCan.setVisibility(View.INVISIBLE);
+                //createNewGame.setVisibility(View.VISIBLE);
             }
 
             if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
             {
                 System.out.println("OnDrop");
+                trashCan.setVisibility(View.INVISIBLE);
+                //createNewGame.setVisibility(View.VISIBLE);
             }
 
             if(event.getAction() == DragEvent.ACTION_DRAG_EXITED) {
