@@ -3,6 +3,7 @@ package simtek.gameplanner.model;
 import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Observable;
 
 import simtek.gameplanner.R;
@@ -117,8 +118,8 @@ public class Model extends Observable {
 
     public void addGame(Game g) {
         //System.out.println("GAME ID, FOOL!!!" + g.getId());
-
         games.add(g);
+        Collections.sort(games);
     }
 
     public void removeGame(Game g) {

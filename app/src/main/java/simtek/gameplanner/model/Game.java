@@ -3,7 +3,7 @@ package simtek.gameplanner.model;
 /**
  * Created by Niklas on 2015-03-08.
  */
-public class Game {
+public class Game implements Comparable<Game>{
 
     private int id;
     private Arena arena;
@@ -125,5 +125,44 @@ public class Game {
                 nr++;
             }
         return nr;
+    }
+
+    @Override
+    public int compareTo(Game another) {
+        //compare year
+        if(another.getYear() > year)
+            return -1;
+        else if (year > another.getYear())
+            return 1;
+
+        //compare month
+        if(another.getMonth() > month)
+            return -1;
+        else if (another.getMonth() < month)
+            return 1;
+
+        if(another.getDay() > day)
+            return -1;
+        else if (another.getDay() < day)
+            return 1;
+
+        //compare day
+        if(another.getMonth() > month)
+            return -1;
+        else if (another.getMonth() < month)
+            return 1;
+
+        //compare hour
+        if(another.getHour() > hour)
+            return -1;
+        else if (another.getHour() < hour)
+            return 1;
+
+        //compare min
+        if(another.getMinute() > minute)
+            return -1;
+        else if (another.getMinute() < minute)
+            return 1;
+        return 0;
     }
 }
