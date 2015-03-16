@@ -1,12 +1,8 @@
 package simtek.gameplanner.model;
 
-import android.graphics.drawable.Drawable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Observable;
-
-import simtek.gameplanner.R;
 
 public class Model extends Observable {
 
@@ -24,13 +20,13 @@ public class Model extends Observable {
         //Create officials
         officials = new ArrayList<Official>();
 
-        officials.add(new Official(1, "Pelle svanslös","Stockholm", "S"));
-        officials.add(new Official(2, "Bengt-Eric Svensson","Luleå", "E"));
-        officials.add(new Official(3, "Stig Ovesson","Gothenburg", "S"));
-        officials.add(new Official(4, "Karl-Evert Karlsson","London", "J"));
-        officials.add(new Official(5, "Jan Ivarsson","London", "E"));
-        officials.add(new Official(6, "Jean-Pierre Baguette","London", "J"));
-        officials.add(new Official(7, "Bert-Ola Surströmming","London", "S"));
+        officials.add(new Official(1, "Pelle svanslös", "29", "Stockholm", "S", "o5"));
+        officials.add(new Official(2, "Bengt-Eric Svensson", "45", "Luleå", "E", "o"));
+        officials.add(new Official(3, "Stig Ovesson", "32", "Gothenburg", "S", "official"));
+        officials.add(new Official(4, "Karl-Evert Karlsson", "24","London", "J", "o"));
+        officials.add(new Official(5, "Jan Ivarsson", "21", "London", "E", "o3"));
+        officials.add(new Official(6, "Jean-Pierre Baguette", "28","France", "J", "o2"));
+        officials.add(new Official(7, "Bert-Ola Surströmming", "42", "London", "S", "o"));
 
         //create arenas
         arenas = new ArrayList<Arena>();

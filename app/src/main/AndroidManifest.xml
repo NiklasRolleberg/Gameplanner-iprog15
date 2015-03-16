@@ -36,6 +36,7 @@
         </activity>
         <activity
             android:name=".android.Officialspicker_activity"
+            android:parentActivityName=".android.Gameinfo_Activity"
             android:label="Assign officials" >
         </activity>
         <activity

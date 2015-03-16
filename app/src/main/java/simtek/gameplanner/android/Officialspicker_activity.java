@@ -34,6 +34,7 @@ public class Officialspicker_activity extends ActionBarActivity{
     ArrayList<Official> allOfficials;
     ArrayList<textViewOfficial> textViews = new ArrayList<>();
     Game game;
+    Official[] officialsToGame = new Official[5];
 
 
     @Override
@@ -128,9 +129,9 @@ public class Officialspicker_activity extends ActionBarActivity{
                             v.setBackgroundResource(R.drawable.tiledesign);
 
                             int INDEX = getIndex((LinearLayout) v);
-                            game.addOfficial(d.getOfficial(), INDEX);
+                            officialsToGame[INDEX] = d.getOfficial();
                             textViewOfficial t = officialsPositionsText[INDEX];
-                            if(game.getOfficial(INDEX) != null)
+                            if(game.getOfficial(INDEX) != null)//???
                             {
                                 String st = t.getText().toString();
                                 for(textViewOfficial to: textViews)
@@ -235,6 +236,14 @@ public class Officialspicker_activity extends ActionBarActivity{
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                for(int i=0; i<5; i++)
+                {
+                    if(officialsToGame[i] != null)
+                    {
+                        game.addOfficial(officialsToGame[i],i);
+                    }
+                }
                 finish();
             }
         });
@@ -254,6 +263,15 @@ public class Officialspicker_activity extends ActionBarActivity{
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Toast toast= Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 100);
+                toast.show();
+
+                this.finish();
+                return true;
+        }
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

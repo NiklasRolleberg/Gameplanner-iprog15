@@ -1,5 +1,6 @@
 package simtek.gameplanner.android;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -41,9 +42,15 @@ public class Refinfo_Activity extends ActionBarActivity {
         TextView resArea = (TextView) findViewById(R.id.residence);
         resArea.setText(resArea.getText() + currentOfficial.getResArea());
 
+        TextView age = (TextView) findViewById(R.id.age);
+        age.setText(age.getText() + currentOfficial.getAge());
+
         ImageView image = (ImageView) findViewById(R.id.official_image);
-        int resID = getResources().getIdentifier("official", "drawable", getPackageName());
-        image.setBackgroundResource(resID);
+        String imageName = currentOfficial.getImage();
+        Drawable im = getResources().getDrawable(getResources().getIdentifier(imageName, "drawable", getPackageName()));
+        image.setImageDrawable(im);
+
+
     }
 
 
