@@ -24,8 +24,8 @@
         android:layout_marginRight="16dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:scaleY="0.75"
-        android:scaleX="0.75"
+        android:scaleY="0.5"
+        android:scaleX="0.5"
         android:layout_marginBottom="20px"
         android:layout_marginTop="20px"
         android:src="@drawable/trashcan_black" />
