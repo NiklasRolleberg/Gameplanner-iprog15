@@ -9,7 +9,9 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView2" >
+        android:id="@+id/scrollView2"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/creategame_createButton">
 
         <LinearLayout
             android:orientation="vertical"
@@ -63,7 +65,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:text="Venue: "
                     android:id="@+id/creategame_noid1"
                     android:layout_centerVertical="true"
@@ -88,7 +91,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:text="Home team "
                     android:id="@+id/creategame_hometeamtextview"
                     android:layout_centerVertical="true"
@@ -112,7 +116,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:text="Away team  "
                     android:id="@+id/creategame_awayteamtextview"
                     android:layout_centerVertical="true"
@@ -136,7 +141,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:text="Date"
                     android:id="@+id/creategame_noid03" />
 
@@ -159,7 +165,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:text="Time"
                     android:id="@+id/creategame_noid04" />
 
@@ -174,14 +181,19 @@
                     android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Create"
-                android:id="@+id/creategame_createButton"
-                android:layout_marginTop="10dp" />
-
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        android:id="@+id/creategame_createButton"
+        android:layout_marginTop="20px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

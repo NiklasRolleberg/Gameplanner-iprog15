@@ -4,9 +4,11 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,9 +89,15 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         arenaInfo = (TextView) findViewById(R.id.creategame_arenaInfo);
         arenaImage = (ImageView) findViewById(R.id.creategame_arenaimage);
 
+
+        //find screen width and set picture size to 1/4
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x/4;
         arenaImage.setImageResource(R.drawable.colosseum);
-        arenaImage.getLayoutParams().height = 512;
-        arenaImage.getLayoutParams().width = 512;
+        arenaImage.getLayoutParams().height = width;
+        arenaImage.getLayoutParams().width = width;
 
         arenaInfo.setText("Capacity:30p \nCost/day:$£ \nLocation:nej");
 
