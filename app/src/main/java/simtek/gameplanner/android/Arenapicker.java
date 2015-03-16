@@ -2,6 +2,7 @@ package simtek.gameplanner.android;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -49,6 +50,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.arenapicker_layout);
+        //TODO set selected arena in the spinner to the current one!
         setValues();
     }
 
@@ -94,7 +96,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
             setTicketPriceFromSlider();
         }
         if (clickedID == R.id.arenapicker_turnout){
-            setTurnoutPriceFromSlider();
+            setTurnoutFromSlider();
         }
         if (clickedID == R.id.arenapicker_okButton){    //OK button
             //todo add update stuff here later!
@@ -117,6 +119,10 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         rentCost = (TextView) findViewById(R.id.arenapicker_rentCost);
         revenue = (TextView) findViewById(R.id.arenapicker_revenue);
         okButton = (Button) findViewById(R.id.arenapicker_okButton);
+        okButton.setBackgroundResource(R.drawable.buttondesign);
+        okButton.setTextColor(Color.WHITE);
+        //ticketPrice.setBackgroundResource(R.drawable.buttondesign);
+        //turnout.setBackgroundResource(R.drawable.buttondesign);
 
         //SELECT name FROM arenas, later: SELECT ID FROM arenas WHERE name = "chosen item thingy"
         myModel = ((CustomApplication) this.getApplication()).getModel();
@@ -156,7 +162,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         revenue.setText("");
 
     }
-    private void setTurnoutPriceFromSlider(){
+    private void setTurnoutFromSlider(){
 
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -186,7 +192,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
                 currentTurnout = (double)currentTurnout * 0.01;
                 System.out.println(currentTurnout);
                 Toast.makeText(getApplicationContext(), "Turnout set to: " + currentTurnout * 100 + " %", Toast.LENGTH_LONG).show();
-                turnout.setText(" Turnout: " + currentTurnout + " % ");
+                turnout.setText(" Turnout: " + currentTurnout * 100 + " % ");
 
                 currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout);
                 revenue.setText(Integer.toString(currentRevenue));
@@ -211,7 +217,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
                 int tempTurnout = seek.getProgress();
-                progressLabel.setText((String.valueOf(tempTurnout)));
+                progressLabel.setText((String.valueOf(tempTurnout)) + " %");
 
             }
 

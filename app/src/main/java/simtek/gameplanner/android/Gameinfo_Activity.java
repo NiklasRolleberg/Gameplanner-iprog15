@@ -32,10 +32,16 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
     TextView turnout;
     TextView ticketPrice;
     TextView visitors;
+    TextView offPay;
+    TextView finalRevenue;
+    TextView income;
     int gameID;
     Game myGame;
     Arena myArena;
     Model myModel;
+    String[] refTitles;
+    TextView[] refTextViewList;
+    Official[] officials; //good idea, but needs a way to handle nulls
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
@@ -57,6 +63,24 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         backJudge = (TextView) findViewById(R.id.gameinfo_backJudge);
         turnout = (TextView) findViewById(R.id.gameinfo_turnout);
         ticketPrice = (TextView) findViewById(R.id.gameinfo_ticketPrice);
+        offPay = (TextView) findViewById(R.id.gameinfo_officialsCost);
+        finalRevenue = (TextView) findViewById(R.id.gameinfo_finalRevenue);
+        income = (TextView) findViewById(R.id.gameinfo_income);
+        refTextViewList = new TextView[5];
+        refTextViewList[0]= referee;
+        refTextViewList[1]= umpire;
+        refTextViewList[2]= headLinesman;
+        refTextViewList[3]= linesman;
+        refTextViewList[4]= backJudge;
+        refTitles = new String[5];
+        refTitles[0] = " R: ";
+        refTitles[1] = " U: ";
+        refTitles[2] = " HL: ";
+        refTitles[3] = " L: ";
+        refTitles[4] = " BJ: ";
+
+
+
 
         visitors = (TextView) findViewById(R.id.gameinfo_visitors);
 
@@ -72,10 +96,8 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
 
         //get ID
         gameID = getIntent().getIntExtra("ID", 1);
-        //get info based on ID
+        officials = new Official[5];
 
-
-        System.out.println("GAME ID!!!!!!!" + gameID);
         setValues(gameID);
     }
 
@@ -113,13 +135,8 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         refArray.add(R.id.gameinfo_backJudge);
         if (clickedID == R.id.gameinfo_Arena) {
             Intent intent = new Intent(this, Arenapicker.class);
-            //int arenaID = 1337; //todo get from db
             intent.putExtra("ID", gameID);
             intent.putExtra("arenaID", myGame.getArena().getID());
-
-            //Bundle bundle = new Bundle();
-            //bundle.putInt("arenaID",arenaID);
-            //intent.putExtras(bundle);
             startActivity(intent);
         }
         if (refArray.contains(clickedID)){
@@ -142,7 +159,17 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         ticketPrice.setText("Ticket price: " + myGame.getTicketPrice());
         turnout.setText("Turnout [%]: " + myGame.getTurnout());
         visitors.setText("Visitors: " + myGame.getVisitors());
-
+        referee.setBackgroundResource(R.drawable.red_field);
+        umpire.setBackgroundResource(R.drawable.red_field);
+        headLinesman.setBackgroundResource(R.drawable.red_field);
+        linesman.setBackgroundResource(R.drawable.red_field);
+        backJudge.setBackgroundResource(R.drawable.red_field);
+        for (int i = 0; i < 5; i++){
+            Official temp = myGame.getOfficial(i);
+            if (temp != null){
+                officials[i] = temp;
+            }
+        }
 
 
         String hourString = "" + myGame.getHour();
@@ -164,27 +191,44 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         String date = (year + "-" + month + "-" + day);
 
         kickoffTime.setText(date + ", " + timeString);
-        //todo this shit is horrible
+        //todo this shit is horrible, make a collection and loop through it!
+        for (int i = 0; i < 5; i++){
+            //doStuff
+            if (officials[i] != null){
+                refTextViewList[i].setText(refTitles[i] + officials[i].getName());
+                refTextViewList[i].setBackgroundResource(R.drawable.tiledesign);
+            }
+            refTextViewList[i].setPadding(3,0,3,0);
+
+        }
+        /*
         Official tempOff = myGame.getOfficial(0);
         if (tempOff != null){
             referee.setText("R: " + tempOff.getName());
+            referee.setBackgroundResource(R.drawable.tiledesign);
+            referee.setPadding(0,0,0,0);
         }
         tempOff = myGame.getOfficial(1);
         if (tempOff != null){
             umpire.setText("U: " + tempOff.getName());
+            umpire.setBackgroundResource(R.drawable.tiledesign);
         }
         tempOff = myGame.getOfficial(2);
         if (tempOff != null){
             headLinesman.setText("HL: " + tempOff.getName());
+            headLinesman.setBackgroundResource(R.drawable.tiledesign);
         }
         tempOff = myGame.getOfficial(3);
         if (tempOff != null){
             linesman.setText("L: " + tempOff.getName());
+            linesman.setBackgroundResource(R.drawable.tiledesign);
         }
         tempOff = myGame.getOfficial(4);
         if (tempOff != null){
             backJudge.setText("BJ: " + tempOff.getName());
+            backJudge.setBackgroundResource(R.drawable.tiledesign);
         }
+        */
 
 
     }
