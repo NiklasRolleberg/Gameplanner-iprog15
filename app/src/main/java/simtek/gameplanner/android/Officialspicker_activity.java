@@ -52,7 +52,7 @@ public class Officialspicker_activity extends ActionBarActivity{
         //set title (teams)
         setTitle(game.getHomeTeam().getName() + " vs " + game.getAwayTeam().getName());
 
-        Toast toast= Toast.makeText(getApplicationContext(), "Choose officials by dragging the names into the desired fields", Toast.LENGTH_LONG);
+        Toast toast= Toast.makeText(getApplicationContext(), "Choose officials by dragging the names into the desired fields", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 100);
         toast.show();
 
@@ -62,9 +62,17 @@ public class Officialspicker_activity extends ActionBarActivity{
         officialsPositions[3] = (LinearLayout) findViewById(R.id.L_officials);
         officialsPositions[4] = (LinearLayout) findViewById(R.id.BJ_officials);
 
-        for(LinearLayout l : officialsPositions)
+        for(int i=0; i<5; i++)
         {
-            l.setBackgroundResource(R.drawable.red_field);
+            officialsPositions[i].setId(i);
+            if(game.getOfficial(i)==null)
+            {
+                officialsToGame[i] = null;
+            }
+            else
+            {
+                officialsToGame[i] = game.getOfficial(i);
+            }
         }
 
         //add text views
@@ -76,7 +84,7 @@ public class Officialspicker_activity extends ActionBarActivity{
             textViews.add(official);
             official.setOfficial(o);
             official.setText(o.getName());
-            official.setTag(official.getText());
+            //official.setTag(official.getText());
             official.setTextSize(18);
             official.setMinHeight(60);
             official.setMinWidth(200);
@@ -90,9 +98,8 @@ public class Officialspicker_activity extends ActionBarActivity{
             scroll.addView(official);
 
             // Set listeners for the drag and drop events.
-            currentDrag = official;
-            currentDrag.setTag(currentDrag.getTag());
-            currentDrag.setOnLongClickListener(new View.OnLongClickListener() {
+            official.setTag("TextView");
+            official.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     currentDrag = v;
@@ -122,33 +129,24 @@ public class Officialspicker_activity extends ActionBarActivity{
                         d = (textViewOfficial) currentDrag;
                         if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
                         {
-                            currentDrag.setBackgroundResource(R.drawable.chosen_field);
-                            currentDrag.getBackground().setAlpha(75);
-                            currentDrag.setLongClickable(false);
-
                             v.setBackgroundResource(R.drawable.tiledesign);
+                            int dropIndex = getIndex((LinearLayout) v); //index of the layout where you dropped something
+                            textViewOfficial t = officialsPositionsText[dropIndex];
 
-                            int INDEX = getIndex((LinearLayout) v);
-                            officialsToGame[INDEX] = d.getOfficial();
-                            textViewOfficial t = officialsPositionsText[INDEX];
-                            if(game.getOfficial(INDEX) != null)//???
-                            {
-                                String st = t.getText().toString();
-                                for(textViewOfficial to: textViews)
-                                {
-                                    if(st.substring(2+pos[INDEX].length(),st.length()).equals(to.getText()))
-                                    {
-                                        to.setBackgroundResource(R.drawable.not_chosen_field);
+                            if (officialsToGame[dropIndex] != null)
+                            { //if already an official assigned to this position
+                                String s = t.getOfficial().getName();
+                                System.out.println(s);
+                                for (textViewOfficial to : textViews) {
+                                    if (s.equals(to.getText())) {
+                                        to.setBackgroundResource(R.drawable.not_chosen_field); //add official to list again (clickable etc.)
                                         to.getBackground().setAlpha(130);
                                         to.setLongClickable(true);
                                     }
                                 }
                             }
-                            t.setText(pos[INDEX] + ": " + d.getText());
-                            t.setOfficial(((textViewOfficial) currentDrag).getOfficial());
 
-                            //set onClickListener (short click) on layout
-                            officialsPositions[INDEX].setOnClickListener(new View.OnClickListener() {
+                            v.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Intent intent = new Intent(getApplicationContext(), Refinfo_Activity.class);
@@ -158,8 +156,55 @@ public class Officialspicker_activity extends ActionBarActivity{
                                     startActivity(intent);
                                 }
                             });
+
+                            CharSequence cs = event.getClipData().getDescription().getLabel();
+                            String type = cs.toString(); //name of the "dragged" official if LinearLayout is dragged or "TextView" if a TextView is dragged
+
+                            if (type.equals("TextView"))
+                            {
+                                currentDrag.setBackgroundResource(R.drawable.chosen_field);
+                                currentDrag.getBackground().setAlpha(130);
+                                currentDrag.setLongClickable(false);
+
+                                t.setText(pos[dropIndex] + ": " + d.getText());
+                                t.setOfficial(((textViewOfficial) currentDrag).getOfficial());
+                                officialsToGame[dropIndex] = ((textViewOfficial) currentDrag).getOfficial();
+                            }
+                            else
+                            { //if a LinearLayout is dragged
+                                LinearLayout view = (LinearLayout) event.getLocalState();
+                                int dragIndex = view.getId(); //index of dragged (and dropped) layout!
+                                t.setText(pos[dropIndex] + ": " + type);
+                                officialsToGame[dropIndex] = officialsPositionsText[dragIndex].getOfficial();
+                                officialsPositionsText[dropIndex].setOfficial(officialsPositionsText[dragIndex].getOfficial());
+                                for(textViewOfficial tv : textViews)
+                                {
+
+                                    if(tv.getText().equals(officialsPositionsText[dragIndex].getOfficial().getName()))
+                                    {
+                                        tv.setLongClickable(false);
+                                        tv.setBackgroundResource(R.drawable.chosen_field);
+                                        tv.getBackground().setAlpha(75);
+                                    }
+                                }
+
+
+
+                                officialsPositions[dragIndex].setBackgroundResource(R.drawable.red_field);
+                                officialsPositionsText[dragIndex].setText(pos[view.getId()] + ": [missing]");
+                                officialsPositionsText[dragIndex].setTag(null);
+                                officialsPositionsText[dragIndex].setOfficial(null);
+
+                                officialsPositions[dragIndex].setLongClickable(false);
+                                officialsPositions[dragIndex].setClickable(false);
+
+                                officialsToGame[dragIndex] = null;
+                            }
+
+                            officialsPositions[dropIndex].setTag(((textViewOfficial) currentDrag).getOfficial().getName());
+                            layoutOnLongClick(officialsPositions[dropIndex]);
                         }
-                        return true;
+                            return true;
                     }
                 });
             }
@@ -183,12 +228,13 @@ public class Officialspicker_activity extends ActionBarActivity{
             officialsPositionsText[i] = tv;
 
             //check if there is an existing official on this position
-            if(game.getOfficial(i) != null)
+            if(officialsToGame[i] != null)
             {
-               // officialsPositions[i].setBackgroundColor(Color.parseColor(green));
                 officialsPositions[i].setBackgroundResource(R.drawable.tiledesign);
                 officialsPositionsText[i].setText(pos[i] + ": " + game.getOfficial(i).getName());
                 officialsPositionsText[i].setOfficial(game.getOfficial(i));
+                officialsPositionsText[i].setTag(game.getOfficial(i).getName());
+                officialsToGame[i] = game.getOfficial(i);
                 tv.setText(pos[i] + ": " + game.getOfficial(i).getName());
                 tv.setOfficial(game.getOfficial(i));
 
@@ -197,7 +243,6 @@ public class Officialspicker_activity extends ActionBarActivity{
                 {
                     if(to.getOfficial().getName().equals(game.getOfficial(i).getName()))
                     {
-                        //to.setBackgroundColor(Color.parseColor(gray));
                         to.setBackgroundResource(R.drawable.chosen_field);
                         to.getBackground().setAlpha(75);
                         to.setLongClickable(false);
@@ -214,10 +259,15 @@ public class Officialspicker_activity extends ActionBarActivity{
                         startActivity(intent);
                     }
                 });
+
+                officialsPositions[i].setTag(officialsPositionsText[i].getOfficial().getName());
+                layoutOnLongClick(officialsPositions[i]);
+
             }
             else
             {
                 tv.setText(pos[i] + ": [missing]");
+                officialsPositions[i].setBackgroundResource(R.drawable.red_field);
             }
 
             tv.setTextSize(18);
@@ -225,7 +275,7 @@ public class Officialspicker_activity extends ActionBarActivity{
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)tv.getLayoutParams();
             params.setMargins(0, 10, 0, 10);
             tv.setLayoutParams(params);
-            tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL); // :(
+            tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
             officialsPositions[i].addView(tv);
         }
 
@@ -242,6 +292,10 @@ public class Officialspicker_activity extends ActionBarActivity{
                     if(officialsToGame[i] != null)
                     {
                         game.addOfficial(officialsToGame[i],i);
+                    }
+                    else
+                    {
+                        game.addOfficial(null,i);
                     }
                 }
                 finish();
@@ -295,6 +349,25 @@ public class Officialspicker_activity extends ActionBarActivity{
             }
         }
         return index;
+    }
+
+    public void layoutOnLongClick(LinearLayout l)
+    {
+       // l.setTag(l.getTag());//??
+        l.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ClipData.Item item = new ClipData.Item((CharSequence) v.getTag());
+                String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
+                ClipData dragData = new ClipData(v.getTag().toString(), mimeTypes, item);
+                // Instantiates the drag shadow builder.
+                View.DragShadowBuilder myShadow = new View.DragShadowBuilder(v);
+
+                // Starts the drag
+                v.startDrag(dragData, myShadow, v, 0);
+                return false;
+            }
+        });
     }
 }
 
