@@ -50,7 +50,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.arenapicker_layout);
-        //TODO set selected arena in the spinner to the current one!
+
         setValues();
     }
 
@@ -101,13 +101,13 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         if (clickedID == R.id.arenapicker_okButton){    //OK button
             //todo add update stuff here later!
             myModel.getGame(gameID).setArena(items.get(selectedPosition));
-            myModel.getGame(gameID).setTurnout((int)currentTurnout*100);
+            myModel.getGame(gameID).setTurnout(currentTurnout*100);
             myModel.getGame(gameID).setTicketPrice(currentTicketPrice);
             finish();
 
         }
     }
-    /**Called by constructor, possibly by the dropdown list*/
+    /**Called by constructor*/
     private void setValues(){
         //initiate component values
         gameID = getIntent().getIntExtra("ID", 1);
@@ -129,6 +129,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
         items = myModel.getArenas();
         currentArena = myModel.getGame(gameID).getArena();
+
         arenaNames = new ArrayList<>(items.size());
         for (Arena a : items){
             arenaNames.add(a.getName());
@@ -136,6 +137,15 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arenaNames);
         vSpinner.setAdapter(adapter);
         vSpinner.setOnItemSelectedListener(this);
+        //make sure current arena is selected in spinner on startup
+        String currentArenaName = currentArena.getName();
+        int i = 0;
+        for (Arena a : items){
+            if (a.getName().equals(currentArenaName)){
+                vSpinner.setSelection(i);
+            }
+            i++;
+        }
         ticketPrice.setOnClickListener(this);
         turnout.setOnClickListener(this);
         okButton.setOnClickListener(this);
@@ -143,6 +153,17 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         currentCapacity = currentArena.getCapacity();
         capacity.setText(" Capacity: " + Integer.toString(currentCapacity));
         rentCost.setText(" Rent cost: " + Integer.toString(currentRentCost));
+        currentTicketPrice = myModel.getGame(gameID).getTicketPrice();
+        if (currentTicketPrice!=0){
+            ticketPrice.setText(" Ticket pricezzz: " + currentTicketPrice);
+            System.out.println(currentTicketPrice + "--------------------------------------------------------------------");
+        }
+        currentTurnout = myModel.getGame(gameID).getTurnout();
+
+        if (currentTurnout!=0){
+            turnout.setText(" Turnout: " + currentTurnout + "%");
+        }
+
 
     }
     private void updateValues(int tempArenaID){
@@ -157,6 +178,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         //reset ticket price and turnout?
         currentTicketPrice = 0;
         currentTurnout = 0;
+        System.out.println("------------------UPDATE CALLED-----------");
         ticketPrice.setText(" Ticket price: ");
         turnout.setText(" Turnout: ");
         revenue.setText("");
@@ -193,7 +215,6 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
                 System.out.println(currentTurnout);
                 Toast.makeText(getApplicationContext(), "Turnout set to: " + currentTurnout * 100 + " %", Toast.LENGTH_LONG).show();
                 turnout.setText(" Turnout: " + currentTurnout * 100 + " % ");
-
                 currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout);
                 revenue.setText(Integer.toString(currentRevenue));
 
@@ -290,7 +311,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         });
 
 
-    }/* //todo failed attempt at breaking out the seekbar in a single method call, in order to avoid code repetition
+    }/* //failed attempt at breaking out the seekbar in a single method call, in order to avoid code repetition
     private int getValueFromSeekBar(String title, String lbl_min,String progress_lbl_init,
                                     final String ok_toast, final String textViewValue, int defaultValue)
     {

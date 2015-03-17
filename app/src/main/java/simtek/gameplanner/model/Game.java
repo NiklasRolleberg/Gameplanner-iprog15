@@ -9,7 +9,7 @@ public class Game implements Comparable<Game>{
     private Arena arena;
     private Official[] officials;
     private int visitors;
-    private int turnout;
+    private double turnout;
     private int ticketPrice;
     private int rentCost;
 
@@ -49,7 +49,7 @@ public class Game implements Comparable<Game>{
     public int getVisitors(){
         return visitors;
     }
-    public int getTurnout(){
+    public double getTurnout(){
         return turnout;
     }
     public void setTicketPrice(int inPrice){
@@ -58,7 +58,7 @@ public class Game implements Comparable<Game>{
     public void setVisitors(int inVisitors){
         visitors = inVisitors;
     }
-    public void setTurnout(int inTurnout){
+    public void setTurnout(double inTurnout){
         turnout = inTurnout;
     }
 

@@ -103,7 +103,7 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) { //todo pass gameID
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_activity_02, menu);
         return false;
@@ -141,13 +141,12 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         }
         if (refArray.contains(clickedID)){
             Intent intent = new Intent(this, Officialspicker_activity.class);
-            //int arenaID = 1337; //TODO fix!
             intent.putExtra("ID", gameID);
             startActivity(intent);
         }
 
     }
-    private void setValues(int gameID){ //TODO get from db
+    private void setValues(int gameID){
         myGame = myModel.getGame(gameID);
         if (myGame != null){
             myArena = myGame.getArena();
@@ -191,7 +190,6 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         String date = (year + "-" + month + "-" + day);
 
         kickoffTime.setText(date + ", " + timeString);
-        //todo this shit is horrible, make a collection and loop through it!
         for (int i = 0; i < 5; i++){
             //doStuff
             if (officials[i] != null){
