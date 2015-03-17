@@ -9,20 +9,24 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import simtek.gameplanner.R;
@@ -50,9 +54,7 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
     private int mHour;
     private int mMinute;
 
-
     private Model model;
-
     private Button createGame;
 
     @Override
@@ -64,20 +66,22 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         model = ((CustomApplication) this.getApplication()).getModel();
 
         //spinners
+        /*
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
 
         for(Team t:model.getTeams()) {
             adapter1.add(t.getName());
             adapter2.add(t.getName());
-        }
+        }*/
 
         hometeam = (Spinner)findViewById(R.id.creategame_spinner01);
         awayteam = (Spinner)findViewById(R.id.creategame_spinner02);
         arena = (Spinner) findViewById(R.id.creategame_arenaspinner);
 
-        hometeam.setAdapter(adapter1);
-        awayteam.setAdapter(adapter2);
+        hometeam.setAdapter(new MySpinnerAdapter(model.getTeams(),awayteam));//adapter1
+        awayteam.setAdapter(new MySpinnerAdapter(model.getTeams(),hometeam));//adapter2);
+        awayteam.setSelection(1);
 
         ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         for(Arena a: model.getArenas()) {
@@ -111,8 +115,6 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
 
-
-
         date = (TextView) findViewById(R.id.creategame_date);
         time = (TextView) findViewById(R.id.creategame_time);
 
@@ -144,8 +146,6 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         createGame.setOnClickListener(this);
         createGame.setBackgroundResource(R.drawable.buttondesign);
         createGame.setTextColor(Color.WHITE);
-
-
     }
 
 
@@ -230,7 +230,8 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
             Team home = null;
             Team away = null;
 
-            //TODO gör om
+
+            //TODO fulhack
             String selectedArena= (String) arena.getSelectedItem();
             for(Arena a:model.getArenas()) {
                 if(a.getName().equals(selectedArena)) {
@@ -240,21 +241,8 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
                 }
             }
 
-            String selectedHome= (String) hometeam.getSelectedItem();
-            for(Team a:model.getTeams()) {
-                if(a.getName().equals(selectedHome)) {
-                    home = a;
-                    break;
-                }
-            }
-
-            String selectedAway= (String) awayteam.getSelectedItem();
-            for(Team a:model.getTeams()) {
-                if(a.getName().equals(selectedAway)) {
-                    away = a;
-                    break;
-                }
-            }
+            away = (Team) awayteam.getSelectedItem();
+            home = (Team) hometeam.getSelectedItem();
 
             //TODO ta bort och gör om
             model.nrGames += 1;
@@ -272,11 +260,40 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
 
     }
 
+    class MySpinnerAdapter extends ArrayAdapter<Team> {
+
+        Spinner other;
+
+        public MySpinnerAdapter(ArrayList<Team> teams, Spinner other) {
+            super(CreateGame_Activity.this, android.R.layout.simple_spinner_item);
+            super.addAll(teams);
+            this.other = other;
+        }
+
+        public View getDropDownView(int position, View convertView, ViewGroup parent)
+        {
+            View row = convertView;
+            if(row == null)
+                row = new TextView(CreateGame_Activity.this);
+
+            Team item = super.getItem(position);
+            ((TextView) row).setText(item.toString());
+            if( (item.equals((Team) other.getSelectedItem()))) {
+                ((TextView) row).setTextColor(Color.GRAY);
+                row.setClickable(true); //skumt borde vara false
+            }
+            else {
+                ((TextView) row).setTextColor(Color.BLACK);
+                row.setClickable(false);
+            }
+            return row;
+        }
+    }
+
     class ArenaListener implements AdapterView.OnItemSelectedListener
     {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            //System.out.println("something selected");
 
             Arena arena = model.getArenas().get(position);
 
