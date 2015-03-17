@@ -54,83 +54,19 @@
             android:gravity="top">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Officials"
-                android:id="@+id/gameinfo_lbl_officials"
+                android:id="@+id/gameinfo_officials"
                 android:layout_below="@+id/gameinfo_kickoffTime"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="R: "
-                android:id="@+id/gameinfo_referee"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/buttondesign"
                 android:textSize="20dp"
-                android:layout_below="@+id/gameinfo_lbl_officials"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:background="@drawable/buttondesign" />
+                android:gravity="center" />
 
-            <TextView
+                <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="U: "
-                android:id="@+id/gameinfo_umpire"
-                android:textSize="20dp"
-                android:layout_below="@+id/gameinfo_referee"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="HL: "
-                android:id="@+id/gameinfo_headLinesman"
-                android:textSize="20dp"
-                android:layout_below="@+id/gameinfo_umpire"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="L: "
-                android:id="@+id/gameinfo_linesman"
-                android:textSize="20dp"
-                android:layout_below="@+id/gameinfo_headLinesman"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="BJ: "
-                android:id="@+id/gameinfo_backJudge"
-                android:textSize="20dp"
-                android:layout_below="@+id/gameinfo_linesman"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Travel and pay: 10 000"
-                android:id="@+id/gameinfo_officialsCost"
-                android:background="@android:color/holo_orange_light"
-                android:layout_row="0"
-                android:layout_column="9"
-                android:layout_alignBottom="@+id/textView4"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="right"
-                android:textSize="17dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Venue: "
                 android:id="@+id/gameinfo_Arena"
@@ -139,7 +75,8 @@
                 android:layout_alignParentLeft="true"
                 android:background="@drawable/buttondesign"
                 android:linksClickable="false"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                    android:gravity="center" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -205,7 +142,21 @@
                 android:layout_gravity="right"
                 android:textSize="17dp" />
 
-            <RelativeLayout
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Travel and pay: 10 000"
+                android:id="@+id/gameinfo_officialsCost"
+                android:background="@android:color/holo_orange_light"
+                android:layout_row="0"
+                android:layout_column="9"
+                android:layout_alignBottom="@+id/textView4"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                    android:textSize="17dp" />
+
+                <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
