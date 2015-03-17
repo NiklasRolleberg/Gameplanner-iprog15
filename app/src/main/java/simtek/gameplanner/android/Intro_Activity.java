@@ -193,8 +193,12 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
                     "\n" + game.getArena().getName() + "\n" + getDateString(game) + "  " + getTimeString(game) +
                     "\n" + game.getNrOfOfficials() + "/5 ref";
 
-            tile.setBackgroundResource(R.drawable.tiledesign);
-
+            if(game.getNrOfOfficials() == 5)
+                tile.setBackgroundResource(R.drawable.tiledesign5);
+            else if (game.getNrOfOfficials() == 0)
+                tile.setBackgroundResource(R.drawable.tiledesign0);
+            else
+                tile.setBackgroundResource(R.drawable.tiledesign);
 
             /*
             //tile.setBackgroundColor(Color.parseColor("#58FA58"));
