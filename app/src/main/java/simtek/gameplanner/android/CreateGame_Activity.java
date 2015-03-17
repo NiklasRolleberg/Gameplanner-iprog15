@@ -54,6 +54,8 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
     private int mHour;
     private int mMinute;
 
+    private int imageSize;
+
     private Model model;
     private Button createGame;
 
@@ -66,15 +68,6 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         model = ((CustomApplication) this.getApplication()).getModel();
 
         //spinners
-        /*
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-
-        for(Team t:model.getTeams()) {
-            adapter1.add(t.getName());
-            adapter2.add(t.getName());
-        }*/
-
         hometeam = (Spinner)findViewById(R.id.creategame_spinner01);
         awayteam = (Spinner)findViewById(R.id.creategame_spinner02);
         arena = (Spinner) findViewById(R.id.creategame_arenaspinner);
@@ -98,10 +91,10 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = size.x/4;
+        imageSize = size.x/2;
         arenaImage.setImageResource(R.drawable.colosseum);
-        arenaImage.getLayoutParams().height = width;
-        arenaImage.getLayoutParams().width = width;
+        arenaImage.getLayoutParams().height = imageSize;
+        arenaImage.getLayoutParams().width = imageSize;
 
         arenaInfo.setText("Capacity:30p \nCost/day:$£ \nLocation:nej");
 
@@ -302,8 +295,8 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
                     .getIdentifier(imageName, "drawable", CreateGame_Activity.this.getPackageName()));
 
             arenaImage.setImageDrawable(image);
-            arenaImage.getLayoutParams().height = 512;
-            arenaImage.getLayoutParams().width = 512;
+            arenaImage.getLayoutParams().height = imageSize;
+            arenaImage.getLayoutParams().width = imageSize;
 
             arenaInfo.setText("Capacity: " + arena.getCapacity() + "\nCost/day: " + arena.getRentCost() + "\nLocation: " + arena.getLocation());
         }
