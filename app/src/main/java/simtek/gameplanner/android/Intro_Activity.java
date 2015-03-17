@@ -200,22 +200,6 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
             else
                 tile.setBackgroundResource(R.drawable.tiledesign);
 
-            /*
-            //tile.setBackgroundColor(Color.parseColor("#58FA58"));
-            if (game.getNrOfOfficials() < 3) {
-                Drawable d = tile.getBackground();
-                d.setColorFilter(0xaaff00ff, PorterDuff.Mode.ADD);
-            }
-            else if (game.getNrOfOfficials() < 4) {
-                Drawable d = tile.getBackground();
-                d.setColorFilter(0xaaff0000, PorterDuff.Mode.ADD);
-            }
-            else if (game.getNrOfOfficials() < 5) {
-                Drawable d = tile.getBackground();
-                d.setColorFilter(0xaa0000ff, PorterDuff.Mode.ADD);
-            }
-            */
-
             tile.setGame(game);
             tile.setText(info);
 

@@ -6,10 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +19,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -290,7 +286,7 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
 
             Arena arena = model.getArenas().get(position);
 
-            String imageName = arena.getImageName();//"colosseum";
+            String imageName = arena.getImageName();
             Drawable image = CreateGame_Activity.this.getResources().getDrawable(CreateGame_Activity.this.getResources()
                     .getIdentifier(imageName, "drawable", CreateGame_Activity.this.getPackageName()));
 
