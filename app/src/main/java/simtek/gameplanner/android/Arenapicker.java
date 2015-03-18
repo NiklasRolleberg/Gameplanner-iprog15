@@ -32,11 +32,13 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     int currentRentCost;
     int currentCapacity;
     int currentRevenue;
+    String arenaLocation;
     TextView capacity;
     TextView rentCost;
     TextView ticketPrice;
     TextView turnout;
     TextView revenue;
+    TextView locationLbl;
     Button okButton;
     Model myModel;
     int selectedPosition;
@@ -59,7 +61,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_arenapicker, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -114,13 +116,16 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         arenaID = getIntent().getIntExtra("arenaID", 1);
         vSpinner = (Spinner) findViewById(R.id.venueSpinner);
         capacity = (TextView) findViewById(R.id.arenapicker_capacity);
+
         ticketPrice = (TextView) findViewById(R.id.arenapicker_ticketPrice);
         turnout = (TextView) findViewById(R.id.arenapicker_turnout);
         rentCost = (TextView) findViewById(R.id.arenapicker_rentCost);
         revenue = (TextView) findViewById(R.id.arenapicker_revenue);
+        locationLbl = (TextView) findViewById(R.id.arenapicker_location);
         okButton = (Button) findViewById(R.id.arenapicker_okButton);
         okButton.setBackgroundResource(R.drawable.buttondesign);
         okButton.setTextColor(Color.WHITE);
+
         //ticketPrice.setBackgroundResource(R.drawable.buttondesign);
         //turnout.setBackgroundResource(R.drawable.buttondesign);
 
@@ -129,12 +134,14 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
         items = myModel.getArenas();
         currentArena = myModel.getGame(gameID).getArena();
+        arenaLocation = currentArena.getLocation(); //TODO HERE!!!
+        locationLbl.setText(" Location: " + arenaLocation);
 
         arenaNames = new ArrayList<>(items.size());
         for (Arena a : items){
             arenaNames.add(a.getName());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arenaNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, arenaNames);
         vSpinner.setAdapter(adapter);
         vSpinner.setOnItemSelectedListener(this);
         //make sure current arena is selected in spinner on startup
@@ -153,16 +160,18 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         currentCapacity = currentArena.getCapacity();
         capacity.setText(" Capacity: " + Integer.toString(currentCapacity));
         rentCost.setText(" Rent cost: " + Integer.toString(currentRentCost));
+
         currentTicketPrice = myModel.getGame(gameID).getTicketPrice();
         if (currentTicketPrice!=0){
-            ticketPrice.setText(" Ticket pricezzz: " + currentTicketPrice);
-            System.out.println(currentTicketPrice + "--------------------------------------------------------------------");
+            ticketPrice.setText(" Ticket price: " + currentTicketPrice + "€");
+            //System.out.println(currentTicketPrice + "-----------");
         }
         currentTurnout = myModel.getGame(gameID).getTurnout();
 
         if (currentTurnout!=0){
             turnout.setText(" Turnout: " + currentTurnout + "%");
         }
+
 
 
     }
@@ -178,10 +187,10 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         //reset ticket price and turnout?
         currentTicketPrice = 0;
         currentTurnout = 0;
-        System.out.println("------------------UPDATE CALLED-----------");
+        //System.out.println("------------------UPDATE CALLED-----------");
         ticketPrice.setText(" Ticket price: ");
         turnout.setText(" Turnout: ");
-        revenue.setText("");
+        //revenue.setText("");
 
     }
     private void setTurnoutFromSlider(){

@@ -17,10 +17,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000"
             android:text="Home team: "
             android:id="@+id/gameinfo_homeTeam"
             android:textSize="20dp"
-            android:layout_below="@+id/imageView2"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -28,6 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Away team: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000"
             android:id="@+id/gameinfo_awayTeam"
             android:textSize="20dp"
             android:layout_below="@+id/gameinfo_homeTeam"
@@ -37,6 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kickoff time: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000"
             android:id="@+id/gameinfo_kickoffTime"
             android:textSize="20dp"
             android:layout_below="@+id/gameinfo_awayTeam"
@@ -87,6 +92,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Visitors: "
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:id="@+id/gameinfo_visitors"
                     android:textSize="20dp" />
 
@@ -98,6 +105,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Turnout [%]:"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:id="@+id/gameinfo_turnout"
                     android:textSize="20dp" />
             </LinearLayout>
@@ -111,6 +120,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ticket price:"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:id="@+id/gameinfo_ticketPrice"
                     android:textSize="20dp" />
 
@@ -122,6 +133,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Rent cost:"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
                     android:id="@+id/gameinfo_rentCost"
                     android:textSize="20dp" />
 
@@ -184,18 +197,26 @@
                         android:layout_centerVertical="true"
                         android:layout_alignRight="@+id/gameinfo_finalRevenue"
                         android:layout_alignEnd="@+id/gameinfo_finalRevenue" />
+
+                    <LinearLayout
+                        android:id="@+id/LL1"
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_alignRight="@+id/textView4"
+                        android:layout_alignEnd="@+id/textView4"></LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/LL2"
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_toRightOf="@+id/textView4"
+                        android:layout_toEndOf="@+id/textView4"></LinearLayout>
                 </RelativeLayout>
 
         </LinearLayout>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView2"
-                android:layout_alignBottom="@+id/gameinfo_Arena"
-                android:layout_toRightOf="@+id/gameinfo_Arena"
-                android:layout_toEndOf="@+id/gameinfo_Arena"
-                android:src="@android:color/background_dark" />
 
         </RelativeLayout>
     </ScrollView>

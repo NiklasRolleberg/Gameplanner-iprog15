@@ -173,6 +173,7 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         //headLinesman.setBackgroundResource(R.drawable.red_field);
         //linesman.setBackgroundResource(R.drawable.red_field);
         //backJudge.setBackgroundResource(R.drawable.red_field);
+        refCount = 0;
         for (int i = 0; i < 5; i++){
             Official temp = myGame.getOfficial(i);
             if (temp != null){
@@ -181,7 +182,15 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
             }
         }
         officials.setText("Officials assigned: " + refCount + "/5");
-        refCount = 0;
+        if(refCount == 5){
+            officials.setBackgroundResource(R.drawable.tiledesign5);
+        }
+        else if(refCount == 0){
+            officials.setBackgroundResource(R.drawable.tiledesign0);
+        }
+        else {
+            officials.setBackgroundResource(R.drawable.tiledesign);
+        }
 
         String hourString = "" + myGame.getHour();
         String minString = "" + myGame.getMinute();
