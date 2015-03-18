@@ -84,7 +84,6 @@ public class Officialspicker_activity extends ActionBarActivity{
             textViews.add(official);
             official.setOfficial(o);
             official.setText(o.getName());
-            //official.setTag(official.getText());
             official.setTextSize(18);
             official.setMinHeight(60);
             official.setMinWidth(200);
@@ -95,10 +94,10 @@ public class Officialspicker_activity extends ActionBarActivity{
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)official.getLayoutParams();
             params.setMargins(0, 6, 0, 6);
             official.setLayoutParams(params);
+            official.setTag("TextView");
             scroll.addView(official);
 
             // Set listeners for the drag and drop events.
-            official.setTag("TextView");
             official.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -106,12 +105,8 @@ public class Officialspicker_activity extends ActionBarActivity{
                     ClipData.Item item = new ClipData.Item((CharSequence)v.getTag());
                     String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
                     ClipData dragData = new ClipData(v.getTag().toString(), mimeTypes, item);
-                    // Instantiates the drag shadow builder.
                     View.DragShadowBuilder myShadow = new View.DragShadowBuilder(v);
-
-                    // Starts the drag
                     currentDrag.startDrag(dragData, myShadow, v, 0);
-
                     return false;
                 }
             });
@@ -129,7 +124,7 @@ public class Officialspicker_activity extends ActionBarActivity{
                         d = (textViewOfficial) currentDrag;
                         if(event.getAction() == DragEvent.ACTION_DROP) //handle the dragged view being dropped over a drop view
                         {
-                            v.setBackgroundResource(R.drawable.tiledesign);
+                            v.setBackgroundResource(R.drawable.tiledesign5);
                             int dropIndex = getIndex((LinearLayout) v); //index of the layout where you dropped something
                             textViewOfficial t = officialsPositionsText[dropIndex];
 
@@ -230,7 +225,7 @@ public class Officialspicker_activity extends ActionBarActivity{
             //check if there is an existing official on this position
             if(officialsToGame[i] != null)
             {
-                officialsPositions[i].setBackgroundResource(R.drawable.tiledesign);
+                officialsPositions[i].setBackgroundResource(R.drawable.tiledesign5);
                 officialsPositionsText[i].setText(pos[i] + ": " + game.getOfficial(i).getName());
                 officialsPositionsText[i].setOfficial(game.getOfficial(i));
                 officialsPositionsText[i].setTag(game.getOfficial(i).getName());
