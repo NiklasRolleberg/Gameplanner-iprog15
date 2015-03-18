@@ -24,26 +24,22 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
     TextView awayTeam;
     TextView arena;
     TextView kickoffTime;
-    //TextView referee;
-    //TextView umpire;
-    //TextView headLinesman;
-    //TextView linesman;
-    //TextView backJudge;
     TextView turnout;
     TextView ticketPrice;
     TextView visitors;
     TextView offPay;
     TextView finalRevenue;
-    TextView income;
     TextView officials;
+    TextView crewRating;
+    TextView rentCost;
+    TextView income;
+    TextView expenses;
     int gameID;
     int refCount;
+    float meanCrewRating;
     Game myGame;
     Arena myArena;
     Model myModel;
-    //String[] refTitles;
-    //TextView[] refTextViewList;
-    //Official[] officialsArray;
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
@@ -59,48 +55,22 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         arena = (TextView) findViewById(R.id.gameinfo_Arena);
         kickoffTime = (TextView) findViewById(R.id.gameinfo_kickoffTime);
         officials = (TextView) findViewById(R.id.gameinfo_officials);
-        //referee = (TextView) findViewById(R.id.gameinfo_referee);
-        //umpire = (TextView) findViewById(R.id.gameinfo_umpire);
-        //headLinesman = (TextView) findViewById(R.id.gameinfo_headLinesman);
-        //linesman = (TextView) findViewById(R.id.gameinfo_linesman);
-        //backJudge = (TextView) findViewById(R.id.gameinfo_backJudge);
         turnout = (TextView) findViewById(R.id.gameinfo_turnout);
         ticketPrice = (TextView) findViewById(R.id.gameinfo_ticketPrice);
-        offPay = (TextView) findViewById(R.id.gameinfo_officialsCost);
         finalRevenue = (TextView) findViewById(R.id.gameinfo_finalRevenue);
         income = (TextView) findViewById(R.id.gameinfo_income);
-        //refTextViewList = new TextView[5];
-        //refTextViewList[0]= referee;
-        //refTextViewList[1]= umpire;
-        //refTextViewList[2]= headLinesman;
-        //refTextViewList[3]= linesman;
-        //refTextViewList[4]= backJudge;
-        //refTitles = new String[5];
-        //refTitles[0] = " R: ";
-        //refTitles[1] = " U: ";
-        //refTitles[2] = " HL: ";
-        //refTitles[3] = " L: ";
-        //refTitles[4] = " BJ: ";
-
-
-
-
+        crewRating = (TextView) findViewById(R.id.gameinfo_crewrating);
+        rentCost = (TextView) findViewById(R.id.gameinfo_rentCost);
         visitors = (TextView) findViewById(R.id.gameinfo_visitors);
+        expenses = (TextView) findViewById(R.id.gameinfo_expenses);
+        income = (TextView) findViewById(R.id.gameinfo_income);
 
 
         arena.setOnClickListener(this);
         officials.setOnClickListener(this);
-        //referee.setOnClickListener(this);
-        //umpire.setOnClickListener(this);
-        //headLinesman.setOnClickListener(this);
-        //linesman.setOnClickListener(this);
-        //backJudge.setOnClickListener(this);
 
         myModel = ((CustomApplication) this.getApplication()).getModel();
-
-        //get ID
         gameID = getIntent().getIntExtra("ID", 1);
-        //officialsArray = new Official[5];
 
         setValues(gameID);
     }
@@ -132,11 +102,6 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
     public void onClick(View v) {
         int clickedID = v.getId();
         ArrayList<Integer> refArray = new ArrayList<>(5);
-        //refArray.add(R.id.gameinfo_referee);
-        //refArray.add(R.id.gameinfo_umpire);
-        //refArray.add(R.id.gameinfo_headLinesman);
-        //refArray.add(R.id.gameinfo_linesman);
-        //refArray.add(R.id.gameinfo_backJudge);
         if (clickedID == R.id.gameinfo_Arena) {
             Intent intent = new Intent(this, Arenapicker.class);
             intent.putExtra("ID", gameID);
@@ -148,11 +113,6 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
             intent.putExtra("ID", gameID);
             startActivity(intent);
         }
-        /*if (refArray.contains(clickedID)){
-            Intent intent = new Intent(this, Officialspicker_activity.class);
-            intent.putExtra("ID", gameID);
-            startActivity(intent);
-        }*/
 
     }
     private void setValues(int gameID){
@@ -165,22 +125,10 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
 
         homeTeam.setText("Home team: " + myGame.getHomeTeam().getName());
         awayTeam.setText("Away team: " + myGame.getAwayTeam().getName());
-        ticketPrice.setText("Ticket price: " + myGame.getTicketPrice());
+        ticketPrice.setText("Ticket price: " + myGame.getTicketPrice() + " €");
         turnout.setText("Turnout [%]: " + myGame.getTurnout());
         visitors.setText("Visitors: " + myGame.getVisitors());
-        //referee.setBackgroundResource(R.drawable.red_field);
-        //umpire.setBackgroundResource(R.drawable.red_field);
-        //headLinesman.setBackgroundResource(R.drawable.red_field);
-        //linesman.setBackgroundResource(R.drawable.red_field);
-        //backJudge.setBackgroundResource(R.drawable.red_field);
-        refCount = 0;
-        for (int i = 0; i < 5; i++){
-            Official temp = myGame.getOfficial(i);
-            if (temp != null){
-                //officialsArray[i] = temp;
-                refCount++;
-            }
-        }
+        refCount = myGame.getNrOfOfficials();
         officials.setText("Officials assigned: " + refCount + "/5");
         if(refCount == 5){
             officials.setBackgroundResource(R.drawable.tiledesign5);
@@ -211,14 +159,25 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         String date = (year + "-" + month + "-" + day);
 
         kickoffTime.setText(date + ", " + timeString);
-        /*for (int i = 0; i < 5; i++){
-            if (officialsArray[i] != null){
-                refTextViewList[i].setText(refTitles[i] + officialsArray[i].getName());
-                refTextViewList[i].setBackgroundResource(R.drawable.tiledesign);
+        meanCrewRating = 0;
+        Official tempOfficial;
+        for (int i = 0; i < 5; i++){
+            tempOfficial = myGame.getOfficial(i);
+            if (tempOfficial!=null){
+                meanCrewRating += myGame.getOfficial(i).getRating();
             }
-            refTextViewList[i].setPadding(3,0,3,0);
+        }
+        meanCrewRating /= myGame.getNrOfOfficials();
+        crewRating.setText("Crew rating: " + String.format("%.2f", meanCrewRating) + "/5");
 
-        }*/
+        rentCost.setText("Rent cost: " + myGame.getRentCost());
+        double tempExpenses = myGame.getRentCost(); //todo get the cost for the refs!
+        expenses.setText("Expenses: " + tempExpenses);
+        double tempIncome = myGame.getVisitors()*myGame.getTicketPrice();
+        income.setText("Income: " + tempIncome);
+        double tempRevenue = tempIncome - tempExpenses;
+        finalRevenue.setText(String.valueOf(tempRevenue) + " €");
+
     }
 
     @Override

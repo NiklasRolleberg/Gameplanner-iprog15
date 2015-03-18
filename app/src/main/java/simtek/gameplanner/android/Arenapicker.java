@@ -33,12 +33,14 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     int currentCapacity;
     int currentRevenue;
     String arenaLocation;
+    int visitors;
     TextView capacity;
     TextView rentCost;
     TextView ticketPrice;
     TextView turnout;
     TextView revenue;
     TextView locationLbl;
+    TextView visitorsLbl;
     Button okButton;
     Model myModel;
     int selectedPosition;
@@ -105,6 +107,10 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
             myModel.getGame(gameID).setArena(items.get(selectedPosition));
             myModel.getGame(gameID).setTurnout(currentTurnout*100);
             myModel.getGame(gameID).setTicketPrice(currentTicketPrice);
+            myModel.getGame(gameID).setVisitors(visitors);
+            myModel.getGame(gameID).setRentCost(currentRentCost);
+            myModel.getGame(gameID).setRentCost(currentRentCost);
+
             finish();
 
         }
@@ -122,6 +128,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         rentCost = (TextView) findViewById(R.id.arenapicker_rentCost);
         revenue = (TextView) findViewById(R.id.arenapicker_revenue);
         locationLbl = (TextView) findViewById(R.id.arenapicker_location);
+        visitorsLbl = (TextView) findViewById(R.id.arenapicker_visitors);
         okButton = (Button) findViewById(R.id.arenapicker_okButton);
         okButton.setBackgroundResource(R.drawable.buttondesign);
         okButton.setTextColor(Color.WHITE);
@@ -134,7 +141,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
         items = myModel.getArenas();
         currentArena = myModel.getGame(gameID).getArena();
-        arenaLocation = currentArena.getLocation(); //TODO HERE!!!
+        arenaLocation = currentArena.getLocation();
         locationLbl.setText(" Location: " + arenaLocation);
 
         arenaNames = new ArrayList<>(items.size());
@@ -163,7 +170,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
         currentTicketPrice = myModel.getGame(gameID).getTicketPrice();
         if (currentTicketPrice!=0){
-            ticketPrice.setText(" Ticket price: " + currentTicketPrice + "€");
+            ticketPrice.setText(" Ticket price: " + currentTicketPrice + " €");
             //System.out.println(currentTicketPrice + "-----------");
         }
         currentTurnout = myModel.getGame(gameID).getTurnout();
@@ -190,6 +197,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         //System.out.println("------------------UPDATE CALLED-----------");
         ticketPrice.setText(" Ticket price: ");
         turnout.setText(" Turnout: ");
+        //visitors =
         //revenue.setText("");
 
     }
@@ -225,7 +233,11 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
                 Toast.makeText(getApplicationContext(), "Turnout set to: " + currentTurnout * 100 + " %", Toast.LENGTH_LONG).show();
                 turnout.setText(" Turnout: " + currentTurnout * 100 + " % ");
                 currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout);
-                revenue.setText(Integer.toString(currentRevenue));
+                revenue.setText(" Projected revenue: " + Integer.toString(currentRevenue));
+                //TODO set proj visitors here!!!!
+                visitors = (int)(currentCapacity * currentTurnout);
+                visitorsLbl.setText(" Projected nr of visitors: " + visitors);
+
 
                 //finish();
             }
@@ -287,9 +299,9 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
             public void onClick(DialogInterface dialog, int id) {
                 currentTicketPrice = seek.getProgress();
                 Toast.makeText(getApplicationContext(), "Ticket price set to: "+ currentTicketPrice, Toast.LENGTH_LONG).show();
-                ticketPrice.setText(" Ticket price: " + currentTicketPrice + " ");
+                ticketPrice.setText(" Ticket price: " + currentTicketPrice  + " €");
                 currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout);
-                revenue.setText(Integer.toString(currentRevenue));
+                revenue.setText(" Projected revenue: " + Integer.toString(currentRevenue));
                 //finish();
             }
         });
@@ -320,67 +332,6 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         });
 
 
-    }/* //failed attempt at breaking out the seekbar in a single method call, in order to avoid code repetition
-    private int getValueFromSeekBar(String title, String lbl_min,String progress_lbl_init,
-                                    final String ok_toast, final String textViewValue, int defaultValue)
-    {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        alert.setTitle(title);
-        //alert.setMessage("Edit Text");
-
-        LinearLayout linear = new LinearLayout(this);
-        linear.setOrientation(LinearLayout.VERTICAL);
-
-        final SeekBar seek = new SeekBar(this);
-        linear.addView(seek);
-
-        alert.setView(linear);
-
-        final TextView progressLabel = new TextView(this);
-        progressLabel.setText(lbl_min);
-        progressLabel.setPadding(10, 10, 10, 10);
-        linear.addView(progressLabel);
-
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                defaultValue = seek.getProgress();
-                Toast.makeText(getApplicationContext(), ok_toast + currentTicketPrice, Toast.LENGTH_LONG).show();
-                ticketPrice.setText(textViewValue + currentTicketPrice);
-                //finish();
-            }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
-                //finish();
-            }
-        });
-
-        alert.show();
-        //final int[] ticketBarValue = new int[1];
-        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
-                int tempValue = seek.getProgress();
-                progressLabel.setText((String.valueOf(tempValue)));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        //if
-        return 1;
-    }*/
+    }
 
 }

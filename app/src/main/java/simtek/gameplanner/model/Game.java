@@ -39,12 +39,16 @@ public class Game implements Comparable<Game>{
         this.minute = minute;
 
         officials  = new Official[5];
+        this.rentCost = arena.getRentCost();
     }
     public int getTicketPrice(){
         return ticketPrice;
     }
     public int getRentCost(){
         return rentCost;
+    }
+    public void setRentCost(int inCost){
+        rentCost = inCost;
     }
     public int getVisitors(){
         return visitors;
