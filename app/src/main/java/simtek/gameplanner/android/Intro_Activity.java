@@ -39,6 +39,8 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.intro_layout);
 
+        setTitle("Games");
+
         //load model
         model = ((CustomApplication) this.getApplication()).getModel();
 

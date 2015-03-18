@@ -269,6 +269,7 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
             ((TextView) row).setText(item.toString());
             if( (item.equals((Team) other.getSelectedItem()))) {
                 ((TextView) row).setTextColor(Color.GRAY);
+                //((TextView) row).setTextAppearance(CreateGame_Activity.this, R.style.Base_TextAppearance_AppCompat_Medium);
                 row.setClickable(true); //skumt borde vara false
             }
             else {

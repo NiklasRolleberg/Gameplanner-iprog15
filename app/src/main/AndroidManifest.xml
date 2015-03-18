@@ -10,7 +10,7 @@
         android:theme="@style/CustomActionBarTheme">
         <activity
             android:name=".android.Intro_Activity"
-            android:label="Games" >
+            android:label="Game Planner" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,11 +24,13 @@
         </activity>
         <activity
             android:name=".android.CreateGame_Activity"
+            android:parentActivityName=".android.Intro_Activity"
             android:label="New game" >
         </activity>
         <activity
             android:name=".android.Arenapicker"
             android:label="Edit venue" >
+            <!--android:parentActivityName=".android.Gameinfo_Activity"-->
         </activity>
         <activity
             android:name=".android.Officialspicker_activity"
