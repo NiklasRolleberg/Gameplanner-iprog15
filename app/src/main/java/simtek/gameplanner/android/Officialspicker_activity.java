@@ -128,15 +128,15 @@ public class Officialspicker_activity extends ActionBarActivity{
                             int dropIndex = getIndex((LinearLayout) v); //index of the layout where you dropped something
                             textViewOfficial t = officialsPositionsText[dropIndex];
 
+
                             if (officialsToGame[dropIndex] != null)
                             { //if already an official assigned to this position
                                 String s = t.getOfficial().getName();
                                 System.out.println(s);
                                 for (textViewOfficial to : textViews) {
-                                    if (s.equals(to.getText())) {
-                                        to.setBackgroundResource(R.drawable.not_chosen_field); //add official to list again (clickable etc.)
-                                        to.getBackground().setAlpha(130);
-                                        to.setLongClickable(true);
+                                    if (s.equals(to.getText()))
+                                    {
+                                        addRemoveTextView(to,true);
                                     }
                                 }
                             }
@@ -152,8 +152,7 @@ public class Officialspicker_activity extends ActionBarActivity{
                                 }
                             });
 
-                            CharSequence cs = event.getClipData().getDescription().getLabel();
-                            String type = cs.toString(); //name of the "dragged" official if LinearLayout is dragged or "TextView" if a TextView is dragged
+                            String type = event.getClipData().getDescription().getLabel().toString(); //name of the "dragged" official if LinearLayout is dragged or "TextView" if a TextView is dragged
 
                             if (type.equals("TextView"))
                             {
@@ -165,35 +164,31 @@ public class Officialspicker_activity extends ActionBarActivity{
                                 t.setOfficial(((textViewOfficial) currentDrag).getOfficial());
                                 officialsToGame[dropIndex] = ((textViewOfficial) currentDrag).getOfficial();
                             }
-                            else
-                            { //if a LinearLayout is dragged
+                            else //if a LinearLayout is dragged
+                            {
                                 LinearLayout view = (LinearLayout) event.getLocalState();
                                 int dragIndex = view.getId(); //index of dragged (and dropped) layout!
                                 t.setText(pos[dropIndex] + ": " + type);
                                 officialsToGame[dropIndex] = officialsPositionsText[dragIndex].getOfficial();
                                 officialsPositionsText[dropIndex].setOfficial(officialsPositionsText[dragIndex].getOfficial());
+                                v.setTag(officialsPositionsText[dragIndex].getOfficial().getName());
                                 for(textViewOfficial tv : textViews)
                                 {
 
                                     if(tv.getText().equals(officialsPositionsText[dragIndex].getOfficial().getName()))
                                     {
-                                        tv.setLongClickable(false);
-                                        tv.setBackgroundResource(R.drawable.chosen_field);
-                                        tv.getBackground().setAlpha(75);
+                                        addRemoveTextView(tv,false);
                                     }
                                 }
 
-
-
                                 officialsPositions[dragIndex].setBackgroundResource(R.drawable.red_field);
                                 officialsPositionsText[dragIndex].setText(pos[view.getId()] + ": [missing]");
-                                officialsPositionsText[dragIndex].setTag(null);
                                 officialsPositionsText[dragIndex].setOfficial(null);
-
                                 officialsPositions[dragIndex].setLongClickable(false);
                                 officialsPositions[dragIndex].setClickable(false);
 
                                 officialsToGame[dragIndex] = null;
+
                             }
 
                             officialsPositions[dropIndex].setTag(((textViewOfficial) currentDrag).getOfficial().getName());
@@ -238,9 +233,7 @@ public class Officialspicker_activity extends ActionBarActivity{
                 {
                     if(to.getOfficial().getName().equals(game.getOfficial(i).getName()))
                     {
-                        to.setBackgroundResource(R.drawable.chosen_field);
-                        to.getBackground().setAlpha(75);
-                        to.setLongClickable(false);
+                        addRemoveTextView(to,false);
                     }
                 }
 
@@ -297,6 +290,37 @@ public class Officialspicker_activity extends ActionBarActivity{
             }
         });
 
+        scroll.setOnDragListener(new View.OnDragListener()
+        {
+            @Override
+            public boolean onDrag(View v, DragEvent event)
+            {
+                if(event.getClipData()!=null)
+                {
+                    String layoutTag = event.getClipData().getDescription().getLabel().toString();
+                    if (event.getAction() == DragEvent.ACTION_DROP && layoutTag != "TextView") {
+                        for(textViewOfficial to : textViews)
+                        {
+                            if(to.getOfficial().getName().equals(layoutTag))
+                            {
+                                addRemoveTextView(to,true);
+                            }
+                        }
+                        for(int i=0; i<5; i++)
+                        {
+                            if(officialsToGame[i] != null && officialsToGame[i].getName().equals(layoutTag))
+                            {
+                                //remove from "model"
+                                officialsToGame[i] = null;
+                                officialsPositionsText[i].setText(pos[i] + ": [missing]");
+                                officialsPositions[i].setBackgroundResource(R.drawable.red_field);
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        });
     }
 
 
@@ -348,21 +372,35 @@ public class Officialspicker_activity extends ActionBarActivity{
 
     public void layoutOnLongClick(LinearLayout l)
     {
-       // l.setTag(l.getTag());//??
         l.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 ClipData.Item item = new ClipData.Item((CharSequence) v.getTag());
                 String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
                 ClipData dragData = new ClipData(v.getTag().toString(), mimeTypes, item);
-                // Instantiates the drag shadow builder.
                 View.DragShadowBuilder myShadow = new View.DragShadowBuilder(v);
-
-                // Starts the drag
                 v.startDrag(dragData, myShadow, v, 0);
                 return false;
             }
         });
+    }
+
+
+    /* Removes (if b=false) of adds (b=true) TextView to list of officials */
+    public void addRemoveTextView(textViewOfficial to, Boolean b)
+    {
+        if(b)
+        {
+            to.setLongClickable(true);
+            to.setBackgroundResource(R.drawable.not_chosen_field);
+            to.getBackground().setAlpha(130);
+        }
+        else
+        {
+            to.setBackgroundResource(R.drawable.chosen_field);
+            to.getBackground().setAlpha(75);
+            to.setLongClickable(false);
+        }
     }
 }
 
