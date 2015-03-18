@@ -11,6 +11,10 @@ public class Official {
     private String licenseType;
     private String image;
 
+    private int rating;
+    private int xp;
+    private String prefPos;
+
     public Official(int id, String name, String age, String resArea, String licenseType, String image) {
         //System.out.println("I AM OFFICIAL!!!");
         this.id = id;
@@ -19,6 +23,14 @@ public class Official {
         this.resArea = resArea;
         this.licenseType = licenseType;
         this.image = image;
+
+        double xpe = (Math.random()-0.3) * Integer.parseInt(age);
+        this.xp = (int) xpe;
+
+        this.rating = (int) (Math.random() * 61);
+
+        String[] pos = {"R","U","HL","L","BJ","BJ"};
+        this.prefPos = pos[(int) Math.random() * 5];
     }
 
     public int getId() {
@@ -42,4 +54,16 @@ public class Official {
     public String getImage() { return image; }
 
     public String getAge() { return age; }
+
+    public int getYearsOfXp() {
+        return this.xp;
+    }
+
+    public String getPrefPos() {
+        return this.prefPos;
+    }
+
+    public int getRating() {
+        return this.rating;
+    }
 }
