@@ -338,10 +338,6 @@ public class Officialspicker_activity extends ActionBarActivity{
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case android.R.id.home:
-                Toast toast= Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 100);
-                toast.show();
-
                 this.finish();
                 return true;
         }

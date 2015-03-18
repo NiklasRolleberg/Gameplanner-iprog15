@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import simtek.gameplanner.R;
@@ -37,13 +38,25 @@ public class Refinfo_Activity extends ActionBarActivity {
         name.setText(currentOfficial.getName());
 
         TextView license = (TextView) findViewById(R.id.license);
-        license.setText(license.getText() + currentOfficial.getLicenseType());
+        license.setText(currentOfficial.getLicenseType());
 
         TextView resArea = (TextView) findViewById(R.id.residence);
-        resArea.setText(resArea.getText() + currentOfficial.getResArea());
+        resArea.setText(currentOfficial.getResArea());
 
         TextView age = (TextView) findViewById(R.id.age);
-        age.setText(age.getText() + currentOfficial.getAge());
+        age.setText(currentOfficial.getAge());
+
+        TextView years = (TextView) findViewById(R.id.years);
+        years.setText(""+(currentOfficial.getYearsOfXp()));
+
+        TextView prefPos = (TextView) findViewById(R.id.prefPos);
+        prefPos.setText(currentOfficial.getPrefPos());
+
+
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        ratingBar.setNumStars(5);
+        ratingBar.setRating(currentOfficial.getRating());
+        ratingBar.setIsIndicator(true);
 
         ImageView image = (ImageView) findViewById(R.id.official_image);
         String imageName = currentOfficial.getImage();

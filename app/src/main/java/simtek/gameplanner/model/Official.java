@@ -11,7 +11,7 @@ public class Official {
     private String licenseType;
     private String image;
 
-    private int rating;
+    private float rating;
     private int xp;
     private String prefPos;
 
@@ -24,10 +24,10 @@ public class Official {
         this.licenseType = licenseType;
         this.image = image;
 
-        double xpe = (Math.random()-0.3) * Integer.parseInt(age);
+        double xpe = (Math.random()*0.5) * Integer.parseInt(age);
         this.xp = (int) xpe;
 
-        this.rating = (int) (Math.random() * 61);
+        this.rating = (float) (Math.random() * 5);
 
         String[] pos = {"R","U","HL","L","BJ","BJ"};
         this.prefPos = pos[(int) Math.random() * 5];
@@ -63,7 +63,7 @@ public class Official {
         return this.prefPos;
     }
 
-    public int getRating() {
+    public float getRating() {
         return this.rating;
     }
 }
