@@ -5,10 +5,7 @@ import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
@@ -48,7 +45,6 @@ public class Intro_Activity extends ActionBarActivity implements View.OnClickLis
         createNewGame.setBackgroundResource(R.drawable.buttondesign);
         createNewGame.setTextColor(Color.WHITE);
         createNewGame.setOnClickListener(this);
-
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();

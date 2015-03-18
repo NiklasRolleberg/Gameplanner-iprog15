@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -51,7 +50,6 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
     private int mMinute;
 
     private int imageSize;
-
     private Model model;
     private Button createGame;
 
@@ -68,11 +66,11 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         awayteam = (Spinner)findViewById(R.id.creategame_spinner02);
         arena = (Spinner) findViewById(R.id.creategame_arenaspinner);
 
-        hometeam.setAdapter(new MySpinnerAdapter(model.getTeams(),awayteam));//adapter1
-        awayteam.setAdapter(new MySpinnerAdapter(model.getTeams(),hometeam));//adapter2);
+        hometeam.setAdapter(new MySpinnerAdapter(model.getTeams(),awayteam));
+        awayteam.setAdapter(new MySpinnerAdapter(model.getTeams(),hometeam));
         awayteam.setSelection(1);
 
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinner_item );
         for(Arena a: model.getArenas()) {
             adapter3.add(a.getName());
         }
@@ -233,7 +231,6 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
             away = (Team) awayteam.getSelectedItem();
             home = (Team) hometeam.getSelectedItem();
 
-            //TODO ta bort och gör om
             model.nrGames += 1;
             int gameid = model.nrGames;
 
@@ -254,7 +251,7 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
         Spinner other;
 
         public MySpinnerAdapter(ArrayList<Team> teams, Spinner other) {
-            super(CreateGame_Activity.this, android.R.layout.simple_spinner_item);
+            super(CreateGame_Activity.this, R.layout.spinner_item);
             super.addAll(teams);
             this.other = other;
         }
@@ -268,11 +265,12 @@ public class CreateGame_Activity extends ActionBarActivity implements View.OnCli
             Team item = super.getItem(position);
             ((TextView) row).setText(item.toString());
             if( (item.equals((Team) other.getSelectedItem()))) {
+                ((TextView) row).setTextAppearance(CreateGame_Activity.this, R.style.Base_TextAppearance_AppCompat_Medium);
                 ((TextView) row).setTextColor(Color.GRAY);
-                //((TextView) row).setTextAppearance(CreateGame_Activity.this, R.style.Base_TextAppearance_AppCompat_Medium);
                 row.setClickable(true); //skumt borde vara false
             }
             else {
+                ((TextView) row).setTextAppearance(CreateGame_Activity.this, R.style.Base_TextAppearance_AppCompat_Medium);
                 ((TextView) row).setTextColor(Color.BLACK);
                 row.setClickable(false);
             }
