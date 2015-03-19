@@ -36,13 +36,20 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     int visitors;
     TextView capacity;
     TextView rentCost;
-    TextView ticketPrice;
-    TextView turnout;
+    //TextView ticketPrice;
+    //TextView turnout;
     TextView revenue;
     TextView locationLbl;
     TextView visitorsLbl;
+    TextView ticketMin;
+    TextView ticketMax;
+    TextView turnoutMin;
+    TextView turnoutMax;
+    SeekBar ticketBar;
+    SeekBar turnoutBar;
     Button okButton;
     Model myModel;
+    int arenaMaxTicketPrice;
     int selectedPosition;
     Arena currentArena;
     private ArrayList<Arena> items;
@@ -77,6 +84,11 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         if (id == R.id.action_settings) {
             return true;
         }
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -86,6 +98,16 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         //System.out.println(arenaNames.get(position));
         selectedPosition = position;
         updateValues(items.get(selectedPosition).getId());
+        updateTicketPriceLabel(items.get(selectedPosition).getId());
+        if (!myModel.getGame(gameID).getArena().equals(myModel.getArenas().get(position))){
+            ticketBar.setProgress(0);
+            turnoutBar.setProgress(0);
+        }
+        else{
+            ticketBar.setProgress(myModel.getGame(gameID).getTicketPrice());
+            turnoutBar.setProgress((int)myModel.getGame(gameID).getTurnout());
+
+        }
     }
 
     @Override
@@ -96,14 +118,8 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     @Override
     public void onClick(View v) {
         int clickedID = v.getId();
-        if (clickedID == R.id.arenapicker_ticketPrice) {
-            setTicketPriceFromSlider();
-        }
-        if (clickedID == R.id.arenapicker_turnout){
-            setTurnoutFromSlider();
-        }
+
         if (clickedID == R.id.arenapicker_okButton){    //OK button
-            //todo add update stuff here later!
             myModel.getGame(gameID).setArena(items.get(selectedPosition));
             myModel.getGame(gameID).setTurnout(currentTurnout*100);
             myModel.getGame(gameID).setTicketPrice(currentTicketPrice);
@@ -115,6 +131,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
         }
     }
+
     /**Called by constructor*/
     private void setValues(){
         //initiate component values
@@ -123,12 +140,21 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         vSpinner = (Spinner) findViewById(R.id.venueSpinner);
         capacity = (TextView) findViewById(R.id.arenapicker_capacity);
 
-        ticketPrice = (TextView) findViewById(R.id.arenapicker_ticketPrice);
-        turnout = (TextView) findViewById(R.id.arenapicker_turnout);
+        //ticketPrice = (TextView) findViewById(R.id.arenapicker_ticketPrice);
+        //turnout = (TextView) findViewById(R.id.arenapicker_turnout);
         rentCost = (TextView) findViewById(R.id.arenapicker_rentCost);
         revenue = (TextView) findViewById(R.id.arenapicker_revenue);
         locationLbl = (TextView) findViewById(R.id.arenapicker_location);
         visitorsLbl = (TextView) findViewById(R.id.arenapicker_visitors);
+        ticketMax = (TextView) findViewById(R.id.arenapicker_ticketBarMaxLbl);
+        ticketMin = (TextView) findViewById(R.id.arenapicker_ticketBarMinLbl);
+
+        turnoutMin = (TextView) findViewById(R.id.arenapicker_turnoutBarMinLbl);
+        turnoutMax = (TextView) findViewById(R.id.arenapicker_turnoutBarMaxLbl);
+        ticketBar = (SeekBar) findViewById(R.id.arenapicker_ticketBar);
+        turnoutBar = (SeekBar) findViewById(R.id.arenapicker_turnoutBar);
+
+
         okButton = (Button) findViewById(R.id.arenapicker_okButton);
         okButton.setBackgroundResource(R.drawable.buttondesign);
         okButton.setTextColor(Color.WHITE);
@@ -160,8 +186,6 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
             }
             i++;
         }
-        ticketPrice.setOnClickListener(this);
-        turnout.setOnClickListener(this);
         okButton.setOnClickListener(this);
         currentRentCost = currentArena.getRentCost();
         currentCapacity = currentArena.getCapacity();
@@ -170,16 +194,71 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
 
         currentTicketPrice = myModel.getGame(gameID).getTicketPrice();
         if (currentTicketPrice!=0){
-            ticketPrice.setText(" Ticket price: " + currentTicketPrice + " €");
+            //ticketPrice.setText(" Ticket price: " + currentTicketPrice + " €");
             //System.out.println(currentTicketPrice + "-----------");
         }
         currentTurnout = myModel.getGame(gameID).getTurnout();
+        updateTicketPriceLabel(myModel.getGame(gameID).getArena().getID());
+
 
         if (currentTurnout!=0){
-            turnout.setText(" Turnout: " + currentTurnout + "%");
+            //turnout.setText(" Turnout: " + currentTurnout + "%");
         }
 
+        ticketBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                //todo update labels, set currentprice to bar value
+                currentTicketPrice = progress;
+                ticketMin.setText(progress + " €");
+                currentTicketPrice = progress;
+                updateRevenue();
 
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        turnoutBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                currentTurnout = (double)progress/100.0;
+                turnoutMin.setText(progress + " %");
+                updateRevenue();
+                visitors = (int)(currentCapacity * currentTurnout);
+                visitorsLbl.setText(" Projected nr of visitors: " + visitors);
+                //todo update visitors
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        ticketBar.setProgress(currentTicketPrice);
+        System.out.println(currentTurnout + "------------------------------------------");
+        turnoutBar.setProgress((int)currentTurnout);
+
+
+
+    }
+    private void updateRevenue(){
+
+        currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout - currentRentCost);
+        revenue.setText(" Projected revenue: " + Integer.toString(currentRevenue));
 
     }
     private void updateValues(int tempArenaID){
@@ -195,143 +274,19 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         currentTicketPrice = 0;
         currentTurnout = 0;
         //System.out.println("------------------UPDATE CALLED-----------");
-        ticketPrice.setText(" Ticket price: ");
-        turnout.setText(" Turnout: ");
+        //ticketPrice.setText(" Ticket price: ");
+        //turnout.setText(" Turnout: ");
         //visitors =
         //revenue.setText("");
 
     }
-    private void setTurnoutFromSlider(){
 
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        alert.setTitle("Set expected turnout [%]");
-        //alert.setMessage("Edit Text");
-
-        LinearLayout linear = new LinearLayout(this);
-
-        linear.setOrientation(LinearLayout.VERTICAL);
-        final TextView progressLabel = new TextView(this);
-        progressLabel.setText("0");
-        progressLabel.setPadding(10, 10, 10, 10);
-
-        final SeekBar seek = new SeekBar(this);
-
-
-        linear.addView(seek);
-        linear.addView(progressLabel);
-
-        alert.setView(linear);
-
-
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-                currentTurnout = seek.getProgress();
-                currentTurnout = (double)currentTurnout * 0.01;
-                System.out.println(currentTurnout);
-                Toast.makeText(getApplicationContext(), "Turnout set to: " + currentTurnout * 100 + " %", Toast.LENGTH_LONG).show();
-                turnout.setText(" Turnout: " + currentTurnout * 100 + " % ");
-                currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout);
-                revenue.setText(" Projected revenue: " + Integer.toString(currentRevenue));
-                //TODO set proj visitors here!!!!
-                visitors = (int)(currentCapacity * currentTurnout);
-                visitorsLbl.setText(" Projected nr of visitors: " + visitors);
-
-
-                //finish();
-            }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
-                //finish();
-            }
-        });
-
-        seek.setMax(100);
-        alert.show();
-        //final int[] ticketBarValue = new int[1];
-        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
-                int tempTurnout = seek.getProgress();
-                progressLabel.setText((String.valueOf(tempTurnout)) + " %");
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-
+    private void updateTicketPriceLabel(int arenaID){
+        arenaMaxTicketPrice= myModel.getArena(arenaID).getmaxTicketPrice();
+        ticketBar.setMax(arenaMaxTicketPrice);
+        ticketMax.setText(arenaMaxTicketPrice + " €");
     }
-    private void setTicketPriceFromSlider(){
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        alert.setTitle("Ticket pricing");
-        //alert.setMessage("Edit Text");
-
-        LinearLayout linear = new LinearLayout(this);
-        linear.setOrientation(LinearLayout.VERTICAL);
-
-        final SeekBar seek = new SeekBar(this);
-        linear.addView(seek);
-
-        alert.setView(linear);
-
-        final TextView progressLabel = new TextView(this);
-        progressLabel.setText("0");
-        progressLabel.setPadding(10, 10, 10, 10);
-        linear.addView(progressLabel);
-
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                currentTicketPrice = seek.getProgress();
-                Toast.makeText(getApplicationContext(), "Ticket price set to: "+ currentTicketPrice, Toast.LENGTH_LONG).show();
-                ticketPrice.setText(" Ticket price: " + currentTicketPrice  + " €");
-                currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout);
-                revenue.setText(" Projected revenue: " + Integer.toString(currentRevenue));
-                //finish();
-            }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show();
-                //finish();
-            }
-        });
-
-        alert.show();
-        //final int[] ticketBarValue = new int[1];
-        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
-                int tempTurnout = seek.getProgress();
-                progressLabel.setText((String.valueOf(tempTurnout)));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
 
 
-    }
 
 }

@@ -27,13 +27,14 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
     TextView turnout;
     TextView ticketPrice;
     TextView visitors;
-    TextView offPay;
+    TextView crewCost;
     TextView finalRevenue;
     TextView officials;
     TextView crewRating;
     TextView rentCost;
     TextView income;
     TextView expenses;
+
     int gameID;
     int refCount;
     float meanCrewRating;
@@ -64,13 +65,14 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         visitors = (TextView) findViewById(R.id.gameinfo_visitors);
         expenses = (TextView) findViewById(R.id.gameinfo_expenses);
         income = (TextView) findViewById(R.id.gameinfo_income);
-
+        crewCost = (TextView) findViewById(R.id.gameinfo_crewrCost);
 
         arena.setOnClickListener(this);
         officials.setOnClickListener(this);
 
         myModel = ((CustomApplication) this.getApplication()).getModel();
         gameID = getIntent().getIntExtra("ID", 1);
+
 
         setValues(gameID);
     }
@@ -101,7 +103,7 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         int clickedID = v.getId();
-        ArrayList<Integer> refArray = new ArrayList<>(5);
+        //ArrayList<Integer> refArray = new ArrayList<>(5);
         if (clickedID == R.id.gameinfo_Arena) {
             Intent intent = new Intent(this, Arenapicker.class);
             intent.putExtra("ID", gameID);
@@ -126,7 +128,7 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         homeTeam.setText("Home team: " + myGame.getHomeTeam().getName());
         awayTeam.setText("Away team: " + myGame.getAwayTeam().getName());
         ticketPrice.setText("Ticket price: " + myGame.getTicketPrice() + " €");
-        turnout.setText("Turnout [%]: " + myGame.getTurnout());
+        turnout.setText("Turnout: " + String.format( "%.0f", myGame.getTurnout()) + " %");
         visitors.setText("Visitors: " + myGame.getVisitors());
         refCount = myGame.getNrOfOfficials();
         officials.setText("Officials assigned: " + refCount + "/5");
@@ -158,6 +160,7 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
             day = "0"+day;
         String date = (year + "-" + month + "-" + day);
 
+
         kickoffTime.setText(date + ", " + timeString);
         meanCrewRating = 0;
         Official tempOfficial;
@@ -170,13 +173,15 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         meanCrewRating /= myGame.getNrOfOfficials();
         crewRating.setText("Crew rating: " + String.format("%.2f", meanCrewRating) + "/5");
 
-        rentCost.setText("Rent cost: " + myGame.getRentCost());
-        double tempExpenses = myGame.getRentCost(); //todo get the cost for the refs!
+        rentCost.setText("Rent cost: " + myGame.getRentCost() + " €");
+        crewCost.setText("Crew cost: " + myGame.getRefCost() + " €");
+
+        double tempExpenses = myGame.getRentCost() + myGame.getRefCost(); //todo get the cost for the refs!
         expenses.setText("Expenses: " + tempExpenses);
         double tempIncome = myGame.getVisitors()*myGame.getTicketPrice();
         income.setText("Income: " + tempIncome);
         double tempRevenue = tempIncome - tempExpenses;
-        finalRevenue.setText(String.valueOf(tempRevenue) + " €");
+        finalRevenue.setText(String.format("%.2f",tempRevenue) + " €");
 
     }
 

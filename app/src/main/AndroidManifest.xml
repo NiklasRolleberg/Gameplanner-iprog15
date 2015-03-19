@@ -29,8 +29,8 @@
         </activity>
         <activity
             android:name=".android.Arenapicker"
-            android:label="Edit venue" >
-            <!--android:parentActivityName=".android.Gameinfo_Activity"-->
+            android:label="Edit venue"
+            android:parentActivityName=".android.Gameinfo_Activity">
         </activity>
         <activity
             android:name=".android.Officialspicker_activity"

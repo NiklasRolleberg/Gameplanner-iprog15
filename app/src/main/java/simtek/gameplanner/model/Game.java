@@ -24,6 +24,8 @@ public class Game implements Comparable<Game>{
     private int hour;
     private int minute;
 
+    private int refCost;
+
     public Game(int id, Arena arena, Team homeTeam, Team awayTeam, int year, int month, int day, int hour, int minute) {
         //System.out.println("I AM A GAME!");
         this.id = id;
@@ -129,6 +131,18 @@ public class Game implements Comparable<Game>{
                 nr++;
             }
         return nr;
+    }
+
+    public int getRefCost(){
+        int tempCost = 0;
+        Official tempOfficial;
+        for (int i = 0; i < 5; i++){
+            tempOfficial=officials[i];
+            if (tempOfficial != null){
+                tempCost += tempOfficial.getCompensation();
+            }
+        }
+        return  tempCost;
     }
 
     @Override

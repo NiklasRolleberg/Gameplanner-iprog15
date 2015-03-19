@@ -14,6 +14,7 @@ public class Official {
     private float rating;
     private int xp;
     private String prefPos;
+    private int compensation;
 
     public Official(int id, String name, String age, String resArea, String licenseType, String image) {
         //System.out.println("I AM OFFICIAL!!!");
@@ -31,6 +32,7 @@ public class Official {
 
         String[] pos = {"R","U","HL","L","BJ","BJ"};
         this.prefPos = pos[(int) Math.random() * 5];
+        this.compensation = 10 + (xp*(int)rating * 2);
     }
 
     public int getId() {
@@ -66,4 +68,7 @@ public class Official {
     public float getRating() {
         return this.rating;
     }
+
+    public int getCompensation(){
+        return compensation;}
 }

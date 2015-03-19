@@ -80,6 +80,15 @@
                     android:textSize="20dp" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Crew cost: "
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:id="@+id/gameinfo_crewrCost"
+                    android:textSize="20dp" />
+
+                <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Venue: "
@@ -178,7 +187,6 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text=" 9000 "
                     android:id="@+id/gameinfo_finalRevenue"
-                    android:background="@color/abc_search_url_text_normal"
                     android:layout_row="0"
                     android:layout_column="9"
                     android:layout_alignBottom="@+id/textView4"

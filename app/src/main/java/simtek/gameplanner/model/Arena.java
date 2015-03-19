@@ -15,6 +15,7 @@ public class Arena {
     private int rentCost;
     private int capacity;
     private String imageName;
+    private int maxTicketPrice;
 
 
     public Arena(int id, String name, String location, String imageName) {
@@ -25,6 +26,7 @@ public class Arena {
         this.capacity = 600+(int) (Math.random()*2000);
         this.rentCost = 4000+ (int) (Math.random()*capacity);
         this.imageName = imageName;
+        this.maxTicketPrice = 10 + (int)(Math.random()*10);
 
 
     }
@@ -54,5 +56,9 @@ public class Arena {
 
     public String getImageName() {
         return this.imageName;
+    }
+
+    public int getmaxTicketPrice(){
+        return maxTicketPrice;
     }
 }
