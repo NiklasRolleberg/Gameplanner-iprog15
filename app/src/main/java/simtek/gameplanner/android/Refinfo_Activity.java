@@ -63,6 +63,9 @@ public class Refinfo_Activity extends ActionBarActivity {
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.parseColor("#33B5E5"), PorterDuff.Mode.SRC_ATOP);
 
+        TextView compensation = (TextView) findViewById(R.id.compensation);
+        compensation.setText(""+currentOfficial.getCompensation() + "€");
+
         ImageView image = (ImageView) findViewById(R.id.official_image);
         String imageName = currentOfficial.getImage();
         Drawable im = getResources().getDrawable(getResources().getIdentifier(imageName, "drawable", getPackageName()));
