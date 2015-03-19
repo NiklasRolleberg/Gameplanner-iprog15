@@ -152,7 +152,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Projected nr of visitors: "
+            android:text=" Projected nr of visitors: 0"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#000000"
             android:id="@+id/arenapicker_visitors"

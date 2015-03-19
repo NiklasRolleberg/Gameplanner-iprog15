@@ -249,16 +249,17 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         });
 
         ticketBar.setProgress(currentTicketPrice);
-        System.out.println(currentTurnout + "------------------------------------------");
+        //System.out.println(currentTurnout + "------------------------------------------");
         turnoutBar.setProgress((int)currentTurnout);
 
-
+        updateRevenue();
 
     }
     private void updateRevenue(){
 
-        currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout - currentRentCost);
-        revenue.setText(" Projected revenue: " + Integer.toString(currentRevenue));
+        currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout - currentRentCost)
+                        - myModel.getGame(gameID).getRefCost();
+        revenue.setText(" Projected revenue: " + Integer.toString(currentRevenue) + " €");
 
     }
     private void updateValues(int tempArenaID){

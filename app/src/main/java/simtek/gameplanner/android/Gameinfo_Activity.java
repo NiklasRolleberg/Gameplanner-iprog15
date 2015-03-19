@@ -176,7 +176,8 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
         rentCost.setText("Rent cost: " + myGame.getRentCost() + " €");
         crewCost.setText("Crew cost: " + myGame.getRefCost() + " €");
 
-        double tempExpenses = myGame.getRentCost() + myGame.getRefCost(); //todo get the cost for the refs!
+        double tempExpenses = myGame.getRentCost() + myGame.getRefCost();
+
         expenses.setText("Expenses: " + tempExpenses);
         double tempIncome = myGame.getVisitors()*myGame.getTicketPrice();
         income.setText("Income: " + tempIncome);
