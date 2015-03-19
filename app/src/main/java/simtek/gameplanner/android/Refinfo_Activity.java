@@ -1,6 +1,9 @@
 package simtek.gameplanner.android;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -57,6 +60,8 @@ public class Refinfo_Activity extends ActionBarActivity {
         ratingBar.setNumStars(5);
         ratingBar.setRating(currentOfficial.getRating());
         ratingBar.setIsIndicator(true);
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(Color.parseColor("#33B5E5"), PorterDuff.Mode.SRC_ATOP);
 
         ImageView image = (ImageView) findViewById(R.id.official_image);
         String imageName = currentOfficial.getImage();
