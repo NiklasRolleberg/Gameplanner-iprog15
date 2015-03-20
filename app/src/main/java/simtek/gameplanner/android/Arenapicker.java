@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import simtek.gameplanner.R;
 import simtek.gameplanner.model.Arena;
@@ -189,8 +190,8 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         okButton.setOnClickListener(this);
         currentRentCost = currentArena.getRentCost();
         currentCapacity = currentArena.getCapacity();
-        capacity.setText(" Capacity: " + Integer.toString(currentCapacity));
-        rentCost.setText(" Rent cost: " + Integer.toString(currentRentCost));
+        capacity.setText(" Capacity: " + Integer.toString(currentCapacity) + " visitors");
+        rentCost.setText(" Rent cost: " + Integer.toString(currentRentCost)  + " €");
 
         currentTicketPrice = myModel.getGame(gameID).getTicketPrice();
         if (currentTicketPrice!=0){
@@ -257,7 +258,7 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
     }
     private void updateRevenue(){
 
-        currentRevenue = (int)((double)currentTicketPrice * (double)currentCapacity * currentTurnout - currentRentCost)
+        currentRevenue = (int)((double)currentTicketPrice * (int)((double)currentCapacity * currentTurnout) - currentRentCost)
                         - myModel.getGame(gameID).getRefCost();
         revenue.setText(" Projected revenue: " + Integer.toString(currentRevenue) + " €");
 
@@ -267,8 +268,8 @@ public class Arenapicker extends ActionBarActivity implements AdapterView.OnItem
         currentArena = myModel.getArena(tempArenaID);
         currentRentCost = currentArena.getRentCost();
         currentCapacity = currentArena.getCapacity();
-        capacity.setText(" Capacity: " + Integer.toString(currentCapacity));
-        rentCost.setText(" Rent cost: " + Integer.toString(currentRentCost));
+        capacity.setText(" Capacity: " + Integer.toString(currentCapacity) + "  visitors");
+        rentCost.setText(" Rent cost: " + Integer.toString(currentRentCost) + " €");
         //todo what else happens here?
 
         //reset ticket price and turnout?

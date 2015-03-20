@@ -170,7 +170,8 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
                 meanCrewRating += myGame.getOfficial(i).getRating();
             }
         }
-        meanCrewRating /= myGame.getNrOfOfficials();
+
+        meanCrewRating /= Math.max(myGame.getNrOfOfficials(),1);
         crewRating.setText("Crew rating: " + String.format("%.2f", meanCrewRating) + "/5");
 
         rentCost.setText("Rent cost: " + myGame.getRentCost() + " €");
@@ -178,12 +179,11 @@ public class Gameinfo_Activity extends ActionBarActivity implements View.OnClick
 
         double tempExpenses = myGame.getRentCost() + myGame.getRefCost();
 
-        expenses.setText("Expenses: " + tempExpenses);
+        expenses.setText("Expenses: " + tempExpenses + " €");
         double tempIncome = myGame.getVisitors()*myGame.getTicketPrice();
-        income.setText("Income: " + tempIncome);
+        income.setText("Income: " + tempIncome + " €");
         double tempRevenue = tempIncome - tempExpenses;
         finalRevenue.setText(String.format("%.2f",tempRevenue) + " €");
-
     }
 
     @Override
